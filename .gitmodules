@@ -1,0 +1,3 @@
+[submodule "bsp/stm32/xt_stm32f103/xt_modules"]
+	path = bsp/stm32/xt_stm32f103/xt_modules
+	url = https://github.com/o2ospring/xt_modules.git
