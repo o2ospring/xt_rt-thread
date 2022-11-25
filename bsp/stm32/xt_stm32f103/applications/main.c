@@ -1,36 +1,24 @@
-/*
- * Copyright (c) 2006-2021, RT-Thread Development Team
- *
- * SPDX-License-Identifier: Apache-2.0
- *
- * Change Logs:
- * Date           Author       Notes
- * 2019-03-08     obito0   first version
- */
+/**
+  * @file  main.c
+  * @brief 应用主函数
+  * COPYRIGHT (C) 2022, XT 技术联合小组
+  * Change Logs:
+  * Date           Author       Notes
+  * 2022-11-18     o2ospring    原始版本
+  */
+#define   MAIN_C__
+#include "main.h"
+#ifdef    MAIN_X__   //再次调用头文件,用于增加存在交叉关系的内容!
+#undef    MAIN_H__
+#include "main.h"
+#endif
 
-#include <rtthread.h>
-#include <rtdevice.h>
-#include <board.h>
-
-/* defined the LED0 pin: PB5 */
-#define LED0_PIN    GET_PIN(B, 5)
-/* defined the LED1 pin: PE5 */
-#define LED1_PIN    GET_PIN(E, 5)
+extern void rt_init_thread_entry(void *p_arg);
+extern void rt_timer_thread_loop(void *p_arg);
 
 int main(void)
 {
-    /* set LED0 pin mode to output */
-    rt_pin_mode(LED0_PIN, PIN_MODE_OUTPUT);
-    /* set LED1 pin mode to output */
-    rt_pin_mode(LED1_PIN, PIN_MODE_OUTPUT);
-
-    while (1)
-    {
-        rt_pin_write(LED0_PIN, PIN_HIGH);
-        rt_pin_write(LED1_PIN, PIN_HIGH);
-        rt_thread_mdelay(500);
-        rt_pin_write(LED0_PIN, PIN_LOW);
-        rt_pin_write(LED1_PIN, PIN_LOW);
-        rt_thread_mdelay(500);
-    }
+	rt_init_thread_entry(0); //应用上电初始化
+	rt_timer_thread_loop(0); //软件定时器循环
+	return 0;
 }

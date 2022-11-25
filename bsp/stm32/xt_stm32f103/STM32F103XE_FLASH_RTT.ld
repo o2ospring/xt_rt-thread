@@ -103,15 +103,7 @@ SECTIONS
 
     /* section information for bsp and app. */
     . = ALIGN(4);
-    KEEP(*(SORT(.chip_init_fn.*)))
-    . = ALIGN(4);
-    KEEP(*(SORT(.hard_init_fn.*)))
-    . = ALIGN(4);
-    KEEP(*(SORT(.icic_init_fn.*)))
-    . = ALIGN(4);
-    KEEP(*(SORT(.eve_init_fn.*)))
-    . = ALIGN(4);
-    KEEP(*(SORT(.app_init_fn.*)))
+    KEEP(*(SORT(.xt_section_fn.*)))
 
     . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
