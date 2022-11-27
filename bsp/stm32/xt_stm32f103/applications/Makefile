@@ -10,45 +10,84 @@ OBJS_D = ../build/gcc
 
 # 添加编译源文件，包括路径及文件名【多个用空格分隔】
 # xxx.s复制来源: HAL库\Drivers\CMSIS\Device\ST\STM32F1xx\Source\Templates\gcc
-SRCS_F = ./main.c                                 \
+SRCS_F = \
+         ../user/xt_ir_send_demo/app_ir_send.c \
+         ../user/xt_ir_send_demo/app_ir_huilink.c \
          \
-         ../$(STM32F103XX_ASM)                    \
-         ../board/CubeMX_Config/Src/stm32f1xx_hal_msp.c \
-         ../board/board.c                         \
+         ../modules/xt_ir_send/xt_ir_send_remap.h \
          \
-         ../../libraries/HAL_Drivers/drv_common.c       \
-         ../../libraries/HAL_Drivers/drv_gpio.c         \
-         ../../libraries/HAL_Drivers/drv_usart.c        \
+         ../xt_modules/xt_macro/xt_comdef.h \
+         ../xt_modules/xt_macro/xt_llist.h \
+         ../xt_modules/xt_ir_send/xt_ir_send.c \
+         ../xt_modules/xt_ir_send/xt_ir_send_pwm_dma_stm32f1xx_hal.c \
          \
-         ../../../../components/finsh/shell.c     \
-         ../../../../components/drivers/misc/pin.c      \
-         ../../../../components/drivers/serial/serial.c
+         ./main.c \
+         ./application.c \
+         ./application.h \
+         ../rtconfig.h \
+         ./cpuusage.c \
+         ./app_debug.c \
+         ./app_debug.h \
+         \
+         ../../../../components/drivers/misc/pin.c \
+         ../../../../components/drivers/serial/serial.c \
+         \
+         ../board/board.c \
+         ../board/board.h \
+         ../board/stm32f1xx_hal_conf.h \
+         ../board/stm32f1xx_hal_msp.c \
+         ../board/bsp_stm32f1xx_it.c \
+         ../board/bsp_stm32f1xx_swj.c \
+         ../board/bsp_stm32f1xx_exti.c \
+         ../board/bsp_stm32f1xx_uart.c \
+         ../board/bsp_stm32f1xx_spi.c \
+         ../board/bsp_stm32f1xx_tim.c \
+         ../board/bsp_stm32f1xx_pwm.c \
+         ../board/bsp_stm32f1xx_flash_sz.c \
+         ../board/bsp_stm32f1xx_id.c \
+         ../board/bsp_stm32f1xx_crc.c \
+         ../board/bsp_stm32f1xx_wdg.c \
+         ../board/bsp_stm32f1xx_adc.c \
+         \
+         ../../libraries/HAL_Drivers/drv_gpio.c \
+         ../../libraries/HAL_Drivers/drv_usart.c \
+         ../../libraries/HAL_Drivers/drv_common.c \
+         \
+         ../$(STM32F103XX_ASM) \
+         \
+         ../../../../components/finsh/shell.c
 
 # 添加编译文件夹，要指定文件扩展名【多个用空格分隔】
 SRCS_D = 
 
 # 添加编译库文件，包括路径及文件名【多个用空格分隔】
-LIBS_F = ../build/gcc/hal.a                       \
+LIBS_F = ../build/gcc/hal.a \
          ../build/gcc/rtt.a
 
 # 添加源码文件及包含文件所在的路径【多个用空格分隔】
-SRCS_I = ../../../../include                      \
-         ../../../../components/drivers/include   \
+SRCS_I = ../../../../include \
+         ../../../../components/drivers/include \
          ../../../../components/drivers/include/drivers \
-         ../../../../components/finsh             \
+         ../../../../components/finsh \
          \
-         ../../libraries/HAL_Drivers                                     \
-         ../../libraries/HAL_Drivers/config                              \
-         ../../libraries/HAL_Drivers/CMSIS/Include                       \
+         ../../libraries/HAL_Drivers \
+         ../../libraries/HAL_Drivers/config \
+         ../../libraries/HAL_Drivers/CMSIS/Include \
          ../../libraries/STM32F1xx_HAL/CMSIS/Device/ST/STM32F1xx/Include \
-         ../../libraries/STM32F1xx_HAL/STM32F1xx_HAL_Driver/Inc          \
-         ../../libraries/STM32F1xx_HAL/CMSIS/Include                     \
+         ../../libraries/STM32F1xx_HAL/STM32F1xx_HAL_Driver/Inc \
+         ../../libraries/STM32F1xx_HAL/CMSIS/Include \
          \
-         ./                         \
-         ../                        \
-         ../board                   \
-         ../board/CubeMX_Config/Inc \
-         ../board/ports/include
+         ./ \
+         ../ \
+         ../applications \
+         ../board \
+         ../board/ports/include \
+         \
+         ../modules/xt_ir_send \
+         ../xt_modules/xt_ir_send \
+         ../xt_modules/xt_macro \
+         \
+         ../user/xt_ir_send_demo
 
 # 添加链接脚本文件，含路径和文件名【只能是一个对象】
 LDS_F  = ../$(STM32F103XX_LD)

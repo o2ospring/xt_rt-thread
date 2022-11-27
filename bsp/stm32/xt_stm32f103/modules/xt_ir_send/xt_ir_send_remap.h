@@ -21,18 +21,19 @@ extern "C" {
 /*++++++++++++++++++++++++++++++++++++++++++++++ 参数配置 ++++++++++++++++++++++++++++++++++++++++++++++*/
 /********************************************************************************************************/
 
-#define XT_IRSEND_SUM            1     //红外发送通道总数（默认:1，因为向空间发送红外会互相干扰及不同载波问题,所以低层硬件一般只支持1通道发送）
-#define xt_irsend_printf(...)    rt_kprintf(__VA_ARGS__)            //异常信息打印
+#define XT_IRSEND_SUM                  1                                  //红外发送通道总数（默认:1，因为向空间发送红外会互相干扰及不同载波问题,所以低层硬件一般只支持1通道发送）
+#define XT_IRSEND_HW_DRIVERS_EN        1                                  //是否使用本模块自带硬件驱动（0:不使用）
+#define xt_irsend_printf(...)          rt_kprintf(__VA_ARGS__)            //异常信息打印
 
-#define XT_IRSEND_VARIAB()       register rt_base_t level;          //硬件互斥:使用到的变量声明
-#define XT_IRSEND_LOCKED()       level = rt_hw_interrupt_disable()  //硬件互斥:[关]中断总开关
-#define XT_IRSEND_UNLOCK()       rt_hw_interrupt_enable(level)      //硬件互斥:[开]中断总开关
+#define XT_IRSEND_VARIAB()             register rt_base_t level;          //硬件互斥:使用到的变量声明
+#define XT_IRSEND_LOCKED()             level = rt_hw_interrupt_disable()  //硬件互斥:[关]中断总开关
+#define XT_IRSEND_UNLOCK()             rt_hw_interrupt_enable(level)      //硬件互斥:[开]中断总开关
 
-#define XT_IRSEND_TASK_LOCKED()  rt_enter_critical()                //任务互斥:[进入]互斥
-#define XT_IRSEND_TASK_UNLOCK()  rt_exit_critical()                 //任务互斥:[退出]互斥
+#define XT_IRSEND_TASK_LOCKED()        rt_enter_critical()                //任务互斥:[进入]互斥
+#define XT_IRSEND_TASK_UNLOCK()        rt_exit_critical()                 //任务互斥:[退出]互斥
 
-#define XT_IRSEND_OS_INT_ENTER() rt_interrupt_enter()               //告知操作系统[进入]中断
-#define XT_IRSEND_OS_INT_EXIT()  rt_interrupt_leave()               //告知操作系统[退出]中断
+#define XT_IRSEND_OS_INT_ENTER()       rt_interrupt_enter()               //告知操作系统[进入]中断
+#define XT_IRSEND_OS_INT_EXIT()        rt_interrupt_leave()               //告知操作系统[退出]中断
 
 /********************************************************************************************************/
 /*++++++++++++++++++++++++++++++++++++++++++++++ 数据类型 ++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -55,13 +56,13 @@ typedef struct xt_irsend_obj_
 	xt_irsend_decode_fn_t p_decode_fn; //【红外属性】：在中断里即时解压出时间码发送（入口(*p_step=0)表开始,其返回高8位时间单位,低8位载波频率,
 	uint32_t decode_tmp[1];            //【红外属性】：根据上行应用解压函数要求分配本缓存空间大小。      返回(*p_step==0xFFFF)表示最后一个码）
 	
-	void (*p_irsend_open_fn)(const struct xt_irsend_obj_ *pob);     //【应用层服务】：红外发送服务已打开的通知函数（常用于设置上层应用标志）
-	void (*p_irsend_close_fn)(const struct xt_irsend_obj_ *pob);    //【应用层服务】：红外发送服务被关闭的通知函数（常用于设置上层应用标志）
+	void (*p_irsend_open_fn)(const struct xt_irsend_obj_ *pob);     //【应用层服务】：红外发送服务成功打开协同操作函数（常用于设置上层应用标志）
+	void (*p_irsend_close_fn)(const struct xt_irsend_obj_ *pob);    //【应用层服务】：红外发送服务成功关闭协同操作函数（常用于设置上层应用标志）
 	void (*p_irsend_complete_fn)(const struct xt_irsend_obj_ *pob); //【应用层服务】：完成发送的通知函数（在中断中通知）
 	
 	void (*p_dv_wave_fn)(struct xt_irsend_obj_ *p_ob);              //【驱动层服务】：为[硬件层]中断提供调用
 	
-	//int (*p_hw_open_fn)(struct xt_irsend_obj_ *p_ob);             //【硬件层服务】：打开硬件（本接口以静态形式提供，它是[驱动层]对接[硬件层]超始通道，并由它来提供其它对接口）
+	int  (*p_hw_open_fn)(struct xt_irsend_obj_ *p_ob);              //【硬件层服务】：打开硬件（本接口以静态形式提供，它是[驱动层]对接[硬件层]超始通道，并由它来提供其它对接口）
 	void (*p_hw_close_fn)(struct xt_irsend_obj_ *p_ob);             //【硬件层服务】：关闭硬件
 	void (*p_hw_putd_before_fn)(uint8_t khz);                       //【硬件层服务】：通知[硬件层]发送前准备（khz:红外载波频率,单位:KHz）
 	void (*p_hw_putd_a_fn)(uint32_t us, uint8_t f);                 //【硬件层服务】：中断中启动[硬件层]去发送一个有载波码（us:有载波时间,f=0:第1个码,1:中途1个码,2:最后1个码）
@@ -79,8 +80,8 @@ typedef struct xt_irsend_obj_
 //为应用提供服务
 extern int xt_irsend_open(xt_irsend_obj_t *p_ob);
 extern int xt_irsend_close(xt_irsend_obj_t *p_ob);
-extern int xt_irsend_send(xt_irsend_obj_t *p_ob, const uint16_t *pb, uint16_t size, uint8_t xus, uint8_t khz);
-extern int xt_irsend_decode_send(xt_irsend_obj_t *p_ob, const uint8_t *pb, uint16_t size, const xt_irsend_decode_fn_t p_fn);
+extern int xt_irsend_send(xt_irsend_obj_t *p_ob, const uint16_t *pd, uint16_t size, uint8_t xus, uint8_t khz);
+extern int xt_irsend_decode_send(xt_irsend_obj_t *p_ob, const uint8_t *pd, uint16_t size, const xt_irsend_decode_fn_t p_fn);
 extern int xt_irsend_state(xt_irsend_obj_t *p_ob);
 
 #ifdef __cplusplus

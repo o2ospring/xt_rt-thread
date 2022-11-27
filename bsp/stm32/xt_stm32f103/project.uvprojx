@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>__STDC_LIMIT_MACROS, STM32F103xE, USE_HAL_DRIVER, RT_USING_LIBC, __CLK_TCK=RT_TICK_PER_SECOND, __RTTHREAD__, RT_USING_ARM_LIBC</Define>
               <Undefine></Undefine>
-              <IncludePath>.\applications;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m3;..\..\..\components\drivers\include;..\..\..\components\libc\compilers\common\include;..\..\..\components\libc\compilers\common\extension;..\..\..\components\libc\compilers\common\extension\fcntl\octal;..\..\..\components\libc\posix\io\poll;..\..\..\components\libc\posix\io\stdio;..\..\..\components\libc\posix\ipc;..\..\..\components\finsh;..\..\..\include;.;.\board;.\board\ports\include;..\libraries\HAL_Drivers;..\libraries\HAL_Drivers\config;..\libraries\HAL_Drivers\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Device\ST\STM32F1xx\Include;..\libraries\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;.\xt_modules\xt_ir_send;.\xt_modules\xt_macro;.\modules\xt_ir_send</IncludePath>
+              <IncludePath>.\applications;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m3;..\..\..\components\drivers\include;..\..\..\components\libc\compilers\common\include;..\..\..\components\libc\compilers\common\extension;..\..\..\components\libc\compilers\common\extension\fcntl\octal;..\..\..\components\libc\posix\io\poll;..\..\..\components\libc\posix\io\stdio;..\..\..\components\libc\posix\ipc;..\..\..\components\finsh;..\..\..\include;.;.\board;.\board\ports\include;..\libraries\HAL_Drivers;..\libraries\HAL_Drivers\config;..\libraries\HAL_Drivers\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Device\ST\STM32F1xx\Include;..\libraries\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;.\xt_modules\xt_ir_send;.\xt_modules\xt_macro;.\modules\xt_ir_send;.\user\xt_ir_send_demo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -382,6 +382,18 @@
       <Groups>
         <Group>
           <GroupName>user</GroupName>
+          <Files>
+            <File>
+              <FileName>app_ir_send.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\user\xt_ir_send_demo\app_ir_send.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_ir_huilink.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\user\xt_ir_send_demo\app_ir_huilink.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>modules</GroupName>
@@ -396,6 +408,16 @@
         <Group>
           <GroupName>xt_modules</GroupName>
           <Files>
+            <File>
+              <FileName>xt_comdef.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\xt_modules\xt_macro\xt_comdef.h</FilePath>
+            </File>
+            <File>
+              <FileName>xt_llist.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\xt_modules\xt_macro\xt_llist.h</FilePath>
+            </File>
             <File>
               <FileName>xt_ir_send.c</FileName>
               <FileType>1</FileType>
@@ -438,6 +460,16 @@
               <FileName>cpuusage.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\applications\cpuusage.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\applications\app_debug.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_debug.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\applications\app_debug.h</FilePath>
             </File>
           </Files>
         </Group>

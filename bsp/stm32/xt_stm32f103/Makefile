@@ -1,5 +1,5 @@
 export ROOT = $(realpath .)
-.PHONY: all clean echo debug download clean_app
+.PHONY: all clean echo debug download clean_app help
 include envi.rule
 
 ####################################################
@@ -127,3 +127,11 @@ download:
 
 clean_app:
 	$(subst //, && $(MAKE) clean$(LFTAB),$(MAKEFILE_CALL2))
+
+help:
+	@echo "make all"
+	@echo "make clean"
+	@echo "make echo"
+	@echo "make debug"
+	@echo "make download"
+	@echo "make clean_app"

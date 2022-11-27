@@ -54,6 +54,7 @@ extern "C" {
 #define XT_DEF_DISABLED                 0                               /* 禁用模块                     */
 #define XT_DEF_ENABLED                  1                               /* 使能模块                     */
 //----------------------------------------
+#define XT_APP_DEBUG                    20221126                        /* 开启[发送红外遥控码演示]     */
 #define __XT_IR_SEND_REMAP_H
 #ifndef XT_APP_IRSEND_EN
 #define XT_APP_IRSEND_EN                XT_DEF_ENABLED                  /* 红外遥控发送服务模块         */

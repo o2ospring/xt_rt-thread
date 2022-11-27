@@ -31,7 +31,7 @@ ifdef TARGET
 DEBUG_CMD = cgdb -d $(DB) \
 -iex 'target extended-remote | openocd -c "gdb_port pipe" -f "interface/jlink_swd.cfg" -f "target/stm32f1x.cfg"' \
 -ex  'file $(TARGET).elf' \
--ex  'monitor reset halt' \
+-ex  'monitor reset halt; wait_halt' \
 -ex  'load' \
 -ex  'tb main' \
 -ex  'c'
