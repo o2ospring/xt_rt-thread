@@ -1,6 +1,6 @@
 export ROOT = $(realpath .)
 .PHONY: all clean echo debug download clean_app help
-include envi.rule
+include makeenvi.rule
 
 ####################################################
 # 0、专门为【STM32Fxxx】应用工程增加的参数配置。

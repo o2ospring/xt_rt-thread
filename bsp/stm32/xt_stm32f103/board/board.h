@@ -175,6 +175,44 @@ extern int __bss_end;
 #define XT_IRSEND_DMA_IRQHandler     DMA1_Channel3_IRQHandler           /* DMA 中断向量函数             */
 #define XT_IRSEND_RAM_SUM            65 /*以空间换取执行效率*/          /* DMA 转传数据源大小(数据个数) */
 
+// 串行通信服务+++++++++++++++++++++++
+// 串行通信模块-定时器（串口+公共定时器）──┐
+extern void xt_scomx_tim_irqhandler(void); //├→★★硬件驱动二选一★★ /* 公共定时器中断中每1ms调用1次 */
+// 串行通信模块-定时器（串口+独立定时器）──┘
+#define XT_SCOMx_TIM                 TIM1                               /* 定时器                       */
+#define XT_SCOMx_TIM_CLK_EN()      __HAL_RCC_TIM1_CLK_ENABLE()          /* 定时器时钟使能               */
+#define XT_SCOMx_TIM_IRQn            TIM1_CC_IRQn                       /* 定时器中断通道               */
+#define XT_SCOMx_TIM_PRE_INT_PRIO    1                                  /* 定时器抢占中断优先级         */
+#define XT_SCOMx_TIM_SUB_INT_PRIO    1                                  /* 定时器响应中断优先级         */
+#define XT_SCOMx_TIM_CCR1            0xFFFF      /*一般不要改*/         /* 定时器CCR1                   */
+#define XT_SCOMx_TIM_CCR2            0xFFFF      /*一般不要改*/         /* 定时器CCR2                   */
+#define XT_SCOMx_TIM_CCR3            0xFFFF      /*一般不要改*/         /* 定时器CCR3                   */
+#define XT_SCOMx_TIM_CCR4            0xFFFF      /*一般不要改*/         /* 定时器CCR4                   */
+#define XT_SCOMx_TIM_TICK_US         1           /*绝对不要改*/         /* 定时器计数节拍(如:1->1us)    */
+#define XT_SCOMx_TIM_IRQHandler      TIM1_CC_IRQHandler                 /* 中断向量函数                 */
+
+// 串行通信模块-通道1（☆通道总数由[SCOM_SUM]决定☆）
+#define XT_SCOM1_UART                USART1                             /* 使用的哪个串口               */
+#define XT_SCOM1_UART_CLK_EN()     __HAL_RCC_USART1_CLK_ENABLE()        /* 串口时钟使能                 */
+#define XT_SCOM1_UART_CLK_DI()     __HAL_RCC_USART1_CLK_DISABLE()       /* 串口时钟禁能                 */
+#define XT_SCOM1_UART_TX_CLK_EN()  __HAL_RCC_GPIOA_CLK_ENABLE()         /* TX脚时钟使能(不用发送则屏蔽) */
+#define XT_SCOM1_UART_RX_CLK_EN()  __HAL_RCC_GPIOA_CLK_ENABLE()         /* RX脚时钟使能(不用接收则屏蔽) */
+#define XT_SCOM1_UART_IRQn           USART1_IRQn                        /* 中断通道                     */
+#define XT_SCOM1_UART_PRE_INT_PRIO   0                                  /* 抢占中断优先级               */
+#define XT_SCOM1_UART_SUB_INT_PRIO   0                                  /* 响应中断优先级               */
+#define XT_SCOM1_UART_TX_GPIO        GPIOA                              /* TX 所在端口                  */
+#define XT_SCOM1_UART_TX_PIN         GPIO_PIN_9                         /* TX 所在管脚                  */
+#define XT_SCOM1_UART_RX_GPIO        GPIOA                              /* RX 所在端口                  */
+#define XT_SCOM1_UART_RX_PIN         GPIO_PIN_10                        /* RX 所在管脚                  */
+#define XT_SCOM1_UART_RX_IN_MODE     GPIO_PULLUP                        /* RX 输入模式(上拉/悬空)       //
+#define XT_SCOM1_UART_AFIO_REMAP() __HAL_AFIO_REMAP_USART1_ENABLE()     // 串口引脚重映射(不使用则屏蔽) // //只有 UART1~3 才有映射
+#define XT_SCOM1_DE_CLK_EN()       __HAL_RCC_GPIOA_CLK_ENABLE()         // DE 端口时钟使能(RS485才使能) //
+#define XT_SCOM1_DE_GPIO             GPIOA                              // DE 所在端口    (RS485才使能) //
+#define XT_SCOM1_DE_PIN              GPIO_PIN_3                         // DE 所在管脚    (RS485才使能) //
+#define XT_SCOM1_DE_EN()       XT_SCOM1_DE_GPIO->BSRR = XT_SCOM1_DE_PIN // 使能DE控制端   (RS485才使能) //
+#define XT_SCOM1_DE_DI()       XT_SCOM1_DE_GPIO->BRR  = XT_SCOM1_DE_PIN // 禁能DE控制端   (RS485才使能) */
+#define XT_SCOM1_UART_IRQHandler     USART1_IRQHandler                  /* 中断向量函数                 */
+
 /********************************************************************************************************/
 /*++++++++++++++++++++++++++++++++++++++++++++++ 操作函数 ++++++++++++++++++++++++++++++++++++++++++++++*/
 /********************************************************************************************************/

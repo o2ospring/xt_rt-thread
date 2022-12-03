@@ -98,10 +98,18 @@ extern volatile uint32_t time_100ms_tick;
 #define WDG_RELOAD()
 #endif
 
+#if (XT_APP_SCOM_EN == XT_DEF_ENABLED) && (XT_SCOM_HW_DRIVERS_EN == 2)
+             extern void xt_scomx_tim_irqhandler(void);
+#define XT_SCOMX_OVT()   xt_scomx_tim_irqhandler()
+#else
+#define XT_SCOMX_OVT()
+#endif
+
 #define TIME_MS_TICK()   do                                                                              \
 {                                                                                                        \
     static uint8_t time_1ms_cnt = 0;                                                                     \
     time_1ms_tick++;                      /*1ms   硬件计数器*/                                           \
+	XT_SCOMX_OVT();                                                                                      \
     if ((++time_1ms_cnt % 10) == 0)                                                                      \
     {                                                                                                    \
         time_10ms_tick++;                 /*10ms  硬件计数器*/                                           \

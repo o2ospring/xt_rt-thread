@@ -63,7 +63,7 @@ $(TARGET).elf: $(OBJS) $(LIBS)
 	@echo ------------------------------------------------
 
 $(TARGET).hex: $(TARGET).elf
-	@echo "[3]making $@...."
+	@echo "[3]making $@..."
 	@$(CP) $< $@ -O ihex
 
 $(TARGET).bin: $(TARGET).elf

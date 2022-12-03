@@ -14,6 +14,9 @@
 #ifdef APPLICATION_C__
 #include "board.h"
 #include "bsp_stm32f1xx_wdg.h"
+#include "cpuusage.h"
+#include "xt_scom_sds.h"
+#include "xt_scom_vofa.h"
 #endif
 
 #ifdef __cplusplus
@@ -54,10 +57,24 @@ extern "C" {
 #define XT_DEF_DISABLED                 0                               /* 禁用模块                     */
 #define XT_DEF_ENABLED                  1                               /* 使能模块                     */
 //----------------------------------------
-#define XT_APP_DEBUG                    20221126                        /* 开启[发送红外遥控码演示]     */
+//#define XT_APP_DEBUG                  20221126                        /* 开启演示                     */
 #define __XT_IR_SEND_REMAP_H
 #ifndef XT_APP_IRSEND_EN
 #define XT_APP_IRSEND_EN                XT_DEF_ENABLED                  /* 红外遥控发送服务模块         */
+#endif
+#define __XT_SCOM_REMAP_H
+#ifndef XT_APP_SCOM_EN
+#define XT_APP_SCOM_EN                  XT_DEF_ENABLED                  /* 串行通信服务模块             */
+#endif
+//#define XT_APP_DEBUG                  20221201                        /* 开启演示                     */
+#define __XT_SCOM_SDS_REMAP_H
+#ifndef XT_APP_SCOMSDS_EN
+#define XT_APP_SCOMSDS_EN               XT_DEF_DISABLED                 /* 串口虚拟数字示波器(VScope)   */
+#endif
+#define XT_APP_DEBUG                    20221203                        /* 开启演示                     */
+#define __XT_SCOM_VOFA_REMAP_H
+#ifndef XT_APP_SCOMVOFA_EN
+#define XT_APP_SCOMVOFA_EN              XT_DEF_ENABLED                  /* 串口虚拟数字示波器(VOFA+)    */
 #endif
 
 #include "rtthread.h" ////////////////////// <- 使用 RT-thread 操作系统头文件

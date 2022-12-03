@@ -15,11 +15,19 @@ SRCS_F = \
          ../user/xt_ir_send_demo/app_ir_huilink.c \
          \
          ../modules/xt_ir_send/xt_ir_send_remap.h \
+         ../modules/xt_scom/xt_scom_remap.h \
+         ../modules/xt_scom_sds/xt_scom_sds_remap.h \
+         ../modules/xt_scom_vofa/xt_scom_vofa_remap.h \
          \
          ../xt_modules/xt_macro/xt_comdef.h \
          ../xt_modules/xt_macro/xt_llist.h \
          ../xt_modules/xt_ir_send/xt_ir_send.c \
          ../xt_modules/xt_ir_send/xt_ir_send_pwm_dma_stm32f1xx_hal.c \
+         ../xt_modules/xt_scom/xt_scom.c \
+         ../xt_modules/xt_scom/xt_scom_stm32f1xx_hal.c \
+         ../xt_modules/xt_scom/xt_scom_stm32f1xx_hal_nt.c \
+         ../xt_modules/xt_scom_sds/xt_scom_sds.c \
+         ../xt_modules/xt_scom_vofa/xt_scom_vofa.c \
          \
          ./main.c \
          ./application.c \
@@ -83,9 +91,15 @@ SRCS_I = ../../../../include \
          ../board \
          ../board/ports/include \
          \
-         ../modules/xt_ir_send \
-         ../xt_modules/xt_ir_send \
          ../xt_modules/xt_macro \
+         ../modules/xt_ir_send \
+         ../modules/xt_scom \
+         ../modules/xt_scom_sds \
+         ../modules/xt_scom_vofa \
+         ../xt_modules/xt_ir_send \
+         ../xt_modules/xt_scom \
+         ../xt_modules/xt_scom_sds \
+         ../xt_modules/xt_scom_vofa \
          \
          ../user/xt_ir_send_demo
 
@@ -93,9 +107,9 @@ SRCS_I = ../../../../include \
 LDS_F  = ../$(STM32F103XX_LD)
 
 # 定义编译器及其环境相关参数
-include ../envi.rule
+include ../makeenvi.rule
 CFLAG_O += -Wall -Og
 
 # 包含[Makefile]脚本公共代码
-include ../make.rule
+include ../makecore.rule
 

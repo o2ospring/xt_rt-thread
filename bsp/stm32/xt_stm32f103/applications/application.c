@@ -136,12 +136,19 @@ void rt_timer_thread_loop(void *p_arg)
 			#endif
 		}
 		// 200mS调用一次
-		//if ((ulCnt % 20) == 0)
-		//{
-		//	#if (APP_VISUALSCOPE_EN == XT_DEF_ENABLED)
-		//	VisualScope_1DataPut(0x80, (signed short)(cpu10000_usage_get(1)));
-		//	#endif
-		//}
+		if ((ulCnt % 20) == 0)
+		{
+			#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221201))
+			#if (XT_APP_SCOMSDS_EN == XT_DEF_ENABLED)
+			xt_scomsds_1ch_put(0x80, (signed short)(cpu10000_usage_get(1)));
+			#endif
+			#endif
+			#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221203))
+			#if (XT_APP_SCOMVOFA_EN == XT_DEF_ENABLED)
+			xt_scomvofa_1ch_put(0x80, (float)(cpu10000_usage_get(1)) / 100);
+			#endif
+			#endif
+		}
 		// 500mS调用一次
 		//if ((ulCnt % 50) == 0)
 		//{
