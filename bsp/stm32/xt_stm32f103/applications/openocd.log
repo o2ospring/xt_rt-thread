@@ -1,0 +1,22 @@
+adapter speed: 20000 kHz
+
+Info : Listening on port 6666 for tcl connections
+Info : Listening on port 4444 for telnet connections
+Info : J-Link ARM-OB STM32 compiled Aug 22 2012 19:52:04
+Info : Hardware version: 7.00
+Info : VTarget = 3.300 V
+Info : clock speed 1000 kHz
+Info : SWD DPIDR 0x1ba01477
+Info : stm32f1x.cpu: hardware has 6 breakpoints, 4 watchpoints
+Info : starting gdb server for stm32f1x.cpu on pipe
+Info : accepting 'gdb' connection from pipe
+Info : device id = 0x20036410
+Info : flash size = 128kbytes
+undefined debug reason 8 - target needs reset
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080034a8 msp: 0x20000bd0
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080034a8 msp: 0x20000bd0
+target halted due to debug-request, current mode: Thread 
+xPSR: 0x01000000 pc: 0x080034a8 msp: 0x20000bd0
+Info : dropped 'gdb' connection

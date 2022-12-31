@@ -243,7 +243,7 @@ void HAL_MspInit(void)
 #define RTT_COM1_RX_GPIO             GPIOA                              /* RX 所在端口                  */
 #define RTT_COM1_RX_PIN              GPIO_PIN_10                        /* RX 所在管脚                  */
 #define RTT_COM1_RX_IN_MODE          GPIO_PULLUP                        /* RX 输入模式(上拉/悬空)       //
-#define RTT_COM1_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART1_ENABLE()     // 串口引脚重映射(不使用则屏蔽) */
+#define RTT_COM1_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART1_ENABLE()     // 串口引脚重映射(不使用则屏蔽) */ //只有 UART1~3 才有映射
 #endif
 
 #ifndef RTT_COM2_UART_CLK_ENABLE
@@ -255,7 +255,7 @@ void HAL_MspInit(void)
 #define RTT_COM2_RX_GPIO             GPIOA                              /* RX 所在端口                  */
 #define RTT_COM2_RX_PIN              GPIO_PIN_3                         /* RX 所在管脚                  */
 #define RTT_COM2_RX_IN_MODE          GPIO_PULLUP                        /* RX 输入模式(上拉/悬空)       //
-#define RTT_COM2_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART2_ENABLE()     // 串口引脚重映射(不使用则屏蔽) */
+#define RTT_COM2_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART2_ENABLE()     // 串口引脚重映射(不使用则屏蔽) */ //只有 UART1~3 才有映射
 #endif
 
 #ifndef RTT_COM3_UART_CLK_ENABLE
@@ -267,7 +267,7 @@ void HAL_MspInit(void)
 #define RTT_COM3_RX_GPIO             GPIOB                              /* RX 所在端口                  */
 #define RTT_COM3_RX_PIN              GPIO_PIN_11                        /* RX 所在管脚                  */
 #define RTT_COM3_RX_IN_MODE          GPIO_PULLUP                        /* RX 输入模式(上拉/悬空)       //
-#define RTT_COM3_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART3_ENABLE()     // 串口引脚重映射(不使用则屏蔽) */
+#define RTT_COM3_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART3_ENABLE()     // 串口引脚重映射(不使用则屏蔽) */ //只有 UART1~3 才有映射
 #endif
 
 #ifndef RTT_COM4_UART_CLK_ENABLE
@@ -279,7 +279,7 @@ void HAL_MspInit(void)
 #define RTT_COM4_RX_GPIO             GPIOC                              /* RX 所在端口                  */
 #define RTT_COM4_RX_PIN              GPIO_PIN_11                        /* RX 所在管脚                  */
 #define RTT_COM4_RX_IN_MODE          GPIO_PULLUP                        /* RX 输入模式(上拉/悬空)       //
-#define RTT_COM4_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART1_ENABLE()     // 串口引脚重映射(没有,所以屏蔽)*/
+#define RTT_COM4_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART1_ENABLE()     // 串口引脚重映射(没有,所以屏蔽)*/ //只有 UART1~3 才有映射
 #endif
 
 #ifndef RTT_COM5_UART_CLK_ENABLE
@@ -291,7 +291,7 @@ void HAL_MspInit(void)
 #define RTT_COM5_RX_GPIO             GPIOD                              /* RX 所在端口                  */
 #define RTT_COM5_RX_PIN              GPIO_PIN_2                         /* RX 所在管脚                  */
 #define RTT_COM5_RX_IN_MODE          GPIO_PULLUP                        /* RX 输入模式(上拉/悬空)       //
-#define RTT_COM5_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART1_ENABLE()     // 串口引脚重映射(没有,所以屏蔽)*/
+#define RTT_COM5_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART1_ENABLE()     // 串口引脚重映射(没有,所以屏蔽)*/ //只有 UART1~3 才有映射
 #endif
 
 /**

@@ -67,29 +67,29 @@ void bsp_unique_id_generate(uint8_t *p_buf, uint8_t id_size)
 		d = bsp_stm32_crc32((const uint8_t *)(0x1FFFF7E8), 12);
 		if (id_size > 4)
 		{
-			memcpy(p_buf, (const uint8_t *)(d), 4);
+			memcpy(p_buf, (const uint8_t *)(&d), 4);
 			p_buf += 4;
 			id_size -= 4;
 		}
 		else
 		{
-			memcpy(p_buf, (const uint8_t *)(d), id_size);
+			memcpy(p_buf, (const uint8_t *)(&d), id_size);
 			return;
 		}
 		d = bsp_stm32_crc32((const uint8_t *)(0x1FFFF7E8), 8);
 		if (id_size > 4)
 		{
-			memcpy(p_buf, (const uint8_t *)(d), 4);
+			memcpy(p_buf, (const uint8_t *)(&d), 4);
 			p_buf += 4;
 			id_size -= 4;
 		}
 		else
 		{
-			memcpy(p_buf, (const uint8_t *)(d), id_size);
+			memcpy(p_buf, (const uint8_t *)(&d), id_size);
 			return;
 		}
 		d = bsp_stm32_crc32((const uint8_t *)(0x1FFFF7E8+4), 8);
-		memcpy(p_buf, (const uint8_t *)(d), id_size);
+		memcpy(p_buf, (const uint8_t *)(&d), id_size);
 		return;
 	}
 }

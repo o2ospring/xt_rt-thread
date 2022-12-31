@@ -21,8 +21,8 @@ extern "C" {
 /********************************************************************************************************/
 
 #define XT_SCOM_SUM                 1                                 //串行通信通道总数（由实际硬件决定，相关通道可以是TTL串口、RS232、RS485等总线）
-#define XT_SCOM_HW_DRIVERS_EN       1                                 //是否使用本模块自带硬件驱动（0:不使用,1:串口+独立定时器,2:串口+公共定时）
-#define xt_scom_printf(...)         rt_kprintf(__VA_ARGS__)           //异常信息打印（目前还没用到可变参数，可以稍作修改本行宏即可支持C89语法）
+#define XT_SCOM_HW_DRIVERS_EN       1                                 //是否使用本模块自带硬件驱动（0:不使用,1:STM32F1xx-串口+独立定时器,2:STM32F1xx-串口+公共定时）
+#define xt_scom_printf(...)         rt_kprintf("scom:" __VA_ARGS__)   //异常信息打印（目前还没用到可变参数，可以稍作修改本行宏即可支持C89语法）
 
 #define XT_SCOM_VARIAB()            register rt_base_t level;         //硬件互斥:使用到的变量声明
 #define XT_SCOM_LOCKED()            level = rt_hw_interrupt_disable() //硬件互斥:[关]中断总开关

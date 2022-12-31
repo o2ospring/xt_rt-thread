@@ -8,7 +8,7 @@
   */
 #define   APP_IR_HUILINK_C__
 #include "app_ir_huilink.h"
-#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221126))
+#if (defined(XT_APP_DEBUG) && ((XT_APP_DEBUG == 20221126) || (XT_APP_DEBUG == 20221203) || (XT_APP_DEBUG == 20221216)))
 #if (defined(XT_APP_IRSEND_EN) && (XT_APP_IRSEND_EN == XT_DEF_ENABLED))
 #ifdef    APP_IR_HUILINK_X__ 
 #undef    APP_IR_HUILINK_H__

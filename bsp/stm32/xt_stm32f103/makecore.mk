@@ -46,11 +46,9 @@ ifdef LIB
 all: $(LIB)
 endif
 
-# 非执行"clean/echo"才包含
-ifneq ($(MAKECMDGOALS),clean)
-ifneq ($(MAKECMDGOALS),echo)
+# 只有执行"all"才包含
+ifeq ($(MAKECMDGOALS),all)
 -include $(DEPS)
-endif
 endif
 
 # 编译出最终执行文件

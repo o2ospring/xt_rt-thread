@@ -20,8 +20,9 @@ extern "C" {
 /********************************************************************************************************/
 
 #define XT_SCOMSDS_SCOM_NUM         0                                   //串口通讯服务通道编号
-#define XT_SCOMSDS_BAUD_RATE        9600  /*由VisualScope软件配置决定*/ //通讯波特率, 如:9600,115200
-#define xt_scomsds_printf(...)      rt_kprintf(__VA_ARGS__)             //异常信息打印（目前还没用到可变参数，可以稍作修改本行宏即可支持C89语法）
+#define XT_SCOMSDS_BAUD_RATE        9600  /*由VisualScope软件配置决定*/ //串口通讯波特率, 如:9600,115200
+#define XT_SCOMSDS_P_HW_OPEN_FN     0                                   //本服务模块提供的硬件驱动程序（0:不提供）
+#define xt_scomsds_printf(...)      rt_kprintf("scomsds:" __VA_ARGS__)  //异常信息打印（目前还没用到可变参数，可以稍作修改本行宏即可支持C89语法）
 
 #if (defined XT_SCOM_SDS_C__) && (XT_APP_SCOMSDS_EN == XT_DEF_ENABLED)
 #define XT_SCOMSDS_CRC16(pd,sz)     xt_scomsds_crc16(pd,sz)                              //校验-CRC16
@@ -40,8 +41,10 @@ struct rt_semaphore                 xt_scomsds_sem;                             
 /*++++++++++++++++++++++++++++++++++++++++++++++ 操作函数 ++++++++++++++++++++++++++++++++++++++++++++++*/
 /********************************************************************************************************/
 
+extern void xt_scomsds_init(void);
 extern int xt_scomsds_1ch_put(uint8_t ch_n, int16_t chx);
 extern int xt_scomsds_4ch_put(uint8_t ch_f, int16_t ch1, int16_t ch2, int16_t ch3, int16_t ch4);
+extern int xt_scomsds_xch_put(uint8_t ch_s, int16_t *p_ch, uint8_t s_ch);
 
 #ifdef __cplusplus
 	}

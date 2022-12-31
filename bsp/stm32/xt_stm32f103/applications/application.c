@@ -119,6 +119,9 @@ void rt_timer_thread_loop(void *p_arg)
 		if (ulCnt == 4000320000UL) ulCnt = 0;
 		rt_thread_delay(10UL/*mS*//(1000/RT_TICK_PER_SECOND));
 		
+		#if (XT_APP_SCOMVOFA_EN == XT_DEF_ENABLED)
+		xt_scomvofa_cmd_run();
+		#endif
 		// 20mS调用一次
 		//if ((ulCnt % 2) == 0)
 		//{
@@ -146,6 +149,11 @@ void rt_timer_thread_loop(void *p_arg)
 			#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221203))
 			#if (XT_APP_SCOMVOFA_EN == XT_DEF_ENABLED)
 			xt_scomvofa_1ch_put(0x80, (float)(cpu10000_usage_get(1)) / 100);
+			#endif
+			#endif
+			#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221216))
+			#if (XT_APP_WIZNETVOFA_EN == XT_DEF_ENABLED)
+			xt_wizvofa_1ch_put(0x00, (float)(cpu10000_usage_get(1)) / 100);
 			#endif
 			#endif
 		}

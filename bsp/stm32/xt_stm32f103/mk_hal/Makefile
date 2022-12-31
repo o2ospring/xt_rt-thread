@@ -56,9 +56,9 @@ SRCS_I = ../board                                 \
          ../../libraries/STM32F1xx_HAL/CMSIS/Include
 
 # 定义编译器及其环境相关参数
-include ../makeenvi.rule
+include ../makeenvi.mk
 CFLAG_O += -Wall -Og
 
 # 包含[Makefile]脚本公共代码
-include ../makecore.rule
+include ../makecore.mk
 

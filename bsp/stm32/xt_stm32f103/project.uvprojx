@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>__STDC_LIMIT_MACROS, STM32F103xE, USE_HAL_DRIVER, RT_USING_LIBC, __CLK_TCK=RT_TICK_PER_SECOND, __RTTHREAD__, RT_USING_ARM_LIBC</Define>
               <Undefine></Undefine>
-              <IncludePath>.\applications;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m3;..\..\..\components\drivers\include;..\..\..\components\libc\compilers\common\include;..\..\..\components\libc\compilers\common\extension;..\..\..\components\libc\compilers\common\extension\fcntl\octal;..\..\..\components\libc\posix\io\poll;..\..\..\components\libc\posix\io\stdio;..\..\..\components\libc\posix\ipc;..\..\..\components\finsh;..\..\..\include;.;.\board;.\board\ports\include;..\libraries\HAL_Drivers;..\libraries\HAL_Drivers\config;..\libraries\HAL_Drivers\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Device\ST\STM32F1xx\Include;..\libraries\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;.\xt_modules\xt_macro;.\xt_modules\xt_ir_send;.\xt_modules\xt_scom;.\xt_modules\xt_scom_sds;.\xt_modules\xt_scom_vofa;.\modules\xt_ir_send;.\modules\xt_scom;.\modules\xt_scom_sds;.\modules\xt_scom_vofa;.\user\xt_ir_send_demo</IncludePath>
+              <IncludePath>.\applications;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m3;..\..\..\components\drivers\include;..\..\..\components\libc\compilers\common\include;..\..\..\components\libc\compilers\common\extension;..\..\..\components\libc\compilers\common\extension\fcntl\octal;..\..\..\components\libc\posix\io\poll;..\..\..\components\libc\posix\io\stdio;..\..\..\components\libc\posix\ipc;..\..\..\components\finsh;..\..\..\include;.;.\board;.\board\ports\include;..\libraries\HAL_Drivers;..\libraries\HAL_Drivers\config;..\libraries\HAL_Drivers\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Device\ST\STM32F1xx\Include;..\libraries\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;.\xt_modules\xt_macro;.\xt_modules\xt_ir_send;.\xt_modules\xt_scom;.\xt_modules\xt_scom_sds;.\xt_modules\xt_scom_vofa;.\xt_modules\xt_cef2;.\xt_modules\xt_wiznet;.\xt_modules\xt_wiznet\Internet\DHCP;.\xt_modules\xt_wiznet\Ethernet;.\xt_modules\xt_wiznet\Ethernet\W5100;.\xt_modules\xt_wiznet\Ethernet\W5100S;.\xt_modules\xt_wiznet\Ethernet\W5200;.\xt_modules\xt_wiznet\Ethernet\W5300;.\xt_modules\xt_wiznet\Ethernet\W5500;.\xt_modules\xt_wiznet_vofa;.\modules\xt_ir_send;.\modules\xt_scom;.\modules\xt_scom_sds;.\modules\xt_scom_vofa;.\modules\xt_cef2;.\modules\xt_wiznet;.\modules\xt_wiznet_vofa;.\user\xt_ir_send_demo;.\user\xt_wiznet_demo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -352,7 +352,7 @@
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
-            <ClangAsOpt>1</ClangAsOpt>
+            <ClangAsOpt>4</ClangAsOpt>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -393,6 +393,11 @@
               <FileType>1</FileType>
               <FilePath>.\user\xt_ir_send_demo\app_ir_huilink.c</FilePath>
             </File>
+            <File>
+              <FileName>app_wiznet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\user\xt_wiznet_demo\app_wiznet.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -417,6 +422,26 @@
               <FileName>xt_scom_vofa_remap.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\modules\xt_scom_vofa\xt_scom_vofa_remap.h</FilePath>
+            </File>
+            <File>
+              <FileName>xt_cef2_remap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\modules\xt_cef2\xt_cef2_remap.h</FilePath>
+            </File>
+            <File>
+              <FileName>xt_wiznet_remap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\modules\xt_wiznet\xt_wiznet_remap.h</FilePath>
+            </File>
+            <File>
+              <FileName>xt_wiznet_port_remap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\modules\xt_wiznet\xt_wiznet_port_remap.h</FilePath>
+            </File>
+            <File>
+              <FileName>xt_wiznet_vofa_remap.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\modules\xt_wiznet_vofa\xt_wiznet_vofa_remap.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -467,6 +492,71 @@
               <FileName>xt_scom_vofa.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\xt_modules\xt_scom_vofa\xt_scom_vofa.c</FilePath>
+            </File>
+            <File>
+              <FileName>xt_cef2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_cef2\xt_cef2.c</FilePath>
+            </File>
+            <File>
+              <FileName>xt_wiznet.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\xt_wiznet.c</FilePath>
+            </File>
+            <File>
+              <FileName>xt_wiznet_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\xt_wiznet_port.c</FilePath>
+            </File>
+            <File>
+              <FileName>xt_wiznet_hspi_stm32f1xx_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\xt_wiznet_hspi_stm32f1xx_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>dhcp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Internet\DHCP\dhcp.c</FilePath>
+            </File>
+            <File>
+              <FileName>socket.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Ethernet\socket.c</FilePath>
+            </File>
+            <File>
+              <FileName>wizchip_conf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Ethernet\wizchip_conf.c</FilePath>
+            </File>
+            <File>
+              <FileName>w5100.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Ethernet\W5100\w5100.c</FilePath>
+            </File>
+            <File>
+              <FileName>w5100s.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Ethernet\W5100S\w5100s.c</FilePath>
+            </File>
+            <File>
+              <FileName>w5200.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Ethernet\W5200\w5200.c</FilePath>
+            </File>
+            <File>
+              <FileName>w5300.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Ethernet\W5300\w5300.c</FilePath>
+            </File>
+            <File>
+              <FileName>w5500.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet\Ethernet\W5500\w5500.c</FilePath>
+            </File>
+            <File>
+              <FileName>xt_wiznet_vofa.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_wiznet_vofa\xt_wiznet_vofa.c</FilePath>
             </File>
           </Files>
         </Group>

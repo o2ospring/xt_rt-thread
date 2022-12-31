@@ -29,9 +29,12 @@ endif
 
 ifdef TARGET
 DEBUG_CMD = cgdb -d $(DB) \
+-ex  'set remotetimeout 60' \
 -iex 'target extended-remote | openocd -c "gdb_port pipe" -f "interface/jlink_swd.cfg" -f "target/stm32f1x.cfg"' \
+-ex  'monitor sleep 1000' \
+-ex  'monitor reset halt' \
+-ex  'monitor sleep 1000' \
 -ex  'file $(TARGET).elf' \
--ex  'monitor reset halt; wait_halt' \
 -ex  'load' \
 -ex  'tb main' \
 -ex  'c'

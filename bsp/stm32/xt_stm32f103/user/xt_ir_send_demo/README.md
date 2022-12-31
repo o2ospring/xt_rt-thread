@@ -19,7 +19,7 @@ title = "发送红外遥控码演示"
 1、在 "application.h" 头文件加入下面宏定义，开启发送红外遥控码演示，并且重新编译程序。
 
 ```c
-#define XT_APP_DEBUG                    20221126                        /* 开启[发送红外遥控码演示]     */
+#define XT_APP_DEBUG                    20221126                        /* 开启演示                     */
 
 #define __XT_IR_SEND_REMAP_H
 #ifndef XT_APP_IRSEND_EN

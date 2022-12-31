@@ -65,13 +65,13 @@ extern int __bss_end;
 // WDG 
 #define BSP_WDG_EN                   0x00                               /* WDG                 使能配置 */
 // CRC
-#define BSP_CRC_EN                   0x00                               /* CRC                 使能配置 */
+#define BSP_CRC_EN                   0x01                               /* CRC                 使能配置 */
 // UART
 #define BSP_USART1_EN                0x00                               /* USART1              使能配置 */ //[0]:PA9,PA10,[1]:PB6,PB7
 #define BSP_USART2_EN                0x00                               /* USART2              使能配置 */ //[0]:PA2,PA3,[1]:PD5,PD6
 #define BSP_USART3_EN                0x00                  /*调试串口*/ /* USART3              使能配置 */ //[00]:PB10,PB11,[01]:PC10,PC11,[11]:PD8,PD9
-#define BSP_UART4_EN                 0x00                               /* UART4               使能配置 */
-#define BSP_UART5_EN                 0x00                               /* UART5               使能配置 */
+#define BSP_UART4_EN                 0x00                               /* UART4               使能配置 */ //PC10,PC11
+#define BSP_UART5_EN                 0x00                               /* UART5               使能配置 */ //PC12,PD2
 // EXTI
 #define BSP_EXTI0_EN                 0x00                               /* EXTI0               使能配置 */
 #define BSP_EXTI1_EN                 0x00                               /* EXTI1               使能配置 */
@@ -212,6 +212,37 @@ extern void xt_scomx_tim_irqhandler(void); //├→★★硬件驱动二选一�
 #define XT_SCOM1_DE_EN()       XT_SCOM1_DE_GPIO->BSRR = XT_SCOM1_DE_PIN // 使能DE控制端   (RS485才使能) //
 #define XT_SCOM1_DE_DI()       XT_SCOM1_DE_GPIO->BRR  = XT_SCOM1_DE_PIN // 禁能DE控制端   (RS485才使能) */
 #define XT_SCOM1_UART_IRQHandler     USART1_IRQHandler                  /* 中断向量函数                 */
+
+// 网络服务模块+++++++++++++++++++++++
+// WIZnet网络芯片SPI总线控制延时
+#define XT_WIZ_SPI_NSS_EN_HOLD_TM()                                     /* NSS 使能时保持时间(可不延时) */
+#define XT_WIZ_SPI_NSS_DI_HOLD_TM()  bsp_delay0us125(2)                 /* NSS 禁止时保持时间(延时50nS) */
+
+// WIZnet网络芯片控制管脚的定义
+#define XT_WIZ_SPI                   SPI2                               /* 使用的哪个SPI                */
+#define XT_WIZ_SPI_BAUD_RATE         SPI_BAUDRATEPRESCALER_4            /* 速度(分频): 72/4=18Mbit/S    */
+#define XT_WIZ_SPI_CLK_ENABLE()    __HAL_RCC_SPI2_CLK_ENABLE()          /* 串口时钟使能                 */
+#define XT_WIZ_SPI_CMS_CLK_EN()    __HAL_RCC_GPIOB_CLK_ENABLE()         /* SCK-MOSI-MISO 脚时钟使能     */
+#define XT_WIZ_SPI_NSS_CLK_EN()    __HAL_RCC_GPIOB_CLK_ENABLE()         /* NSS  脚时钟使能              */
+#define XT_WIZ_SPI_NSS_GPIO          GPIOB                              /* NSS  所在端口(NSS由软件控制) */
+#define XT_WIZ_SPI_NSS_PIN           GPIO_PIN_12                        /* NSS  所在管脚(NSS由软件控制) */
+#define XT_WIZ_SPI_SCK_GPIO          GPIOB                              /* SCK  所在端口                */
+#define XT_WIZ_SPI_SCK_PIN           GPIO_PIN_13                        /* SCK  所在管脚                */
+#define XT_WIZ_SPI_MISO_GPIO         GPIOB                              /* MISO 所在端口                */
+#define XT_WIZ_SPI_MISO_PIN          GPIO_PIN_14                        /* MISO 所在管脚                */
+#define XT_WIZ_SPI_MOSI_GPIO         GPIOB                              /* MOSI 所在端口                */
+#define XT_WIZ_SPI_MOSI_PIN          GPIO_PIN_15                        /* MOSI 所在管脚                */
+#define XT_WIZ_SPI_RX_IN_MODE        GPIO_NOPULL                        /* MISO 输入模式(下拉/上拉/悬空)*/
+#define XT_WIZ_SPI_DIRECTION_LINES   SPI_DIRECTION_2LINES               /* 收发使用几线(全双工/半双工)  //
+#define XT_WIZ_SPI_AFIO_REMAP()    __HAL_AFIO_REMAP_SPI1_ENABLE()       // SPI  引脚重映射(不使用则屏蔽)*/
+#define XT_WIZ_SPI_HANDLER           xt_wiz_hspi                        /* SPI  句柄                    */
+#define XT_WIZ_RST_CLK_ENABLE()    __HAL_RCC_GPIOA_CLK_ENABLE()         /* RST  所在外设(使能外设时钟)  */
+#define XT_WIZ_RST_GPIO              GPIOA                              /* RST  所在端口                */
+#define XT_WIZ_RST_PIN               GPIO_PIN_1                         /* RST  所在管脚                */
+#define XT_WIZ_RST_EN()              XT_WIZ_RST_GPIO->BRR      = XT_WIZ_RST_PIN     // RST有效
+#define XT_WIZ_RST_DI()              XT_WIZ_RST_GPIO->BSRR     = XT_WIZ_RST_PIN     // RST无效
+#define XT_WIZ_SPI_NSS_EN()          XT_WIZ_SPI_NSS_GPIO->BRR  = XT_WIZ_SPI_NSS_PIN // NSS有效
+#define XT_WIZ_SPI_NSS_DI()          XT_WIZ_SPI_NSS_GPIO->BSRR = XT_WIZ_SPI_NSS_PIN // NSS无效
 
 /********************************************************************************************************/
 /*++++++++++++++++++++++++++++++++++++++++++++++ 操作函数 ++++++++++++++++++++++++++++++++++++++++++++++*/

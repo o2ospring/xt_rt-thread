@@ -200,7 +200,7 @@
 /* On-chip Peripheral Drivers */
 
 #define BSP_USING_GPIO
-#define BSP_USING_UART
+//#define BSP_USING_UART
 #define BSP_USING_UART3
 //#define BSP_UART3_RX_USING_DMA
 

@@ -13,11 +13,16 @@ OBJS_D = ../build/gcc
 SRCS_F = \
          ../user/xt_ir_send_demo/app_ir_send.c \
          ../user/xt_ir_send_demo/app_ir_huilink.c \
+         ../user/xt_wiznet_demo/app_wiznet.c \
          \
          ../modules/xt_ir_send/xt_ir_send_remap.h \
          ../modules/xt_scom/xt_scom_remap.h \
          ../modules/xt_scom_sds/xt_scom_sds_remap.h \
          ../modules/xt_scom_vofa/xt_scom_vofa_remap.h \
+         ../modules/xt_cef2/xt_cef2_remap.h \
+         ../modules/xt_wiznet/xt_wiznet_remap.h \
+         ../modules/xt_wiznet/xt_wiznet_port_remap.h \
+         ../modules/xt_wiznet_vofa/xt_wiznet_vofa_remap.h \
          \
          ../xt_modules/xt_macro/xt_comdef.h \
          ../xt_modules/xt_macro/xt_llist.h \
@@ -28,6 +33,19 @@ SRCS_F = \
          ../xt_modules/xt_scom/xt_scom_stm32f1xx_hal_nt.c \
          ../xt_modules/xt_scom_sds/xt_scom_sds.c \
          ../xt_modules/xt_scom_vofa/xt_scom_vofa.c \
+         ../xt_modules/xt_cef2/xt_cef2.c \
+         ../xt_modules/xt_wiznet/xt_wiznet.c \
+         ../xt_modules/xt_wiznet/xt_wiznet_port.c \
+         ../xt_modules/xt_wiznet/xt_wiznet_hspi_stm32f1xx_hal.c \
+         ../xt_modules/xt_wiznet/Internet/DHCP/dhcp.c \
+         ../xt_modules/xt_wiznet/Ethernet/socket.c \
+         ../xt_modules/xt_wiznet/Ethernet/wizchip_conf.c \
+         ../xt_modules/xt_wiznet/Ethernet/W5100/w5100.c \
+         ../xt_modules/xt_wiznet/Ethernet/W5100S/w5100s.c \
+         ../xt_modules/xt_wiznet/Ethernet/W5200/w5200.c \
+         ../xt_modules/xt_wiznet/Ethernet/W5300/w5300.c \
+         ../xt_modules/xt_wiznet/Ethernet/W5500/w5500.c \
+         ../xt_modules/xt_wiznet_vofa/xt_wiznet_vofa.c \
          \
          ./main.c \
          ./application.c \
@@ -91,25 +109,34 @@ SRCS_I = ../../../../include \
          ../board \
          ../board/ports/include \
          \
-         ../xt_modules/xt_macro \
          ../modules/xt_ir_send \
          ../modules/xt_scom \
          ../modules/xt_scom_sds \
          ../modules/xt_scom_vofa \
+         ../modules/xt_cef2 \
+         ../modules/xt_wiznet \
+         ../modules/xt_wiznet_vofa \
+         ../xt_modules/xt_macro \
          ../xt_modules/xt_ir_send \
          ../xt_modules/xt_scom \
          ../xt_modules/xt_scom_sds \
          ../xt_modules/xt_scom_vofa \
+         ../xt_modules/xt_cef2 \
+         ../xt_modules/xt_wiznet \
+         ../xt_modules/xt_wiznet/Internet \
+         ../xt_modules/xt_wiznet/Ethernet \
+         ../xt_modules/xt_wiznet_vofa \
          \
-         ../user/xt_ir_send_demo
+         ../user/xt_ir_send_demo \
+         ../user/xt_wiznet_demo
 
 # 添加链接脚本文件，含路径和文件名【只能是一个对象】
 LDS_F  = ../$(STM32F103XX_LD)
 
 # 定义编译器及其环境相关参数
-include ../makeenvi.rule
+include ../makeenvi.mk
 CFLAG_O += -Wall -Og
 
 # 包含[Makefile]脚本公共代码
-include ../makecore.rule
+include ../makecore.mk
 

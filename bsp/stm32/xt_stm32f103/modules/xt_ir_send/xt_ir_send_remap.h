@@ -20,8 +20,8 @@ extern "C" {
 /********************************************************************************************************/
 
 #define XT_IRSEND_SUM                  1                                  //红外发送通道总数（默认:1，因为向空间发送红外会互相干扰及不同载波问题,所以低层硬件一般只支持1通道发送）
-#define XT_IRSEND_HW_DRIVERS_EN        1                                  //是否使用本模块自带硬件驱动（0:不使用）
-#define xt_irsend_printf(...)          rt_kprintf(__VA_ARGS__)            //异常信息打印（目前还没用到可变参数，可以稍作修改本行宏即可支持C89语法）
+#define XT_IRSEND_HW_DRIVERS_EN        1                                  //是否使用本模块自带硬件驱动（0:不使用,1:STM32F1xx-PWM+DMA）
+#define xt_irsend_printf(...)          rt_kprintf("irsend:" __VA_ARGS__)  //异常信息打印（目前还没用到可变参数，可以稍作修改本行宏即可支持C89语法）
 
 #define XT_IRSEND_VARIAB()             register rt_base_t level;          //硬件互斥:使用到的变量声明
 #define XT_IRSEND_LOCKED()             level = rt_hw_interrupt_disable()  //硬件互斥:[关]中断总开关
