@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2022, RT-Thread Development Team
+ * Copyright (c) 2006-2021, RT-Thread Development Team
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -47,10 +47,9 @@ rt_err_t rt_usbh_hid_set_idle(struct uhintf* intf, int duration, int report_id)
     setup.wValue = (duration << 8 )| report_id;
 
     if (rt_usb_hcd_setup_xfer(device->hcd, device->pipe_ep0_out, &setup, timeout) == 8)
-        if (rt_usb_hcd_pipe_xfer(device->hcd, device->pipe_ep0_in, RT_NULL, 0, timeout) == 0)
-            return RT_EOK;
-
-    return -RT_FALSE;
+        return RT_EOK;
+    else
+        return -RT_FALSE;
 }
 
 /**
@@ -342,7 +341,7 @@ static rt_err_t rt_usbh_hid_enable(void* arg)
         if(!(ep_desc->bEndpointAddress & USB_DIR_IN)) continue;
 
         ret = rt_usb_hcd_alloc_pipe(intf->device->hcd, &hid->pipe_in,
-            intf->device, ep_desc);
+            intf, ep_desc);
         if(ret != RT_EOK) return ret;
     }
 

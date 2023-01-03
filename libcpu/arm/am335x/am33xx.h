@@ -98,8 +98,6 @@
 #define CM_PER_UART4_CLKCTRL(base)        (CM_PER(base) + 0x78)
 #define CM_PER_UART5_CLKCTRL(base)        (CM_PER(base) + 0x38)
 #define CM_WKUP(base)                     ((base) + 0x400)
-#define CM_WKUP_CLKSTCTRL(base)           (CM_WKUP(base) + 0)
-#define CM_WKUP_UART0_CLKCTRL(base)       (CM_WKUP(base) + 0xB4)
 #define CM_DPLL(base)                     ((base) + 0x500)
 #define CM_MPU(base)                      ((base) + 0x600)
 #define CM_DEVICE(base)                   ((base) + 0x700)
@@ -195,9 +193,6 @@
 
 #define PRM_PER_PWRSTST_REG(base)          REG32(PRM_PER_PWRSTST(base))
 #define PRM_PER_PWRSTCTRL_REG(base)        REG32(PRM_PER_PWRSTCTRL(base))
-
-#define CM_WKUP_CLKSTCTRL_REG(base)        REG32(CM_WKUP_CLKSTCTRL(base))
-#define CM_WKUP_UART0_CLKCTRL_REG(base)    REG32(CM_WKUP_UART0_CLKCTRL(base))
 
 #define CM_DPLL_CLKSEL_TIMER7_CLK(base)    REG32(CM_DPLL(base) + 0x4)
 #define CM_DPLL_CLKSEL_TIMER2_CLK(base)    REG32(CM_DPLL(base) + 0x8)

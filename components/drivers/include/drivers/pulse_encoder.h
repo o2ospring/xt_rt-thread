@@ -12,6 +12,7 @@
 #define __PULSE_ENCODER_H__
 
 #include <rtthread.h>
+#include <rtdevice.h>
 
 #ifdef __cplusplus
 extern "C" {

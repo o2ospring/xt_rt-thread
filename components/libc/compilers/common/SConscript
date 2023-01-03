@@ -4,13 +4,11 @@ Import('rtconfig')
 src   = []
 cwd   = GetCurrentDir()
 group = []
-CPPPATH = [cwd + '/include']
+CPPPATH = [cwd]
 CPPDEFINES = []
 
-if rtconfig.PLATFORM in ['armcc', 'armclang']:
+if rtconfig.CROSS_TOOL == 'keil':
     CPPDEFINES += ['__CLK_TCK=RT_TICK_PER_SECOND']
-elif rtconfig.PLATFORM in ['iccarm']:
-    CPPDEFINES += ['CLOCKS_PER_SEC=RT_TICK_PER_SECOND'] # forcly revert to 1 by IAR
 
 src += Glob('*.c')
 

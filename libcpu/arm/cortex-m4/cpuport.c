@@ -15,7 +15,6 @@
  * 2013-06-23     aozima       support lazy stack optimized.
  * 2018-07-24     aozima       enhancement hard fault exception handler.
  * 2019-07-03     yangjie      add __rt_ffs() for armclang.
- * 2022-06-12     jonas        fixed __rt_ffs() for armclang.
  */
 
 #include <rtthread.h>
@@ -474,12 +473,12 @@ exit
 int __rt_ffs(int value)
 {
     __asm volatile(
-        "CMP     %1, #0x00            \n"
+        "CMP     r0, #0x00            \n"
         "BEQ     1f                   \n"
 
-        "RBIT    %1, %1               \n"
-        "CLZ     %0, %1               \n"
-        "ADDS    %0, %0, #0x01        \n"
+        "RBIT    r0, r0               \n"
+        "CLZ     r0, r0               \n"
+        "ADDS    r0, r0, #0x01        \n"
 
         "1:                           \n"
 

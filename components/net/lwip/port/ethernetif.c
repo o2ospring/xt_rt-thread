@@ -469,17 +469,13 @@ static err_t eth_netif_device_init(struct netif *netif)
         rt_device_t device;
 
 #ifdef RT_USING_NETDEV
-        /* network interface device register */
-        netdev_add(netif);
+    /* network interface device register */
+    netdev_add(netif);
 #endif /* RT_USING_NETDEV */
 
         /* get device object */
         device = (rt_device_t) ethif;
         if (rt_device_init(device) != RT_EOK)
-        {
-            return ERR_IF;
-        }
-        if (rt_device_open(device, RT_DEVICE_FLAG_RDWR) != RT_EOK)
         {
             return ERR_IF;
         }
@@ -667,7 +663,7 @@ rt_err_t eth_device_ready(struct eth_device* dev)
 
 rt_err_t eth_device_linkchange(struct eth_device* dev, rt_bool_t up)
 {
-    rt_base_t level;
+    rt_uint32_t level;
 
     RT_ASSERT(dev != RT_NULL);
 
@@ -744,6 +740,7 @@ static void eth_rx_thread_entry(void* parameter)
             if (device->link_changed)
             {
                 int status;
+                rt_uint32_t level;
 
                 level = rt_hw_interrupt_disable();
                 status = device->link_status;
@@ -914,7 +911,7 @@ FINSH_FUNCTION_EXPORT(set_dns, set DNS server address);
 
 void list_if(void)
 {
-    rt_uint8_t index;
+    rt_ubase_t index;
     struct netif * netif;
 
     rt_enter_critical();

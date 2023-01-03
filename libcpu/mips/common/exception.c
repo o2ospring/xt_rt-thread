@@ -61,7 +61,7 @@ const char *exception_name[] = {
 
 rt_base_t rt_hw_interrupt_disable(void)
 {
-    register rt_base_t status = read_c0_status();
+    rt_base_t status = read_c0_status();
     clear_c0_status(ST0_IE);
     return status;
 }

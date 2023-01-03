@@ -18,9 +18,6 @@ config ARCH_ARM_CORTEX_M
 config ARCH_ARM_CORTEX_FPU
     bool
 
-config ARCH_ARM_CORTEX_SECURE
-    bool
-
 config ARCH_ARM_CORTEX_M0
     bool
     select ARCH_ARM_CORTEX_M
@@ -40,11 +37,6 @@ config ARCH_ARM_CORTEX_M4
     select RT_USING_CPU_FFS
 
 config ARCH_ARM_CORTEX_M7
-    bool
-    select ARCH_ARM_CORTEX_M
-    select RT_USING_CPU_FFS
-
-config ARCH_ARM_CORTEX_M33
     bool
     select ARCH_ARM_CORTEX_M
     select RT_USING_CPU_FFS

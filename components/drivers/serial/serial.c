@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2022, RT-Thread Development Team
+ * Copyright (c) 2006-2021, RT-Thread Development Team
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -115,8 +115,6 @@ static int serial_fops_close(struct dfs_fd *fd)
 static int serial_fops_ioctl(struct dfs_fd *fd, int cmd, void *args)
 {
     rt_device_t device;
-    int flags = (int)(rt_base_t)args;
-    int mask  = O_NONBLOCK | O_APPEND;
 
     device = (rt_device_t)fd->data;
     switch (cmd)
@@ -124,11 +122,6 @@ static int serial_fops_ioctl(struct dfs_fd *fd, int cmd, void *args)
     case FIONREAD:
         break;
     case FIONWRITE:
-        break;
-    case F_SETFL:
-        flags &= mask;
-        fd->flags &= ~mask;
-        fd->flags |= flags;
         break;
     }
 
@@ -200,7 +193,7 @@ static int serial_fops_poll(struct dfs_fd *fd, struct rt_pollreq *req)
     return mask;
 }
 
-static const struct dfs_file_ops _serial_fops =
+const static struct dfs_file_ops _serial_fops =
 {
     serial_fops_open,
     serial_fops_close,
@@ -424,7 +417,7 @@ static void rt_dma_recv_update_get_index(struct rt_serial_device *serial, rt_siz
 
     if (rx_fifo->is_full && len != 0) rx_fifo->is_full = RT_FALSE;
 
-    rx_fifo->get_index += (rt_uint16_t)len;
+    rx_fifo->get_index += len;
     if (rx_fifo->get_index >= serial->config.bufsz)
     {
         rx_fifo->get_index %= serial->config.bufsz;
@@ -445,7 +438,7 @@ static void rt_dma_recv_update_put_index(struct rt_serial_device *serial, rt_siz
 
     if (rx_fifo->get_index <= rx_fifo->put_index)
     {
-        rx_fifo->put_index += (rt_uint16_t)len;
+        rx_fifo->put_index += len;
         /* beyond the fifo end */
         if (rx_fifo->put_index >= serial->config.bufsz)
         {
@@ -459,7 +452,7 @@ static void rt_dma_recv_update_put_index(struct rt_serial_device *serial, rt_siz
     }
     else
     {
-        rx_fifo->put_index += (rt_uint16_t)len;
+        rx_fifo->put_index += len;
         if (rx_fifo->put_index >= rx_fifo->get_index)
         {
             /* beyond the fifo end */
@@ -900,7 +893,7 @@ struct speed_baudrate_item
     int baudrate;
 };
 
-static const struct speed_baudrate_item _tbl[] =
+const static struct speed_baudrate_item _tbl[] =
 {
     {B2400, BAUD_RATE_2400},
     {B4800, BAUD_RATE_4800},
@@ -918,7 +911,7 @@ static const struct speed_baudrate_item _tbl[] =
 
 static speed_t _get_speed(int baudrate)
 {
-    size_t index;
+    int index;
 
     for (index = 0; index < sizeof(_tbl)/sizeof(_tbl[0]); index ++)
     {
@@ -931,7 +924,7 @@ static speed_t _get_speed(int baudrate)
 
 static int _get_baudrate(speed_t speed)
 {
-    size_t index;
+    int index;
 
     for (index = 0; index < sizeof(_tbl)/sizeof(_tbl[0]); index ++)
     {

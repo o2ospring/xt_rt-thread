@@ -38,10 +38,6 @@ int rt_hw_usart_init(void);
 #define UART_INSTANCE_CLEAR_FUNCTION    __HAL_UART_CLEAR_IT
 #endif
 
-#define UART_RX_DMA_IT_IDLE_FLAG        0x00
-#define UART_RX_DMA_IT_HT_FLAG          0x01
-#define UART_RX_DMA_IT_TC_FLAG          0x02
-
 /* stm32 config class */
 struct stm32_uart_config
 {
@@ -62,7 +58,7 @@ struct stm32_uart
     struct
     {
         DMA_HandleTypeDef handle;
-        rt_size_t remaining_cnt;
+        rt_size_t last_index;
     } dma_rx;
     struct
     {

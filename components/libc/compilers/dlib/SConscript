@@ -4,9 +4,9 @@ Import('rtconfig')
 src   = Glob('*.c')
 group = []
 
-CPPDEFINES = ['RT_USING_DLIBC', 'RT_USING_LIBC', '_DLIB_ADD_EXTRA_SYMBOLS=0']
+CPPDEFINES = ['RT_USING_DLIBC']
 
-if rtconfig.PLATFORM in ['iccarm']:
+if rtconfig.PLATFORM == 'iar':
     if GetDepend('DFS_USING_POSIX'):
         from distutils.version import LooseVersion
         from iar import IARVersion

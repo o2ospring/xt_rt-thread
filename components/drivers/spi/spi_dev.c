@@ -39,6 +39,22 @@ static rt_size_t _spi_bus_device_write(rt_device_t dev,
     return rt_spi_transfer(bus->owner, buffer, RT_NULL, size);
 }
 
+static rt_err_t _spi_bus_device_control(rt_device_t dev,
+                                        int         cmd,
+                                        void       *args)
+{
+    /* TODO: add control command handle */
+    switch (cmd)
+    {
+    case 0: /* set device */
+        break;
+    case 1:
+        break;
+    }
+
+    return RT_EOK;
+}
+
 #ifdef RT_USING_DEVICE_OPS
 const static struct rt_device_ops spi_bus_ops =
 {
@@ -47,7 +63,7 @@ const static struct rt_device_ops spi_bus_ops =
     RT_NULL,
     _spi_bus_device_read,
     _spi_bus_device_write,
-    RT_NULL
+    _spi_bus_device_control
 };
 #endif
 
@@ -69,7 +85,7 @@ rt_err_t rt_spi_bus_device_init(struct rt_spi_bus *bus, const char *name)
     device->close   = RT_NULL;
     device->read    = _spi_bus_device_read;
     device->write   = _spi_bus_device_write;
-    device->control = RT_NULL;
+    device->control = _spi_bus_device_control;
 #endif
 
     /* register to device manager */

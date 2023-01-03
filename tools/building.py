@@ -29,14 +29,10 @@ import sys
 import string
 import utils
 import operator
-import rtconfig
-import platform
 
 from SCons.Script import *
 from utils import _make_path_relative
 from mkdist import do_copy_file
-from options import AddOptions
-
 
 BuildOptions = {}
 Projects = []
@@ -123,8 +119,9 @@ class Win32Spawn:
 
 # generate cconfig.h file
 def GenCconfigFile(env, BuildOptions):
+    import rtconfig
 
-    if rtconfig.PLATFORM in ['gcc']:
+    if rtconfig.PLATFORM == 'gcc':
         contents = ''
         if not os.path.isfile('cconfig.h'):
             import gcc
@@ -147,13 +144,90 @@ def GenCconfigFile(env, BuildOptions):
                 env.AppendUnique(CPPDEFINES = ['HAVE_CCONFIG_H'])
 
 def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = []):
+    import rtconfig
 
     global BuildOptions
     global Projects
     global Env
     global Rtt_Root
 
-    AddOptions()
+    # ===== Add option to SCons =====
+    AddOption('--dist',
+                      dest = 'make-dist',
+                      action = 'store_true',
+                      default = False,
+                      help = 'make distribution')
+    AddOption('--dist-strip',
+                      dest = 'make-dist-strip',
+                      action = 'store_true',
+                      default = False,
+                      help = 'make distribution and strip useless files')
+    AddOption('--dist-ide',
+                      dest = 'make-dist-ide',
+                      action = 'store_true',
+                      default = False,
+                      help = 'make distribution for RT-Thread Studio IDE')
+    AddOption('--project-path',
+                      dest = 'project-path',
+                      type = 'string',
+                      default = None,
+                      help = 'set dist-ide project output path')
+    AddOption('--project-name',
+                      dest = 'project-name',
+                      type = 'string',
+                      default = None,
+                      help = 'set project name')
+    AddOption('--reset-project-config',
+                      dest = 'reset-project-config',
+                      action = 'store_true',
+                      default = False,
+                      help = 'reset the project configurations to default')
+    AddOption('--cscope',
+                      dest = 'cscope',
+                      action = 'store_true',
+                      default = False,
+                      help = 'Build Cscope cross reference database. Requires cscope installed.')
+    AddOption('--clang-analyzer',
+                      dest = 'clang-analyzer',
+                      action = 'store_true',
+                      default = False,
+                      help = 'Perform static analyze with Clang-analyzer. ' + \
+                           'Requires Clang installed.\n' + \
+                           'It is recommended to use with scan-build like this:\n' + \
+                           '`scan-build scons --clang-analyzer`\n' + \
+                           'If things goes well, scan-build will instruct you to invoke scan-view.')
+    AddOption('--buildlib',
+                      dest = 'buildlib',
+                      type = 'string',
+                      help = 'building library of a component')
+    AddOption('--cleanlib',
+                      dest = 'cleanlib',
+                      action = 'store_true',
+                      default = False,
+                      help = 'clean up the library by --buildlib')
+    AddOption('--target',
+                      dest = 'target',
+                      type = 'string',
+                      help = 'set target project: mdk/mdk4/mdk5/iar/vs/vsc/ua/cdk/ses/makefile/eclipse/codelite/cmake')
+    AddOption('--stackanalysis',
+                dest = 'stackanalysis',
+                action = 'store_true',
+                default = False,
+                help = 'thread stack static analysis')
+    AddOption('--genconfig',
+                dest = 'genconfig',
+                action = 'store_true',
+                default = False,
+                help = 'Generate .config from rtconfig.h')
+    AddOption('--useconfig',
+                dest = 'useconfig',
+                type = 'string',
+                help = 'make rtconfig.h from config file.')
+    AddOption('--verbose',
+                dest = 'verbose',
+                action = 'store_true',
+                default = False,
+                help = 'print verbose information during build')
 
     Env = env
     Rtt_Root = os.path.abspath(root_directory)
@@ -173,7 +247,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
     tgt_dict = {'mdk':('keil', 'armcc'),
                 'mdk4':('keil', 'armcc'),
                 'mdk5':('keil', 'armcc'),
-                'iar':('iar', 'iccarm'),
+                'iar':('iar', 'iar'),
                 'vs':('msvc', 'cl'),
                 'vs2012':('msvc', 'cl'),
                 'vsc' : ('gcc', 'gcc'),
@@ -185,9 +259,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
                 'ses' : ('gcc', 'gcc'),
                 'cmake':('gcc', 'gcc'),
                 'cmake-armclang':('keil', 'armclang'),
-                'xmake':('gcc', 'gcc'),
-                'codelite' : ('gcc', 'gcc'),
-                'esp-idf': ('gcc', 'gcc')}
+                'codelite' : ('gcc', 'gcc')}
     tgt_name = GetOption('target')
 
     if tgt_name:
@@ -214,13 +286,8 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
             del os.environ['RTT_EXEC_PATH']
             utils.ReloadModule(rtconfig)
 
-    exec_path = GetOption('exec-path')
-    if exec_path:
-        os.environ['RTT_EXEC_PATH'] = exec_path
-        utils.ReloadModule(rtconfig)
-
     # add compability with Keil MDK 4.6 which changes the directory of armcc.exe
-    if rtconfig.PLATFORM in ['armcc', 'armclang']:
+    if rtconfig.PLATFORM == 'armcc' or rtconfig.PLATFORM == 'armclang':
         if rtconfig.PLATFORM == 'armcc' and not os.path.isfile(os.path.join(rtconfig.EXEC_PATH, 'armcc.exe')):
             if rtconfig.EXEC_PATH.find('bin40') > 0:
                 rtconfig.EXEC_PATH = rtconfig.EXEC_PATH.replace('bin40', 'armcc/bin')
@@ -234,7 +301,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
         env['LIBLINKSUFFIX'] = '.lib'
         env['LIBDIRPREFIX'] = '--userlibpath '
 
-    elif rtconfig.PLATFORM == 'iccarm':
+    elif rtconfig.PLATFORM == 'iar':
         env['LIBPREFIX'] = ''
         env['LIBSUFFIX'] = '.a'
         env['LIBLINKPREFIX'] = ''
@@ -293,7 +360,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
     GenCconfigFile(env, BuildOptions)
 
     # auto append '_REENT_SMALL' when using newlib 'nano.specs' option
-    if rtconfig.PLATFORM in ['gcc'] and str(env['LINKFLAGS']).find('nano.specs') != -1:
+    if rtconfig.PLATFORM == 'gcc' and str(env['LINKFLAGS']).find('nano.specs') != -1:
         env.AppendUnique(CPPDEFINES = ['_REENT_SMALL'])
 
     if GetOption('genconfig'):
@@ -305,13 +372,30 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
         from WCS import ThreadStackStaticAnalysis
         ThreadStackStaticAnalysis(Env)
         exit(0)
-    if platform.system() != 'Windows':
+    
+    if env['PLATFORM'] != 'win32':
+        AddOption('--menuconfig',
+                    dest = 'menuconfig',
+                    action = 'store_true',
+                    default = False,
+                    help = 'make menuconfig for RT-Thread BSP')
         if GetOption('menuconfig'):
             from menuconfig import menuconfig
             menuconfig(Rtt_Root)
             exit(0)
 
-    if GetOption('pyconfig_silent'):
+    AddOption('--pyconfig',
+                dest = 'pyconfig',
+                action = 'store_true',
+                default = False,
+                help = 'Python GUI menuconfig for RT-Thread BSP')
+    AddOption('--pyconfig-silent',
+                dest = 'pyconfig_silent',
+                action = 'store_true',
+                default = False,
+                help = 'Don`t show pyconfig window')
+
+    if GetOption('pyconfig_silent'):    
         from menuconfig import guiconfig_silent
 
         guiconfig_silent(Rtt_Root)
@@ -373,6 +457,7 @@ def PrepareBuilding(env, root_directory, has_libcpu=False, remove_components = [
     return objs
 
 def PrepareModuleBuilding(env, root_directory, bsp_directory):
+    import rtconfig
 
     global BuildOptions
     global Env
@@ -395,15 +480,16 @@ def PrepareModuleBuilding(env, root_directory, bsp_directory):
     PreProcessor.process_contents(contents)
     BuildOptions = PreProcessor.cpp_namespace
 
+    # add build/clean library option for library checking
     AddOption('--buildlib',
-                      dest = 'buildlib',
-                      type = 'string',
-                      help = 'building library of a component')
+              dest='buildlib',
+              type='string',
+              help='building library of a component')
     AddOption('--cleanlib',
-                      dest = 'cleanlib',
-                      action = 'store_true',
-                      default = False,
-                      help = 'clean up the library by --buildlib')
+              dest='cleanlib',
+              action='store_true',
+              default=False,
+              help='clean up the library by --buildlib')
 
     # add program path
     env.PrependENVPath('PATH', rtconfig.EXEC_PATH)
@@ -471,7 +557,6 @@ def AddDepend(option):
 
 def MergeGroup(src_group, group):
     src_group['src'] = src_group['src'] + group['src']
-    src_group['src'].sort()
     if 'CFLAGS' in group:
         if 'CFLAGS' in src_group:
             src_group['CFLAGS'] = src_group['CFLAGS'] + group['CFLAGS']
@@ -623,8 +708,8 @@ def DefineGroup(name, src, depend, **parameters):
             paths.append(os.path.abspath(item))
         group['LOCAL_CPPPATH'] = paths
 
-
-    if rtconfig.PLATFORM in ['gcc']:
+    import rtconfig
+    if rtconfig.PLATFORM == 'gcc':
         if 'CFLAGS' in group:
             group['CFLAGS'] = utils.GCCC99Patch(group['CFLAGS'])
         if 'CCFLAGS' in group:
@@ -700,10 +785,10 @@ def PreBuilding():
         a()
 
 def GroupLibName(name, env):
-
-    if rtconfig.PLATFORM in ['armcc']:
+    import rtconfig
+    if rtconfig.PLATFORM == 'armcc':
         return name + '_rvds'
-    elif rtconfig.PLATFORM in ['gcc']:
+    elif rtconfig.PLATFORM == 'gcc':
         return name + '_gcc'
 
     return name
@@ -781,16 +866,8 @@ def DoBuilding(target, objects):
                             objects.remove(obj)
 
         # re-add the source files to the objects
-
-        objects_in_group = []
         for group in Projects:
-            local_group(group, objects_in_group)
-
-        # sort seperately, because the data type of
-        # the members of the two lists are different
-        objects_in_group = sorted(objects_in_group)
-        objects = sorted(objects)
-        objects.append(objects_in_group)
+            local_group(group, objects)
 
         program = Env.Program(target, objects)
 
@@ -798,26 +875,35 @@ def DoBuilding(target, objects):
 
 def GenTargetProject(program = None):
 
-    if GetOption('target') in ['mdk', 'mdk4', 'mdk5']:
-        from keil import MDK2Project, MDK4Project, MDK5Project, ARMCC_Version
+    if GetOption('target') == 'mdk':
+        from keil import MDKProject
+        from keil import MDK4Project
+        from keil import MDK5Project
 
-        if os.path.isfile('template.uvprojx') and GetOption('target') not in ['mdk4']: # Keil5
-            MDK5Project('project.uvprojx', Projects)
-            print("Keil5 project is generating...")
-        elif os.path.isfile('template.uvproj') and GetOption('target') not in ['mdk5']: # Keil4
-            MDK4Project('project.uvproj', Projects)
-            print("Keil4 project is generating...")
-        elif os.path.isfile('template.Uv2') and GetOption('target') not in ['mdk4', 'mdk5']: # Keil2
-            MDK2Project('project.Uv2', Projects)
-            print("Keil2 project is generating...")
+        template = os.path.isfile('template.Uv2')
+        if template:
+            MDKProject('project.Uv2', Projects)
         else:
-            print ('No template project file found.')
-            exit(1)
-        print("Keil Version: " + ARMCC_Version())
+            template = os.path.isfile('template.uvproj')
+            if template:
+                MDK4Project('project.uvproj', Projects)
+            else:
+                template = os.path.isfile('template.uvprojx')
+                if template:
+                    MDK5Project('project.uvprojx', Projects)
+                else:
+                    print ('No template project file found.')
+
+    if GetOption('target') == 'mdk4':
+        from keil import MDK4Project
+        MDK4Project('project.uvproj', Projects)
+
+    if GetOption('target') == 'mdk5':
+        from keil import MDK5Project
+        MDK5Project('project.uvprojx', Projects)
 
     if GetOption('target') == 'iar':
-        from iar import IARProject, IARVersion
-        print("IAR Version: " + IARVersion())
+        from iar import IARProject
         IARProject('project.ewp', Projects)
 
     if GetOption('target') == 'vs':
@@ -855,7 +941,7 @@ def GenTargetProject(program = None):
     if GetOption('target') == 'eclipse':
         from eclipse import TargetEclipse
         TargetEclipse(Env, GetOption('reset-project-config'), GetOption('project-name'))
-
+        
     if GetOption('target') == 'codelite':
         from codelite import TargetCodelite
         TargetCodelite(Projects, program)
@@ -864,15 +950,9 @@ def GenTargetProject(program = None):
         from cmake import CMakeProject
         CMakeProject(Env,Projects)
 
-    if GetOption('target') == 'xmake':
-        from xmake import XMakeProject
-        XMakeProject(Env, Projects)
-
-    if GetOption('target') == 'esp-idf':
-        from esp_idf import ESPIDFProject
-        ESPIDFProject(Env, Projects)
 
 def EndBuilding(target, program = None):
+    import rtconfig
 
     need_exit = False
 
@@ -890,11 +970,9 @@ def EndBuilding(target, program = None):
     Clean(target, 'cconfig.h')
     Clean(target, 'rtua.py')
     Clean(target, 'rtua.pyc')
-    Clean(target, '.sconsign.dblite')
 
     if GetOption('target'):
         GenTargetProject(program)
-        need_exit = True
 
     BSP_ROOT = Dir('#').abspath
     if GetOption('make-dist') and program != None:
@@ -988,11 +1066,11 @@ def GetVersion():
     prepcessor.process_contents(contents)
     def_ns = prepcessor.cpp_namespace
 
-    version = int([ch for ch in def_ns['RT_VERSION_MAJOR'] if ch in '0123456789.'])
-    subversion = int([ch for ch in def_ns['RT_VERSION_MINOR'] if ch in '0123456789.'])
+    version = int([ch for ch in def_ns['RT_VERSION'] if ch in '0123456789.'])
+    subversion = int([ch for ch in def_ns['RT_SUBVERSION'] if ch in '0123456789.'])
 
-    if 'RT_VERSION_PATCH' in def_ns:
-        revision = int([ch for ch in def_ns['RT_VERSION_PATCH'] if ch in '0123456789.'])
+    if 'RT_REVISION' in def_ns:
+        revision = int([ch for ch in def_ns['RT_REVISION'] if ch in '0123456789.'])
         return '%d.%d.%d' % (version, subversion, revision)
 
     return '0.%d.%d' % (version, subversion)

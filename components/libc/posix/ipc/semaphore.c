@@ -39,9 +39,7 @@ static void posix_sem_delete(sem_t *psem)
         posix_sem_list = psem->next;
 
         rt_sem_delete(psem->sem);
-
-        if(psem->unamed == 0)
-            rt_free(psem);
+        rt_free(psem);
 
         return;
     }
@@ -57,9 +55,7 @@ static void posix_sem_delete(sem_t *psem)
 
             /* delete RT-Thread mqueue */
             rt_sem_delete(psem->sem);
-
-            if(psem->unamed == 0)
-                rt_free(psem);
+            rt_free(psem);
 
             return ;
         }
@@ -111,6 +107,8 @@ RTM_EXPORT(sem_close);
 
 int sem_destroy(sem_t *sem)
 {
+    rt_err_t result;
+
     if ((!sem) || !(sem->unamed))
     {
         rt_set_errno(EINVAL);
@@ -120,7 +118,8 @@ int sem_destroy(sem_t *sem)
 
     /* lock posix semaphore list */
     rt_sem_take(&posix_sem_lock, RT_WAITING_FOREVER);
-    if(rt_list_len(&sem->sem->parent.suspend_thread) != 0)
+    result = rt_sem_trytake(sem->sem);
+    if (result != RT_EOK)
     {
         rt_sem_release(&posix_sem_lock);
         rt_set_errno(EBUSY);

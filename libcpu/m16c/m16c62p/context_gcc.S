@@ -1,7 +1,11 @@
 /*
- * Copyright (c) 2006-2022, RT-Thread Development Team
+ * File      : context.asm
+ * This file is part of RT-Thread RTOS
+ * COPYRIGHT (C) 2009, RT-Thread Development Team
  *
- * SPDX-License-Identifier: Apache-2.0
+ * The license and distribution terms for this file may be
+ * found in the file LICENSE in this distribution or at
+ * http://www.rt-thread.org/license/LICENSE
  *
  * Change Logs:
  * Date           Author       Notes

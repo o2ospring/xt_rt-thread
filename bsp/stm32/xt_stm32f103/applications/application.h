@@ -86,6 +86,12 @@ extern "C" {
 #endif
 
 #include "rtthread.h" ////////////////////// <- 使用 RT-thread 操作系统头文件
+#ifndef ALIGN
+#define ALIGN(x) rt_align(x) /////////////// <- 新版 RT-thread 宏名称变动（≥V5.0.0）
+#endif
+#ifndef RT_WEAK
+#define RT_WEAK  rt_weak /////////////////// <- 新版 RT-thread 宏名称变动（≥V5.0.0）
+#endif
 #ifdef APPLICATION_C__
 #include "board.h" ///////////////////////// <- 使用工程所有硬件资源管理头文件
 #include "bsp_stm32f1xx_wdg.h" ///////////// <- 使用全局看门狗驱动程序

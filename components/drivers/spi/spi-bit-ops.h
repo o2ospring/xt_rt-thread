@@ -6,7 +6,6 @@
  * Change Logs:
  * Date           Author        Notes
  * 2021-10-11     kyle          first version
- * 2022-6-14      solar         Remove the const attribute of private data in ops
  */
 
 #ifndef __SPI_BIT_OPS_H__
@@ -20,7 +19,7 @@ extern "C" {
 
 struct rt_spi_bit_ops
 {
-    void *data;            /* private data for lowlevel routines */
+    void *const data;            /* private data for lowlevel routines */
     void (*const tog_sclk)(void *data);
     void (*const set_sclk)(void *data, rt_int32_t state);
     void (*const set_mosi)(void *data, rt_int32_t state);

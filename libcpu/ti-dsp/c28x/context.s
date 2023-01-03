@@ -9,8 +9,7 @@
 ; 2019-06-17     zhaoxiaowei  fix bugs of old c28x interrupt api.
 ; 2019-07-03     zhaoxiaowei  add _rt_hw_calc_csb function to support __rt_ffs.
 ; 2019-12-05     xiaolifan    add support for hardware fpu32
-; 2022-06-21     guyunjie     trim pendsv (RTOSINT_Handler)
-; 2022-08-24     guyunjie     fix bugs in context switching
+;
 
     .ref   _rt_interrupt_to_thread
     .ref   _rt_interrupt_from_thread
@@ -39,6 +38,7 @@
 
 
 RT_CTX_SAVE  .macro
+
 
     PUSH    AR1H:AR0H
     PUSH    XAR2
@@ -90,12 +90,14 @@ RT_CTX_RESTORE  .macro
     POP     XAR3
     POP     XAR2
 
+
     MOVZ    AR0 , @SP
     SUBB    XAR0, #6
     MOVL    ACC , *XAR0
     AND     ACC, #0xFFFF << 16
     MOV     AL, IER
     MOVL   *XAR0, ACC
+
 
     POP     AR1H:AR0H
 
@@ -128,19 +130,23 @@ _rt_hw_interrupt_enable:
 
 ;
 ; void rt_hw_context_switch(rt_uint32 from, rt_uint32 to);
-; ACC   --> from
-; SP[4] --> to
-;
+; r0 --> from
+; r4 --> to
+
+
     .asmfunc
 _rt_hw_context_switch_interrupt:
-    MOVL    XAR0, ACC
+    MOVL    XAR0, #0
+    MOV     AR0, AL
     MOVL    XAR4, *-SP[4]
     ; set rt_thread_switch_interrupt_flag to 1
     MOVL    XAR5, #_rt_thread_switch_interrupt_flag
-    MOVL    ACC, *XAR5
-    BF      _reswitch, NEQ                     ; ACC!=0
-    MOVB    ACC, #1
-    MOVL    *XAR5, ACC
+    MOVL    XAR6, *XAR5
+    MOVL    ACC, XAR6
+    CMPB    AL, #1
+    B       _reswitch, EQ
+    MOVL     XAR6, #1
+    MOVL    *XAR5, XAR6
 
     MOVL    XAR5, #_rt_interrupt_from_thread   ; set rt_interrupt_from_thread
     MOVL    *XAR5, XAR0
@@ -154,19 +160,23 @@ _reswitch:
 
 ;
 ; void rt_hw_context_switch(rt_uint32 from, rt_uint32 to);
-; ACC   --> from
-; SP[4] --> to
-;
+; r0 --> from
+; r4 --> to
+
+
     .asmfunc
 _rt_hw_context_switch:
-    MOVL    XAR0, ACC
+    MOVL    XAR0, #0
+    MOV     AR0, AL
     MOVL    XAR4, *-SP[4]
     ; set rt_thread_switch_interrupt_flag to 1
     MOVL    XAR5, #_rt_thread_switch_interrupt_flag
-    MOVL    ACC, *XAR5
-    BF      _reswitch2, NEQ                    ; ACC!=0
-    MOVB    ACC, #1
-    MOVL    *XAR5, ACC
+    MOVL    XAR6, *XAR5
+    MOVL    ACC, XAR6
+    CMPB    AL, #1
+    B       _reswitch2, EQ
+    MOVL     XAR6, #1
+    MOVL    *XAR5, XAR6
 
     MOVL    XAR5, #_rt_interrupt_from_thread   ; set rt_interrupt_from_thread
     MOVL    *XAR5, XAR0
@@ -179,68 +189,67 @@ _reswitch2:
     LRETR
     .endasmfunc
 
-;
-; * void rt_hw_context_switch_to(rt_uint32 to);
-; * ACC --> to
-;
-    .asmfunc
-_rt_hw_context_switch_to:
-    ; get to thread
-    MOVL    XAR1, #_rt_interrupt_to_thread
-    MOVL    *XAR1, ACC
-
-    ; set from thread to 0
-    MOVL    XAR1, #_rt_interrupt_from_thread
-    MOVL    XAR0, #0
-    MOVL    *XAR1, XAR0
-
-    ; set interrupt flag to 1
-    MOVL    XAR1, #_rt_thread_switch_interrupt_flag
-    MOVL    XAR0, #1
-    MOVL    *XAR1, XAR0
-
-    TRAP    #16
-
-    ; never reach here!
-    .endasmfunc
-
-    .asmfunc
+     .asmfunc
 _RTOSINT_Handler:
-    ; disable interrupt to protect context switch
-    ; DINT ;this is done by hardware so not needed
+; disable interrupt to protect context switch
+    DINT
 
     ; get rt_thread_switch_interrupt_flag
-    MOVL    XAR0, #_rt_thread_switch_interrupt_flag
-    MOVL    ACC, *XAR0
-    BF      rtosint_exit, EQ         ; pendsv already handled
+    MOV     AR0, #_rt_thread_switch_interrupt_flag
+    MOV     AL, *AR0
+    MOV     AR1, AL
+    CMP     AR1, #0
+    B       rtosint_exit, EQ         ; pendsv already handled
 
     ; clear rt_thread_switch_interrupt_flag to 0
-    MOVL    XAR1, #0
-    MOVL    *XAR0, XAR1
+    MOV     AR1, #0x00
+    MOV     *AR0, AR1
 
-    MOVL    XAR0, #_rt_interrupt_from_thread
-    MOVL    ACC, *XAR0
-    BF      switch_to_thread, EQ     ; skip register save at the first time
+    MOV     AR0, #_rt_interrupt_from_thread
+    MOV     AL, *AR0
+    MOV     AR1, AL
+    CMP     AR1, #0
+    B       switch_to_thread, EQ    ; skip register save at the first time
 
-    RT_CTX_SAVE                      ; push cpu registers
+;#if defined (__VFP_FP__) && !defined(__SOFTFP__)
+;    TST     lr, #0x10           ; if(!EXC_RETURN[4])
+;    VSTMDBEQ r1!, {d8 - d15}    ; push FPU register s16~s31
+;#endif
 
-    MOVL    ACC, *XAR0
-    MOVL    XAR0, ACC
+    RT_CTX_SAVE     ; push r4 - r11 register
+
+;#if defined (__VFP_FP__) && !defined(__SOFTFP__)
+;    MOV     r4, #0x00           ; flag = 0
+
+;    TST     lr, #0x10           ; if(!EXC_RETURN[4])
+;    MOVEQ   r4, #0x01           ; flag = 1
+
+;    STMFD   r1!, {r4}           ; push flag
+;#endif
+
+    MOV     AL, *AR0
+    MOV     AR0, AL
     MOVZ    AR1, @SP                 ; get from thread stack pointer
-    MOVL    *XAR0, XAR1              ; update from thread stack pointer
+    MOV     *AR0, AR1                ; update from thread stack pointer
 
 switch_to_thread:
-    MOVL    XAR1, #_rt_interrupt_to_thread
-    MOVL    ACC, *XAR1
-    MOVL    XAR1, ACC
-    MOVL    ACC, *XAR1
-    MOV     @SP, AL                  ; load thread stack pointer
+    MOV     AR1, #_rt_interrupt_to_thread
+    MOV     AL, *AR1
+    MOV     AR1, AL
+    MOV     AL, *AR1
+    MOV     AR1, AL                ; load thread stack pointer
 
-    RT_CTX_RESTORE                   ; pop cpu registers
+;#if defined (__VFP_FP__) && !defined(__SOFTFP__)
+;    LDMFD   r1!, {r3}           ; pop flag
+;#endif
+
+    MOV     @SP, AR1
+
+    RT_CTX_RESTORE     ; pop r4 - r11 register
 
 rtosint_exit:
-    ; do not restore interrupt here: to be restored according to the
-    ; switched-to context during IRET (automaticlly by hardware)
+    ; restore interrupt
+    EINT
 
     IRET
     .endasmfunc
@@ -276,6 +285,38 @@ _rt_hw_calc_csb:
     SUBB    ACC, #30              ; ACC = ACC - 30
     ABS     ACC                   ; ACC = |ACC|
     lretr
+    .endasmfunc
+
+;
+; * void rt_hw_context_switch_to(rt_uint32 to);
+; * r0 --> to
+
+    .asmfunc
+_rt_hw_context_switch_to:
+    MOV     AR1, #_rt_interrupt_to_thread
+    MOV     *AR1, AL
+
+;#if defined (__VFP_FP__) && !defined(__SOFTFP__)
+    ; CLEAR CONTROL.FPCA
+;    MRS     r2, CONTROL         ; read
+;    BIC     r2, #0x04           ; modify
+;    MSR     CONTROL, r2         ; write-back
+;#endif
+
+    ; set from thread to 0
+    MOV     AR1, #_rt_interrupt_from_thread
+    MOV     AR0, #0x0
+    MOV     *AR1, AR0
+
+    ; set interrupt flag to 1
+    MOV     AR1, #_rt_thread_switch_interrupt_flag
+    MOV     AR0, #1
+    MOV     *AR1, AR0
+
+    TRAP    #16
+
+
+    ; never reach here!
     .endasmfunc
 
 ; compatible with old version

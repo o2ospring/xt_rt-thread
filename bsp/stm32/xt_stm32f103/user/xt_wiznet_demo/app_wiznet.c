@@ -151,8 +151,8 @@ void app_tcp_thread_entry(void *p_arg)
         if (send(TCP_SK_NUM, pbuf, tlen) != tlen)            //socket发送数据
         {
             rt_kprintf("socket 1: send len error!\r\n");
-			disconnect(TCP_SK_NUM);                          //断开TCP连接
-			close(TCP_SK_NUM);                               //关闭socket
+            disconnect(TCP_SK_NUM);                          //断开TCP连接
+            close(TCP_SK_NUM);                               //关闭socket
             goto tcp_build;
         }
         for (cnt = 0; cnt < tlen; cnt += rlen)               //socket接收数据

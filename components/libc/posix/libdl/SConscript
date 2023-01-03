@@ -6,7 +6,7 @@ cwd = GetCurrentDir()
 group   = []
 CPPPATH = [cwd]
 
-if rtconfig.PLATFORM in ['gcc']:
+if rtconfig.PLATFORM == 'gcc':
     group = DefineGroup('POSIX', src, depend = ['RT_USING_MODULE'], CPPPATH = CPPPATH)
 
 Return('group')

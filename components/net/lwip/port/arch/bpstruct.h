@@ -8,6 +8,6 @@
  * 2022-02-20     Meco Man     add RT-Thread copyright
  */
 
-#if defined(__ICCARM__) || defined(_WIN32)
+#if defined(__ICCARM__)
 #pragma pack(1)
 #endif

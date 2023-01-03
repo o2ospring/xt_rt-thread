@@ -90,7 +90,7 @@ PendSV_Handler:
     /* get rt_thread_switch_interrupt_flag */
     LDR     R0, =rt_thread_switch_interrupt_flag
     LDR     R1, [R0]
-    CBZ     R1, pendsv_exit         /* pendsv already handled */
+    CBZ     R1, pendsv_exit         /* pendsv aLReady handled */
 
     /* clear rt_thread_switch_interrupt_flag to 0 */
     MOV     R1, #0
@@ -161,10 +161,6 @@ rt_hw_context_switch_to:
     /* enable interrupts at processor level */
     CPSIE   F
     CPSIE   I
-
-    /* ensure PendSV exception taken place before subsequent operation */
-    DSB
-    ISB
 
     /* never reach here! */
 

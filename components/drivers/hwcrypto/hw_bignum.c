@@ -78,7 +78,6 @@ void rt_hwcrypto_bignum_free(struct hw_bignum_mpi *n)
 {
     if (n)
     {
-        rt_memset(n->p, 0xFF, n->total);
         rt_free(n->p);
         n->sign = 0;
         n->total = 0;
@@ -129,7 +128,7 @@ int rt_hwcrypto_bignum_export_bin(struct hw_bignum_mpi *n, rt_uint8_t *buf, int 
         return 0;
     }
     rt_memset(buf, 0, len);
-    cp_len = (int)n->total > len ? len : (int)n->total;
+    cp_len = n->total > len ? len : n->total;
     for(i = cp_len, j = 0; i > 0; i--, j++)
     {
         buf[i - 1] = n->p[j];
@@ -145,9 +144,9 @@ int rt_hwcrypto_bignum_export_bin(struct hw_bignum_mpi *n, rt_uint8_t *buf, int 
  * @param buf       Buffer for the binary number
  * @param len       Length of the buffer
  *
- * @return          import length.
+ * @return          RT_EOK on success.
  */
-int rt_hwcrypto_bignum_import_bin(struct hw_bignum_mpi *n, rt_uint8_t *buf, int len)
+rt_err_t rt_hwcrypto_bignum_import_bin(struct hw_bignum_mpi *n, rt_uint8_t *buf, int len)
 {
     int cp_len, i, j;
     void *temp_p;
@@ -156,21 +155,19 @@ int rt_hwcrypto_bignum_import_bin(struct hw_bignum_mpi *n, rt_uint8_t *buf, int 
     {
         return 0;
     }
-    if ((int)n->total < len)
+    if (n->total < len)
     {
         temp_p = rt_malloc(len);
         if (temp_p == RT_NULL)
         {
             return 0;
         }
+        rt_memset(temp_p, 0, len);
         rt_free(n->p);
         n->p = temp_p;
         n->total = len;
     }
-
-    n->sign = 1;
-    rt_memset(n->p, 0, n->total);
-    cp_len = (int)n->total > len ? len : n->total;
+    cp_len = n->total > len ? len : n->total;
 
     for(i = cp_len, j = 0; i > 0; i--, j++)
     {

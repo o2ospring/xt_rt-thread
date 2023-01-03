@@ -25,7 +25,6 @@ SRCS_F = ../../../../components/drivers/ipc/completion.c  \
          ../../../../libcpu/arm/cortex-m3/context_gcc.S   \
          \
          ../../../../components/finsh/msh.c       \
-         ../../../../components/finsh/msh_parse.c \
          ../../../../components/finsh/cmd.c       \
          \
          ../../../../src/clock.c                  \

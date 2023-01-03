@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2022, RT-Thread Development Team
+ * Copyright (c) 2006-2021, RT-Thread Development Team
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -47,9 +47,9 @@
 
 static rt_list_t _rt_thread_defunct = RT_LIST_OBJECT_INIT(_rt_thread_defunct);
 
-static struct rt_thread idle_thread[_CPUS_NR];
+static struct rt_thread idle[_CPUS_NR];
 ALIGN(RT_ALIGN_SIZE)
-static rt_uint8_t idle_thread_stack[_CPUS_NR][IDLE_THREAD_STACK_SIZE];
+static rt_uint8_t rt_thread_stack[_CPUS_NR][IDLE_THREAD_STACK_SIZE];
 
 #ifdef RT_USING_SMP
 #ifndef SYSTEM_THREAD_STACK_SIZE
@@ -155,13 +155,13 @@ void rt_thread_defunct_enqueue(rt_thread_t thread)
  */
 rt_thread_t rt_thread_defunct_dequeue(void)
 {
-    rt_base_t level;
+    register rt_base_t lock;
     rt_thread_t thread = RT_NULL;
     rt_list_t *l = &_rt_thread_defunct;
 
 #ifdef RT_USING_SMP
     /* disable interrupt */
-    level = rt_hw_interrupt_disable();
+    lock = rt_hw_interrupt_disable();
     if (l->next != l)
     {
         thread = rt_list_entry(l->next,
@@ -169,16 +169,16 @@ rt_thread_t rt_thread_defunct_dequeue(void)
                 tlist);
         rt_list_remove(&(thread->tlist));
     }
-    rt_hw_interrupt_enable(level);
+    rt_hw_interrupt_enable(lock);
 #else
     if (l->next != l)
     {
         thread = rt_list_entry(l->next,
                 struct rt_thread,
                 tlist);
-        level = rt_hw_interrupt_disable();
+        lock = rt_hw_interrupt_disable();
         rt_list_remove(&(thread->tlist));
-        rt_hw_interrupt_enable(level);
+        rt_hw_interrupt_enable(lock);
     }
 #endif
     return thread;
@@ -194,7 +194,6 @@ static void rt_defunct_execute(void)
     while (1)
     {
         rt_thread_t thread;
-        rt_bool_t object_is_systemobject;
         void (*cleanup)(struct rt_thread *tid);
 
 #ifdef RT_USING_MODULE
@@ -213,42 +212,36 @@ static void rt_defunct_execute(void)
             dlmodule_destroy(module);
         }
 #endif
-
-#ifdef RT_USING_SIGNALS
-        rt_thread_free_sig(thread);
-#endif
-
-        /* store the point of "thread->cleanup" avoid to lose */
-        cleanup = thread->cleanup;
-
-        /* if it's a system object, not delete it */
-        object_is_systemobject = rt_object_is_systemobject((rt_object_t)thread);
-        if (object_is_systemobject == RT_TRUE)
-        {
-            /* detach this object */
-            rt_object_detach((rt_object_t)thread);
-        }
-
         /* invoke thread cleanup */
+        cleanup = thread->cleanup;
         if (cleanup != RT_NULL)
         {
             cleanup(thread);
         }
 
-#ifdef RT_USING_HEAP
-        /* if need free, delete it */
-        if (object_is_systemobject == RT_FALSE)
+#ifdef RT_USING_SIGNALS
+        rt_thread_free_sig(thread);
+#endif
+
+        /* if it's a system object, not delete it */
+        if (rt_object_is_systemobject((rt_object_t)thread) == RT_TRUE)
         {
+            /* detach this object */
+            rt_object_detach((rt_object_t)thread);
+        }
+        else
+        {
+#ifdef RT_USING_HEAP
             /* release thread's stack */
             RT_KERNEL_FREE(thread->stack_addr);
             /* delete thread object */
             rt_object_delete((rt_object_t)thread);
-        }
 #endif
+        }
     }
 }
 
-static void idle_thread_entry(void *parameter)
+static void rt_thread_idle_entry(void *parameter)
 {
 #ifdef RT_USING_SMP
     if (rt_hw_cpu_id() != 0)
@@ -306,24 +299,24 @@ static void rt_thread_system_entry(void *parameter)
 void rt_thread_idle_init(void)
 {
     rt_ubase_t i;
-    char idle_thread_name[RT_NAME_MAX];
+    char tidle_name[RT_NAME_MAX];
 
     for (i = 0; i < _CPUS_NR; i++)
     {
-        rt_sprintf(idle_thread_name, "tidle%d", i);
-        rt_thread_init(&idle_thread[i],
-                idle_thread_name,
-                idle_thread_entry,
+        rt_sprintf(tidle_name, "tidle%d", i);
+        rt_thread_init(&idle[i],
+                tidle_name,
+                rt_thread_idle_entry,
                 RT_NULL,
-                &idle_thread_stack[i][0],
-                sizeof(idle_thread_stack[i]),
+                &rt_thread_stack[i][0],
+                sizeof(rt_thread_stack[i]),
                 RT_THREAD_PRIORITY_MAX - 1,
                 32);
 #ifdef RT_USING_SMP
-        rt_thread_control(&idle_thread[i], RT_THREAD_CTRL_BIND_CPU, (void*)i);
+        rt_thread_control(&idle[i], RT_THREAD_CTRL_BIND_CPU, (void*)i);
 #endif /* RT_USING_SMP */
         /* startup */
-        rt_thread_startup(&idle_thread[i]);
+        rt_thread_startup(&idle[i]);
     }
 
 #ifdef RT_USING_SMP
@@ -351,10 +344,10 @@ void rt_thread_idle_init(void)
 rt_thread_t rt_thread_idle_gethandler(void)
 {
 #ifdef RT_USING_SMP
-    int id = rt_hw_cpu_id();
+    register int id = rt_hw_cpu_id();
 #else
-    int id = 0;
+    register int id = 0;
 #endif /* RT_USING_SMP */
 
-    return (rt_thread_t)(&idle_thread[id]);
+    return (rt_thread_t)(&idle[id]);
 }

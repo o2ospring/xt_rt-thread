@@ -30,10 +30,6 @@ import shutil
 import hashlib
 import operator
 
-DEFAULT_RTT_PACKAGE_URL = 'https://github.com/RT-Thread/packages.git'
-# you can change the package url by defining RTT_PACKAGE_URL, ex:
-#    export RTT_PACKAGE_URL=https://github.com/Varanda-Labs/packages.git
-
 # make rtconfig.h from .config
 
 def is_pkg_special_config(config_str):
@@ -151,8 +147,6 @@ def touch_env():
     else:
         home_dir = os.environ['USERPROFILE']
 
-    package_url = os.getenv('RTT_PACKAGE_URL') or DEFAULT_RTT_PACKAGE_URL
-
     env_dir  = os.path.join(home_dir, '.env')
     if not os.path.exists(env_dir):
         os.mkdir(env_dir)
@@ -164,7 +158,7 @@ def touch_env():
 
     if not os.path.exists(os.path.join(env_dir, 'packages', 'packages')):
         try:
-            ret = os.system('git clone %s %s' % (package_url, os.path.join(env_dir, 'packages', 'packages')))
+            ret = os.system('git clone https://github.com/RT-Thread/packages.git %s' % os.path.join(env_dir, 'packages', 'packages'))
             if ret != 0:
                 shutil.rmtree(os.path.join(env_dir, 'packages', 'packages'))
                 print("********************************************************************************\n"
@@ -223,7 +217,7 @@ def touch_env():
         if os.path.exists(os.path.join(env_dir, 'tools', 'scripts')):
             os.environ["PATH"] = os.path.join(env_dir, 'tools', 'scripts') + ';' + os.environ["PATH"]
 
-# Exclude utestcases
+# Exclude utestcases 
 def exclude_utestcases(RTT_ROOT):
     if os.path.isfile(os.path.join(RTT_ROOT, 'examples/utest/testcases/Kconfig')):
         return
@@ -241,7 +235,7 @@ def exclude_utestcases(RTT_ROOT):
 # menuconfig for Linux
 def menuconfig(RTT_ROOT):
 
-    # Exclude utestcases
+    # Exclude utestcases 
     exclude_utestcases(RTT_ROOT)
 
     kconfig_dir = os.path.join(RTT_ROOT, 'tools', 'kconfig-frontends')
@@ -249,8 +243,8 @@ def menuconfig(RTT_ROOT):
 
     touch_env()
     env_dir = get_env_dir()
-    if isinstance(env_dir, str):
-        os.environ['PKGS_ROOT'] = os.path.join(env_dir, 'packages')
+
+    os.environ['PKGS_ROOT'] = os.path.join(env_dir, 'packages')
 
     fn = '.config'
     fn_old = '.config.old'
@@ -275,15 +269,15 @@ def menuconfig(RTT_ROOT):
 def guiconfig(RTT_ROOT):
     import pyguiconfig
 
-    # Exclude utestcases
+    # Exclude utestcases 
     exclude_utestcases(RTT_ROOT)
 
     if sys.platform != 'win32':
         touch_env()
 
     env_dir = get_env_dir()
-    if isinstance(env_dir, str):
-        os.environ['PKGS_ROOT'] = os.path.join(env_dir, 'packages')
+
+    os.environ['PKGS_ROOT'] = os.path.join(env_dir, 'packages')
 
     fn = '.config'
     fn_old = '.config.old'
@@ -309,15 +303,15 @@ def guiconfig(RTT_ROOT):
 def guiconfig_silent(RTT_ROOT):
     import defconfig
 
-    # Exclude utestcases
+    # Exclude utestcases 
     exclude_utestcases(RTT_ROOT)
-
+    
     if sys.platform != 'win32':
         touch_env()
 
     env_dir = get_env_dir()
-    if isinstance(env_dir, str):
-        os.environ['PKGS_ROOT'] = os.path.join(env_dir, 'packages')
+
+    os.environ['PKGS_ROOT'] = os.path.join(env_dir, 'packages')
 
     fn = '.config'
 

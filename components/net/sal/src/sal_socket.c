@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2022, RT-Thread Development Team
+ * Copyright (c) 2006-2021, RT-Thread Development Team
  *
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -18,7 +18,7 @@
 #ifdef SAL_USING_TLS
 #include <sal_tls.h>
 #endif
-#include <sal_low_lvl.h>
+#include <sal.h>
 #include <netdev.h>
 
 #ifdef SAL_INTERNET_CHECK
@@ -158,8 +158,7 @@ static void check_netdev_internet_up_work(struct rt_work *work, void *work_data)
 #define SAL_INTERNET_MONTH_LEN 4
 #define SAL_INTERNET_DATE_LEN  16
 
-    unsigned int index;
-    int sockfd = -1, result = 0;
+    int index, sockfd = -1, result = 0;
     struct sockaddr_in server_addr;
     struct hostent *host;
     struct timeval timeout;
@@ -169,7 +168,7 @@ static void check_netdev_internet_up_work(struct rt_work *work, void *work_data)
 
     const char month[][SAL_INTERNET_MONTH_LEN] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     char date[SAL_INTERNET_DATE_LEN];
-    unsigned int moth_num = 0;
+    int moth_num = 0;
 
     struct sal_proto_family *pf = (struct sal_proto_family *) netdev->sal_user_data;
     const struct sal_socket_ops *skt_ops;
@@ -238,9 +237,9 @@ static void check_netdev_internet_up_work(struct rt_work *work, void *work_data)
     {
         send_data[index + 1] = netdev->hwaddr[index] + moth_num;
     }
-    send_data[9] = RT_VERSION_MAJOR;
-    send_data[10] = RT_VERSION_MINOR;
-    send_data[11] = RT_VERSION_PATCH;
+    send_data[9] = RT_VERSION;
+    send_data[10] = RT_SUBVERSION;
+    send_data[11] = RT_REVISION;
 
     skt_ops->sendto(sockfd, send_data, SAL_INTERNET_BUFF_LEN, 0,
                     (struct sockaddr *)&server_addr, sizeof(struct sockaddr));
@@ -377,8 +376,7 @@ static void sal_unlock(void)
  */
 int sal_netdev_cleanup(struct netdev *netdev)
 {
-    uint32_t idx = 0;
-    int find_dev;
+    int idx = 0, find_dev;
 
     do
     {

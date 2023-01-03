@@ -72,8 +72,6 @@ int pthread_barrier_init(pthread_barrier_t           *barrier,
         return EINVAL;
     if (attr && (*attr != PTHREAD_PROCESS_PRIVATE))
         return EINVAL;
-    if (count == 0)
-        return EINVAL;
 
     barrier->count = count;
     pthread_cond_init(&(barrier->cond), NULL);
