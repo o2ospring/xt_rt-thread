@@ -33,6 +33,7 @@ void app_irsend_close_cb(const xt_irsend_obj_t *p_ob);
 void app_irsend_complete_cb(const xt_irsend_obj_t *p_ob);
 void app_irsend_open(void);
 void app_irsend_close(void);
+void app_irsend_switch(int argc, char *argv[]);
 void app_irsend_data(int argc, char *argv[]);
 void app_irsend_code(int argc, char *argv[]);
 void app_irsend_help(void);
@@ -112,6 +113,33 @@ FINSH_FUNCTION_EXPORT(app_irsend_close, app_irsend_close);
 MSH_CMD_EXPORT(app_irsend_close, app_irsend_close);
 
 /**
+  * @brief  [开关]红外发送服务
+  * @param  argc       入口参数数量
+  * @param  argv       入口相关参数
+  * @return void
+  */
+void app_irsend_switch(int argc, char *argv[])
+{
+	uint32_t n = atoi(argv[1]);
+	
+	if ((argc != 2) || (n > 1))
+	{
+		rt_kprintf("app_irsend_switch input arg error!\r\n");
+		return;
+	}
+	if (n == 1)
+	{	//打开模块（命令: app_irsend_switch 1）
+		app_irsend_open();
+	}
+	else
+	{	//关闭模块（命令: app_irsend_switch 0）
+		app_irsend_close();
+	}
+}
+FINSH_FUNCTION_EXPORT(app_irsend_switch, app_irsend_switch 1 or 0);
+MSH_CMD_EXPORT(app_irsend_switch, app_irsend_switch 1 or 0);
+
+/**
   * @brief  [发送]红外码示例【直接发送时间码】
   * @param  argc       入口参数数量
   * @param  argv       入口相关参数
@@ -127,14 +155,14 @@ void app_irsend_data(int argc, char *argv[])
 		return;
 	}
 	if (n == 1)
-	{	//开机（测试命令: app_irsend_data 1）
+	{	//打开空调（测试命令: app_irsend_data 1）
 		if (xt_irsend_send(&app_irsend_obj, data_midea_on , sizeof(data_midea_on) , 1/*us*/, 38/*KHz*/) < 0)
 		{
 			rt_kprintf("xt_irsend_send return error!\r\n");
 		}
 	}
 	else
-	{	//关机（测试命令: app_irsend_data 0）
+	{	//关闭空调（测试命令: app_irsend_data 0）
 		if (xt_irsend_send(&app_irsend_obj, data_midea_off, sizeof(data_midea_off), 1/*us*/, 38/*KHz*/) < 0)
 		{
 			rt_kprintf("xt_irsend_send return error!\r\n");
@@ -160,7 +188,7 @@ void app_irsend_code(int argc, char *argv[])
 		return;
 	}
 	if (n == 1)
-	{	//开机（测试命令: app_irsend_code 1）
+	{	//打开空调（测试命令: app_irsend_code 1）
 		uint8_t buf[sizeof(code_midea_on)];
 		memcpy(buf, code_midea_on, sizeof(code_midea_on));
 		n = Api_Ir_ConvCode(buf, sizeof(code_midea_on));                  /*初步解码*/
@@ -170,7 +198,7 @@ void app_irsend_code(int argc, char *argv[])
 		}
 	}
 	else
-	{	//关机（测试命令: app_irsend_code 0）
+	{	//关闭空调（测试命令: app_irsend_code 0）
 		uint8_t buf[sizeof(code_midea_off)];
 		memcpy(buf, code_midea_off, sizeof(code_midea_off));
 		n = Api_Ir_ConvCode(buf, sizeof(code_midea_off));                 /*初步解码*/

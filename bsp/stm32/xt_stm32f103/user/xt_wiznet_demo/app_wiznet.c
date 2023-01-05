@@ -143,7 +143,7 @@ void app_tcp_thread_entry(void *p_arg)
            socket(TCP_SK_NUM, Sn_MR_TCP, 1002, Sn_MR_ND);    //打开socket（TCP协议,本机端口:1002）
         }
         while (connect(TCP_SK_NUM, ip, port) <= 0);          //连接TCP服务端
-        rt_kprintf("socket 1: open and connected!\r\n");
+        //rt_kprintf("socket 1: open and connected!\r\n");
         
         //setsockopt(TCP_SK_NUM, SO_KEEPALIVESEND, 0);       //如果没有打开TCP连接自动维持,则要求应用定时发送维持帧
         tlen = sizeof("tcp client send data!") - 1;
@@ -170,7 +170,7 @@ void app_tcp_thread_entry(void *p_arg)
         
         disconnect(TCP_SK_NUM);                              //断开TCP连接
         close(TCP_SK_NUM);                                   //关闭socket
-        rt_kprintf("socket 1: closed!\r\n");
+        //rt_kprintf("socket 1: closed!\r\n");
     }
 }
 

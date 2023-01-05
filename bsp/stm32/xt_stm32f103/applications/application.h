@@ -50,6 +50,10 @@ extern "C" {
 #define XT_DEF_DISABLED                 0                               /* 禁用模块                     */
 #define XT_DEF_ENABLED                  1                               /* 使能模块                     */
 //------------------------------------------
+#define XT_CPU_USAGE_EN                 1                               /* 是否上电就开启统计           */
+#ifndef XT_APP_CPUUSAGE_EN
+#define XT_APP_CPUUSAGE_EN              XT_DEF_ENABLED                  /* 统计CPU占用率                */
+#endif
 //#define XT_APP_DEBUG                  20221126                        /* 开启演示                     */
 #define __XT_IR_SEND_REMAP_H
 #ifndef XT_APP_IRSEND_EN
@@ -104,6 +108,7 @@ extern "C" {
  Task Priorities 线程优先级 (RT_THREAD_PRIORITY_MAX 为优先权最大值) (动态线程还要使能 RT_USING_HEAP) *****
 *********************************************************************************************************/
 
+//#define RT_THREAD_IDLE_PRIO           RT_THREAD_PRIORITY_MAX - 1      /* rt_thread_idle_entry()       */
 //#define RT_TIMER_THREAD_PRIO          0    /*在<rtconfig.h>加入*/     /* _timer_thread_entry()        */
 //#define FINSH_THREAD_PRIORITY         20   /*在<rtconfig.h>配置*/     /* finsh_thread_entry()         */
 //#define RT_MAIN_THREAD_PRIORITY       5    /*在<rtconfig.h>配置*/     /* main_thread_entry()->main()  */
@@ -123,7 +128,6 @@ extern "C" {
  Task Timeslice 线程同级调度节拍数 (RT_TICK_PER_SECOND 为每秒节拍数) *************************************
 *********************************************************************************************************/
 
-//#define XXX_THREAD_PRIO_TIMESLICE     4                               /* xxx_thread_entry()           */
 #define XTNET_THREAD_PRIO_TIMESLICE     4                               /* xt_net_thread_entry()        */
 
 /*********************************************************************************************************
