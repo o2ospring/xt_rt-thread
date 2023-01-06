@@ -1,4 +1,4 @@
-﻿/**
+/**
   * @file  xt_wiznet.h
   * @brief 网络服务模块（目前只针对 WIZnet Hardwired TCP/IP Chips (WIZCHIP)）
   * COPYRIGHT (C) 2022, XT 技术联合小组
@@ -22,7 +22,7 @@ extern "C" {
 #define XT_NET_HW_DRIVERS_EN     1            //是否使用本模块自带硬件驱动（0:不使用,1:STM32F1xx-SPI）
 //#define XT_NET_PIN_INIT                     //使能定义:将控制引脚初始化操作放到本模块线程中完成（但需要手工取消board.c的初始化）
 //#define XT_NET_CFG_INIT                     //使能定义:将网络芯片初始化操作放到本模块线程中完成（但需要手工取消board.c的初始化）
-#define XT_NET_PRINTF(...)       rt_kprintf("net:" __VA_ARGS__)               //工作大流程打印
+#define XT_NET_PRINTF(...)       rt_kprintf("wiznet:" __VA_ARGS__)            //工作大流程打印
 
 #if (defined(XT_WIZNET_C__) && (XT_APP_WIZNET_EN == XT_DEF_ENABLED))
 #if 1 //////////////////////////////////////////
