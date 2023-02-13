@@ -16,7 +16,7 @@
 #endif
 
 #ifndef XT_MSG_INIT_1_TAB_EXPORT
-#define XT_MSG_INIT_1_TAB_EXPORT(func,name)
+#define XT_MSG_INIT_1_TAB_EXPORT(func,desc)
 #endif
 
 #ifdef RT_USING_FINSH

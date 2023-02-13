@@ -16,7 +16,7 @@
 #endif
 
 #ifndef XT_APP_INIT_2_TAB_EXPORT
-#define XT_APP_INIT_2_TAB_EXPORT(func,name)
+#define XT_APP_INIT_2_TAB_EXPORT(func,desc)
 #endif
 
 ALIGN(RT_ALIGN_SIZE)

@@ -15,7 +15,7 @@
 #endif
 
 #ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,name)
+#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
 #endif
 
 /**

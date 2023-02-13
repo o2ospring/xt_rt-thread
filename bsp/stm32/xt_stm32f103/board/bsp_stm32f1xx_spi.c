@@ -15,7 +15,7 @@
 #endif
 
 #ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,name)
+#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
 #endif
 
 //HAL_StatusTypeDef HAL_SPI_Transmit(SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size, uint32_t Timeout);//·¢ËÍÊý¾Ý
