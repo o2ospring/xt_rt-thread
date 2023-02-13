@@ -60,7 +60,7 @@ typedef struct xt_irsend_obj_
 	
 	void (*p_dv_wave_fn)(struct xt_irsend_obj_ *p_ob);              //【驱动层服务】：为[硬件层]中断提供调用
 	
-	int  (*p_hw_open_fn)(struct xt_irsend_obj_ *p_ob);              //【硬件层服务】：打开硬件（本接口以静态形式提供，它是[驱动层]对接[硬件层]超始通道，并由它来提供其它对接口）
+	int  (*p_hw_open_fn)(struct xt_irsend_obj_ *p_ob);              //【硬件层服务】：打开硬件（本接口以静态形式提供，它是[驱动层]对接[硬件层]起始通道，并由它来提供其它对接口）
 	void (*p_hw_close_fn)(struct xt_irsend_obj_ *p_ob);             //【硬件层服务】：关闭硬件
 	void (*p_hw_putd_before_fn)(uint8_t khz);                       //【硬件层服务】：通知[硬件层]发送前准备（khz:红外载波频率,单位:KHz）
 	void (*p_hw_putd_a_fn)(uint32_t us, uint8_t f);                 //【硬件层服务】：中断中启动[硬件层]去发送一个有载波码（us:有载波时间,f=0:第1个码,1:中途1个码,2:最后1个码）

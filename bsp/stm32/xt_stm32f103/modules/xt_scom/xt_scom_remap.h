@@ -74,12 +74,12 @@ typedef struct xt_scom_obj_
 	int  (*p_rx_data1_fn)(const struct xt_scom_obj_ *pob);               //【应用层服务】：中断中接收到第一字节数据通知函数（内参传递:pob->p_rx_buf）
 	int  (*p_rx_data_fn)(const struct xt_scom_obj_ *pob, uint16_t size); //【应用层服务】：中断中接收到整一组数据的传递函数（内参传递:pob->p_rx_buf, size）
 	
-	void (*p_dv_uart_rx_reset)(struct xt_scom_obj_ *pob);                //【驱动层服务】：为[硬件层]中断提供调用-串口接收重置操作函数
+	void (*p_dv_uart_rx_reset_fn)(struct xt_scom_obj_ *pob);             //【驱动层服务】：为[硬件层]中断提供调用-串口接收重置操作函数
 	void (*p_dv_uart_tx_fn)(struct xt_scom_obj_ *pob);                   //【驱动层服务】：为[硬件层]中断提供调用-串口发送中断操作函数
 	void (*p_dv_uart_rx_fn)(struct xt_scom_obj_ *pob);                   //【驱动层服务】：为[硬件层]中断提供调用-串口接收中断操作函数
 	void (*p_dv_time_rx_fn)(struct xt_scom_obj_ *pob);                   //【驱动层服务】：为[硬件层]中断提供调用-接收定时中断操作函数
 	
-	int  (*p_hw_open_fn)(struct xt_scom_obj_ *p_ob);                     //【硬件层服务】：打开硬件（本接口以静态形式提供，它是[驱动层]对接[硬件层]超始通道，并由它来提供其它对接口）
+	int  (*p_hw_open_fn)(struct xt_scom_obj_ *p_ob);                     //【硬件层服务】：打开硬件（本接口以静态形式提供，它是[驱动层]对接[硬件层]起始通道，并由它来提供其它对接口）
 	void (*p_hw_close_fn)(struct xt_scom_obj_ *p_ob);                    //【硬件层服务】：关闭硬件
 	void (*p_hw_tx_putc_null_fn)(void);                                  //【硬件层服务】：要求[硬件层]启动发送空中断（★如果硬件不支持发送空中断,则设置为0★）
 	void (*p_hw_tx_putc_fn)(uint16_t d, uint8_t f);                      //【硬件层服务】：中断中启动[硬件层]发送一字节（0:第1字节,1:中途1字节,2:最后1字节）

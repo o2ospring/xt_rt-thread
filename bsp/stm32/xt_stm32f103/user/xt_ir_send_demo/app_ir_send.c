@@ -211,22 +211,5 @@ void app_irsend_code(int argc, char *argv[])
 FINSH_FUNCTION_EXPORT(app_irsend_code, app_irsend_code 1 or 0);
 MSH_CMD_EXPORT(app_irsend_code, app_irsend_code 1 or 0);
 
-/**
-  * @brief  发送红外遥控码演示帮助
-  * @param  void
-  * @return void
-  */
-void app_irsend_help(void)
-{
-	rt_kprintf("app_irsend_open   \r\n");
-	rt_kprintf("app_irsend_data 1 \r\n");
-	rt_kprintf("app_irsend_data 0 \r\n");
-	rt_kprintf("app_irsend_code 1 \r\n");
-	rt_kprintf("app_irsend_code 0 \r\n");
-	rt_kprintf("app_irsend_close  \r\n");
-}
-FINSH_FUNCTION_EXPORT(app_irsend_help, app_irsend_help);
-MSH_CMD_EXPORT(app_irsend_help, app_irsend_help);
-
 #endif  //#if (XT_APP_IRSEND_EN == XT_DEF_ENABLED)
 #endif
