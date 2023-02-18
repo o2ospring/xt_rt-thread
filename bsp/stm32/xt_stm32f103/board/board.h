@@ -245,6 +245,32 @@ extern void xt_scomx_tim_irqhandler(void); //├→★★硬件驱动二选一�
 #define XT_WIZ_SPI_NSS_DI()          XT_WIZ_SPI_NSS_GPIO->BSRR = XT_WIZ_SPI_NSS_PIN // NSS无效
 
 /********************************************************************************************************/
+/*++++++++++++++++++++++++++++++++++++++++++++++ 硬件扩展 ++++++++++++++++++++++++++++++++++++++++++++++*/
+/********************************************************************************************************/
+
+// 硬件定时器定时调用函数+++++++++++++
+#if (defined BSP_STM32F1XX_IT_C__) && (defined BSP_MS_TICK_TIM)
+#if (BSP_WDG_EN & 0x01)
+                         extern void wdg_reload_counter(uint8_t runner);
+#define WDG_RELOAD()                 wdg_reload_counter(1)
+#else
+#define WDG_RELOAD()
+#endif
+
+#include "xt_scom.h"
+#if (XT_APP_SCOM_EN == XT_DEF_ENABLED) && (XT_SCOM_HW_DRIVERS_EN == 2)
+                         extern void xt_scomx_tim_irqhandler(void);
+#define XT_SCOMX_OVT()               xt_scomx_tim_irqhandler()
+#else
+#define XT_SCOMX_OVT()
+#endif
+
+#define TIME_1MS_LOOP()              XT_SCOMX_OVT()                     /* 1ms   定时器循环调用函数     */
+#define TIME_10MS_LOOP()                                                /* 10ms  定时器循环调用函数     */
+#define TIME_100MS_LOOP()            WDG_RELOAD()                       /* 100ms 定时器循环调用函数     */
+#endif
+
+/********************************************************************************************************/
 /*++++++++++++++++++++++++++++++++++++++++++++++ 操作函数 ++++++++++++++++++++++++++++++++++++++++++++++*/
 /********************************************************************************************************/
 

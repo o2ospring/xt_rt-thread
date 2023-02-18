@@ -12,7 +12,6 @@
 #include <stdint.h> //////////////////////// <- 使用的数据定义，如: int8_t, uint32_t 等
 #include "xt_comdef.h" ///////////////////// <- 常用宏定义集合，如: XT_BIT_SET 等
 #include "board.h"   /////////////////////// <- 工程所有硬件资源管理头文件!!!!!!!!!!!!!!!
-#include "bsp_stm32f1xx_wdg.h" ///////////// <- 调用看门狗操作
 #include "stm32f1xx.h" ///////////////////// <- 依赖STM32F103单片机HAL库
 /*
 #include "stm32f1xx_hal.h"
@@ -92,31 +91,31 @@ extern volatile uint32_t time_10ms_tick;
 extern volatile uint32_t time_100ms_tick;
 #endif
 
-#if (BSP_WDG_EN & 0x01)
-#define WDG_RELOAD()     wdg_reload_counter(1)
-#else
-#define WDG_RELOAD()
+#ifndef TIME_1MS_LOOP
+#define TIME_1MS_LOOP()
 #endif
 
-#if (XT_APP_SCOM_EN == XT_DEF_ENABLED) && (XT_SCOM_HW_DRIVERS_EN == 2)
-             extern void xt_scomx_tim_irqhandler(void);
-#define XT_SCOMX_OVT()   xt_scomx_tim_irqhandler()
-#else
-#define XT_SCOMX_OVT()
+#ifndef TIME_10MS_LOOP
+#define TIME_10MS_LOOP()
+#endif
+
+#ifndef TIME_100MS_LOOP
+#define TIME_100MS_LOOP()
 #endif
 
 #define TIME_MS_TICK()   do                                                                              \
 {                                                                                                        \
     static uint8_t time_1ms_cnt = 0;                                                                     \
     time_1ms_tick++;                      /*1ms   硬件计数器*/                                           \
-	XT_SCOMX_OVT();                                                                                      \
+	TIME_1MS_LOOP();                                                                                     \
     if ((++time_1ms_cnt % 10) == 0)                                                                      \
     {                                                                                                    \
         time_10ms_tick++;                 /*10ms  硬件计数器*/                                           \
+		TIME_10MS_LOOP();                                                                                \
         if ((time_1ms_cnt % 100) == 0)                                                                   \
         {    time_1ms_cnt = 0;                                                                           \
              time_100ms_tick++;           /*100ms 硬件计数器*/                                           \
-			 WDG_RELOAD();                                                                               \
+			 TIME_100MS_LOOP();                                                                          \
         }                                                                                                \
     }                                                                                                    \
 }   while (0)
