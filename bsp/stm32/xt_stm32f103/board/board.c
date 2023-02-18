@@ -67,14 +67,14 @@ int bsp_board_init(void)
 	//1、内核上电初始化（如：定时器等）
 	for (p_tab=&chip_init_fn_bsp_tab_front+1; p_tab<&chip_init_fn_bsp_tab_limit; p_tab++)
 	{
-		//rt_kprintf("xt_chip_init: %s\r\n", p_tab->name);
+		//rt_kprintf("xt_chip_init: %s\r\n", p_tab->desc);
 		(*(p_tab->p_fn))();
 	}
 	
 	//2、硬件上电初始化（如：IC引脚等）
 	for (p_tab=&hard_init_fn_bsp_tab_front+1; p_tab<&hard_init_fn_bsp_tab_limit; p_tab++)
 	{
-		//rt_kprintf("xt_hard_init: %s\r\n", p_tab->name);
+		//rt_kprintf("xt_hard_init: %s\r\n", p_tab->desc);
 		(*(p_tab->p_fn))();
 	}
 	
@@ -83,7 +83,7 @@ int bsp_board_init(void)
 	//3、器件上电初始化（如：传感器等）
 	for (p_tab=&dev_init_fn_bsp_tab_front+1; p_tab<&dev_init_fn_bsp_tab_limit; p_tab++)
 	{
-		//rt_kprintf("xt_dev_init: %s\r\n", p_tab->name);
+		//rt_kprintf("xt_dev_init: %s\r\n", p_tab->desc);
 		(*(p_tab->p_fn))();
 	}
 	

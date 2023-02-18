@@ -85,7 +85,7 @@ void rt_init_thread_entry(void *p_arg)
 	for (p_tab=&msg_init_fn_app_tab_front+1; p_tab<&msg_init_fn_app_tab_limit; p_tab++)
 	{
 		#if (defined XT_PRINT_INIT_EN) && (XT_PRINT_INIT_EN != 0)
-		rt_kprintf("xt_msg_init: %s\r\n", p_tab->name);
+		rt_kprintf("xt_msg_init: %s\r\n", p_tab->desc);
 		#endif
 		(*(p_tab->p_fn))();
 	}
@@ -94,7 +94,7 @@ void rt_init_thread_entry(void *p_arg)
 	for (p_tab=&app_init_fn_app_tab_front+1; p_tab<&app_init_fn_app_tab_limit; p_tab++)
 	{
 		#if (defined XT_PRINT_INIT_EN) && (XT_PRINT_INIT_EN != 0)
-		rt_kprintf("xt_app_init: %s\r\n", p_tab->name);
+		rt_kprintf("xt_app_init: %s\r\n", p_tab->desc);
 		#endif
 		(*(p_tab->p_fn))();
 	}
