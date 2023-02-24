@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>__STDC_LIMIT_MACROS, STM32F103xE, USE_HAL_DRIVER, RT_USING_LIBC, __CLK_TCK=RT_TICK_PER_SECOND, __RTTHREAD__, RT_USING_ARM_LIBC</Define>
               <Undefine></Undefine>
-              <IncludePath>.\applications;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m3;..\..\..\components\drivers\include;..\..\..\components\libc\compilers\common\include;..\..\..\components\libc\compilers\common\extension;..\..\..\components\libc\compilers\common\extension\fcntl\octal;..\..\..\components\libc\posix\io\poll;..\..\..\components\libc\posix\io\stdio;..\..\..\components\libc\posix\ipc;..\..\..\components\finsh;..\..\..\include;.;.\board;.\board\ports\include;..\libraries\HAL_Drivers;..\libraries\HAL_Drivers\config;..\libraries\HAL_Drivers\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Device\ST\STM32F1xx\Include;..\libraries\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;.\xt_modules\xt_macro;.\xt_modules\xt_ir_send;.\xt_modules\xt_scom;.\xt_modules\xt_scom_sds;.\xt_modules\xt_scom_vofa;.\xt_modules\xt_cef2;.\xt_modules\xt_wiznet;.\xt_modules\xt_wiznet\Internet\DHCP;.\xt_modules\xt_wiznet\Ethernet;.\xt_modules\xt_wiznet\Ethernet\W5100;.\xt_modules\xt_wiznet\Ethernet\W5100S;.\xt_modules\xt_wiznet\Ethernet\W5200;.\xt_modules\xt_wiznet\Ethernet\W5300;.\xt_modules\xt_wiznet\Ethernet\W5500;.\xt_modules\xt_wiznet_vofa;.\modules\xt_ir_send;.\modules\xt_scom;.\modules\xt_scom_sds;.\modules\xt_scom_vofa;.\modules\xt_cef2;.\modules\xt_wiznet;.\modules\xt_wiznet_vofa;.\user\xt_ir_send_demo;.\user\xt_wiznet_demo</IncludePath>
+              <IncludePath>.\applications;..\..\..\libcpu\arm\common;..\..\..\libcpu\arm\cortex-m3;..\..\..\components\drivers\include;..\..\..\components\libc\compilers\common\include;..\..\..\components\libc\compilers\common\extension;..\..\..\components\libc\compilers\common\extension\fcntl\octal;..\..\..\components\libc\posix\io\poll;..\..\..\components\libc\posix\io\stdio;..\..\..\components\libc\posix\ipc;..\..\..\components\finsh;..\..\..\include;.;.\board;.\board\ports\include;..\libraries\HAL_Drivers;..\libraries\HAL_Drivers\config;..\libraries\HAL_Drivers\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Include;..\libraries\STM32F1xx_HAL\CMSIS\Device\ST\STM32F1xx\Include;..\libraries\STM32F1xx_HAL\STM32F1xx_HAL_Driver\Inc;.\xt_modules\xt_macro;.\xt_modules\xt_llist;.\xt_modules\xt_ir_send;.\xt_modules\xt_scom;.\xt_modules\xt_scom_sds;.\xt_modules\xt_scom_vofa;.\xt_modules\xt_cef2;.\xt_modules\xt_wiznet;.\xt_modules\xt_wiznet\Internet\DHCP;.\xt_modules\xt_wiznet\Ethernet;.\xt_modules\xt_wiznet\Ethernet\W5100;.\xt_modules\xt_wiznet\Ethernet\W5100S;.\xt_modules\xt_wiznet\Ethernet\W5200;.\xt_modules\xt_wiznet\Ethernet\W5300;.\xt_modules\xt_wiznet\Ethernet\W5500;.\xt_modules\xt_wiznet_vofa;.\modules\xt_ir_send;.\modules\xt_scom;.\modules\xt_scom_sds;.\modules\xt_scom_vofa;.\modules\xt_cef2;.\modules\xt_wiznet;.\modules\xt_wiznet_vofa;.\user\xt_ir_send_demo;.\user\xt_wiznet_demo</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -454,9 +454,14 @@
               <FilePath>.\xt_modules\xt_macro\xt_comdef.h</FilePath>
             </File>
             <File>
+              <FileName>xt_llist.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\xt_modules\xt_llist\xt_llist.c</FilePath>
+            </File>
+            <File>
               <FileName>xt_llist.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\xt_modules\xt_macro\xt_llist.h</FilePath>
+              <FilePath>.\xt_modules\xt_llist\xt_llist.h</FilePath>
             </File>
             <File>
               <FileName>xt_ir_send.c</FileName>

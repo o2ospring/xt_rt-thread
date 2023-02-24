@@ -25,7 +25,8 @@ SRCS_F = \
          ../modules/xt_wiznet_vofa/xt_wiznet_vofa_remap.h \
          \
          ../xt_modules/xt_macro/xt_comdef.h \
-         ../xt_modules/xt_macro/xt_llist.h \
+         ../xt_modules/xt_llist/xt_llist.c \
+         ../xt_modules/xt_llist/xt_llist.h \
          ../xt_modules/xt_ir_send/xt_ir_send.c \
          ../xt_modules/xt_ir_send/xt_ir_send_pwm_dma_stm32f1xx_hal.c \
          ../xt_modules/xt_scom/xt_scom.c \
@@ -117,6 +118,7 @@ SRCS_I = ../../../../include \
          ../modules/xt_wiznet \
          ../modules/xt_wiznet_vofa \
          ../xt_modules/xt_macro \
+         ../xt_modules/xt_llist \
          ../xt_modules/xt_ir_send \
          ../xt_modules/xt_scom \
          ../xt_modules/xt_scom_sds \
