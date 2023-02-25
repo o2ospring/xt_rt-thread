@@ -22,6 +22,10 @@
 #endif
 #endif
 
+#ifndef XT_APP_TLOOP_2_TAB_EXPORT
+#define XT_APP_TLOOP_2_TAB_EXPORT(func,ms)
+#endif
+
 #if (BSP_WDG_EN & 0x01)
 #if (BSP_WDG_CFG == 1)
 uint8_t iwdg_runner = 0;
@@ -79,4 +83,12 @@ void wdg_reload_counter(uint8_t runner)
 	__HAL_IWDG_RELOAD_COUNTER(&hiwdg); } //HAL_IWDG_Refresh(&hiwdg);  // 重启计数器（喂狗）
 	#endif
 }
+
+//应用：软件定时器喂狗
+void wdg_reload_software(void)
+{
+	wdg_reload_counter(0);
+}
+XT_APP_TLOOP_2_TAB_EXPORT(wdg_reload_software, 100/*ms*/);
+
 #endif  //#if (BSP_WDG_EN & 0x01)

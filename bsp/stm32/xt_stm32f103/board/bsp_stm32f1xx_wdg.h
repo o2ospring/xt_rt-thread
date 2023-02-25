@@ -40,6 +40,7 @@ extern "C" {
 extern void bsp_wdg_init(void);
 extern void wdg_runner_set(uint8_t runner);
 extern void wdg_reload_counter(uint8_t runner);
+extern void wdg_reload_software(void);
 
 // 由于喂狗一般在软件定时器操作,但当一些特别操作会影响软
 // 件定时器喂狗的及时性时,可以临时启动在硬件定时器中喂狗：

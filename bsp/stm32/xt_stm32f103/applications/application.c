@@ -100,6 +100,11 @@ void rt_init_thread_entry(void *p_arg)
 	}
 }
 
+void loop_tab_front(void) {}
+void loop_tab_limit(void) {}
+XT_APP_TLOOP_S_TAB_EXPORT(loop_tab_front, 100);
+XT_APP_TLOOP_E_TAB_EXPORT(loop_tab_limit, 100);
+
 /**
   * @brief  定时循环线程
   * @param  *p_arg
@@ -107,7 +112,8 @@ void rt_init_thread_entry(void *p_arg)
   */
 void rt_timer_thread_loop(void *p_arg)
 {
-	unsigned long ulCnt = 0;
+	const xt_tloop_fn_tab_t *p_tab;
+	uint32_t ms = 0;
 	
 	#if (BSP_WDG_EN & 0x01)
 	bsp_wdg_init(); //初始化看门狗
@@ -115,58 +121,25 @@ void rt_timer_thread_loop(void *p_arg)
 	
 	while (1)
 	{
-		ulCnt++;
-		if (ulCnt == 4000320000UL) ulCnt = 0;
+		ms += 10;
+		if (ms == 4000320000UL) ms = 0;
 		rt_thread_delay(10UL/*mS*//(1000/RT_TICK_PER_SECOND));
 		
-		#if (XT_APP_SCOMVOFA_EN == XT_DEF_ENABLED)
-		xt_scomvofa_cmd_run();
-		#endif
+		//6、定时调用函数（如：扫描等）
+		for (p_tab=&app_tloop_fn_loop_tab_front+1; p_tab<&app_tloop_fn_loop_tab_limit; p_tab++)
+		{
+			if ((ms % p_tab->ms) == 0)
+			{
+				(*(p_tab->p_fn))();
+			}
+		}
+		
 		// 20mS调用一次
-		//if ((ulCnt % 2) == 0)
+		//if ((ms % 20) == 0)
 		//{
 		//}
-		// 50mS调用一次
-		//if ((ulCnt % 5) == 0)
-		//{
-		//}
-		//else{}
 		// 100mS调用一次
-		if ((ulCnt % 10) == 0)
-		{
-			#if (BSP_WDG_EN & 0x01)
-			wdg_reload_counter(0); // 喂狗: 独立看门狗(影响仿真调试)
-			#endif
-		}
-		// 200mS调用一次
-		if ((ulCnt % 20) == 0)
-		{
-			#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221201))
-			#if (XT_APP_SCOMSDS_EN == XT_DEF_ENABLED)
-			xt_scomsds_1ch_put(0x80, (signed short)(cpu10000_usage_get(1)));
-			#endif
-			#endif
-			#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221203))
-			#if (XT_APP_SCOMVOFA_EN == XT_DEF_ENABLED)
-			xt_scomvofa_1ch_put(0x80, (float)(cpu10000_usage_get(1)) / 100);
-			#endif
-			#endif
-			#if (defined(XT_APP_DEBUG) && (XT_APP_DEBUG == 20221216))
-			#if (XT_APP_WIZNETVOFA_EN == XT_DEF_ENABLED)
-			xt_wizvofa_1ch_put(0x00, (float)(cpu10000_usage_get(1)) / 100);
-			#endif
-			#endif
-		}
-		// 500mS调用一次
-		//if ((ulCnt % 50) == 0)
-		//{
-		//}
-		// 1000mS调用一次
-		//if ((ulCnt % 100) == 0)
-		//{
-		//}
-		// 1小时调用一次
-		//if ((ulCnt % 360000) == 0)
+		//if ((ms % 100) == 0)
 		//{
 		//}
 	}
