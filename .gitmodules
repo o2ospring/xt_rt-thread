@@ -1,9 +1,6 @@
 [submodule "bsp/stm32/xt_stm32f103/xt_modules"]
 	path = bsp/stm32/xt_stm32f103/xt_modules
 	url = https://github.com/o2ospring/xt_modules.git
-[submodule "bsp/stm32/xt_stm32f103/oss_modules/crc-lib-c"]
-	path = bsp/stm32/xt_stm32f103/oss_modules/crc-lib-c
-	url = https://github.com/whik/crc-lib-c.git
-[submodule "bsp/stm32/xt_stm32f103/oss_modules/encrypt_decrypt"]
-	path = bsp/stm32/xt_stm32f103/oss_modules/encrypt_decrypt
-	url = https://gitee.com/liones/encrypt_decrypt.git
+[submodule "bsp/stm32/xt_stm32f103/oss_modules"]
+	path = bsp/stm32/xt_stm32f103/oss_modules
+	url = https://github.com/o2ospring/oss_modules.git
