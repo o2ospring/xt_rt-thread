@@ -90,7 +90,7 @@ void TIM1_CC_IRQHandler(void)
 	if (flag & 0x01) // CCR1
 	{
 		#if (defined BSP_MS_TICK_TIM) && (BSP_MS_TICK_TIM == 1)
-		TIME_MS_TICK();
+		time_ms_tick();
 		#endif
 	}
 	// if (flag & 0x02) // CCR2
@@ -186,7 +186,7 @@ void TIM2_IRQHandler(void)
 	if (flag & 0x01) // CCR1
 	{
 		#if (defined BSP_MS_TICK_TIM) && (BSP_MS_TICK_TIM == 2)
-		TIME_MS_TICK();
+		time_ms_tick();
 		#endif
 	}
 	// if (flag & 0x02) // CCR2
@@ -282,7 +282,7 @@ void TIM3_IRQHandler(void)
 	if (flag & 0x01) // CCR1
 	{
 		#if (defined BSP_MS_TICK_TIM) && (BSP_MS_TICK_TIM == 3)
-		TIME_MS_TICK();
+		time_ms_tick();
 		#endif
 	}
 	// if (flag & 0x02) // CCR2
@@ -378,7 +378,7 @@ void TIM4_IRQHandler(void)
 	if (flag & 0x01) // CCR1
 	{
 		#if (defined BSP_MS_TICK_TIM) && (BSP_MS_TICK_TIM == 4)
-		TIME_MS_TICK();
+		time_ms_tick();
 		#endif
 	}
 	// if (flag & 0x02) // CCR2

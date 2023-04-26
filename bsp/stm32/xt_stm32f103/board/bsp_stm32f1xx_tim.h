@@ -78,49 +78,6 @@ extern "C" {
 #endif ///////////////////////////////
 
 /********************************************************************************************************/
-/*+++++++++++++++++++++++++++++++++++++++++++++++ 硬件计数器 +++++++++++++++++++++++++++++++++++++++++++*/
-/********************************************************************************************************/
-
-#ifdef BSP_STM32F1XX_TIM_C__
-volatile uint32_t time_1ms_tick = 0;
-volatile uint32_t time_10ms_tick = 0;
-volatile uint32_t time_100ms_tick = 0;
-#else
-extern volatile uint32_t time_1ms_tick;
-extern volatile uint32_t time_10ms_tick;
-extern volatile uint32_t time_100ms_tick;
-#endif
-
-#ifndef TIME_1MS_LOOP
-#define TIME_1MS_LOOP()
-#endif
-
-#ifndef TIME_10MS_LOOP
-#define TIME_10MS_LOOP()
-#endif
-
-#ifndef TIME_100MS_LOOP
-#define TIME_100MS_LOOP()
-#endif
-
-#define TIME_MS_TICK()   do                                                                              \
-{                                                                                                        \
-    static uint8_t time_1ms_cnt = 0;                                                                     \
-    time_1ms_tick++;                      /*1ms   硬件计数器*/                                           \
-	TIME_1MS_LOOP();                                                                                     \
-    if ((++time_1ms_cnt % 10) == 0)                                                                      \
-    {                                                                                                    \
-        time_10ms_tick++;                 /*10ms  硬件计数器*/                                           \
-		TIME_10MS_LOOP();                                                                                \
-        if ((time_1ms_cnt % 100) == 0)                                                                   \
-        {    time_1ms_cnt = 0;                                                                           \
-             time_100ms_tick++;           /*100ms 硬件计数器*/                                           \
-			 TIME_100MS_LOOP();                                                                          \
-        }                                                                                                \
-    }                                                                                                    \
-}   while (0)
-
-/********************************************************************************************************/
 /*++++++++++++++++++++++++++++++++++++++++++++++ 初始函数 ++++++++++++++++++++++++++++++++++++++++++++++*/
 /********************************************************************************************************/
 

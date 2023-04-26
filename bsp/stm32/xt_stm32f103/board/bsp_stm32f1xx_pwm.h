@@ -46,7 +46,11 @@ extern "C" {
 #define XXX_TIMX_CLK_ENABLE()      __HAL_RCC_TIM2_CLK_ENABLE()          /* ¶¨Ê±Æ÷Ê±ÖÓÊ¹ÄÜ               //
 #define XXX_TIMX_AFIO_REMAP()      __HAL_AFIO_REMAP_TIM2_PARTIAL_1()    // ¶¨Ê±Æ÷Òý½ÅÖØÓ³Éä(²»ÓÃÔòÆÁ±Î) // //Ö»ÓÐ TIM1~5 ²ÅÓÐÓ³Éä (·Ö:ÖØÓ³Éä[TIM4~5]¡¢²¿·ÖºÍÍêÈ«ÖØÓ³ÉäTIM1~3)
 #define XXX_TIMX_HANDLER             htim2                              // ¶¨Ê±Æ÷¾ä±ú(²»ÓÃÈ«¾Ö¾ä±úÔòÆÁ±Î//
-BSP_EXT TIM_HandleTypeDef            htim2;                             // ¶¨Ê±Æ÷¾ä±ú(È«¾Ö±äÁ¿,°´ÐèÆÁ±Î)*/
+BSP_EXT TIM_HandleTypeDef            htim2;                             // ¶¨Ê±Æ÷¾ä±ú(È«¾Ö±äÁ¿,°´ÐèÆÁ±Î)//
+#define XXX_TIMX_IRQn                TIM2_IRQn                          // ¶¨Ê±Æ÷ÖÐ¶ÏÍ¨µÀ (²»ÖÐ¶ÏÔòÆÁ±Î)//
+#define XXX_TIMX_PRE_INT_PRIO        0                                  // ¶¨Ê±Æ÷ÇÀÕ¼ÖÐ¶ÏÓÅÏÈ¼¶(.ÔòÆÁ±Î)//
+#define XXX_TIMX_SUB_INT_PRIO        0                                  // ¶¨Ê±Æ÷ÏìÓ¦ÖÐ¶ÏÓÅÏÈ¼¶(.ÔòÆÁ±Î)//
+#define XXX_TIMX_IRQHandler          TIM2_IRQHandler                    // ÖÐ¶ÏÏòÁ¿º¯Êý   (²»ÖÐ¶ÏÔòÆÁ±Î)*/
 
 // ÅäÖÃPWM1
 #define XXX_PWM1_CLK_ENABLE()      __HAL_RCC_GPIOA_CLK_ENABLE()         /* PWM1 ¹Ü½ÅÊ±ÖÓÊ¹ÄÜ(²»ÓÃÔòÆÁ±Î)*/
@@ -55,7 +59,8 @@ BSP_EXT TIM_HandleTypeDef            htim2;                             // ¶¨Ê±Æ
 #define XXX_PWM1_OCMODE              TIM_OCMODE_PWM1                    /* PWM1 Êä³ö¼«ÐÔÄ£Ê½(2Ôò·´¼«ÐÔ) */ //Ê¹ÓÃÔÚ:·Ç0%,·ÇÍ£Ö¹
 #define XXX_PWM1_OCPOLARITY          TIM_OCPOLARITY_HIGH                /* PWM1 ÓÐÐ§Õ¼¿Õ±ÈÊä³öµÄµçÆ½    // //ÕýÏòÍ¨µÀ
 #define XXX_PWM1_OCIDLESTATE         TIM_OCIDLESTATE_RESET              // PWM1 ¿ÕÏÐÊ±µçÆ½(²»ÓÃÔòÆÁ±Î)  */ //Ö»Õë¶ÔTIM1,ÆäËü¶¨Ê±Æ÷Ä¬ÈÏÎªµÍµçÆ½
-#define XXX_PWM1_CCRx                CCR1                               /* PWM1 XXX_TIMX->XXX_PWM1_CCRx */ //Õ¼¿Õ±È
+#define XXX_PWM1_CCR                 CCR1                               /* PWM1 XXX_TIMX->XXX_PWM1_CCR  */ //Õ¼¿Õ±È
+#define XXX_PWM1_TIM_CHANNEL         TIM_CHANNEL_1                      /* PWM1 ËùÔÚ¶¨Ê±Æ÷Í¨µÀ          */
 
 // ÅäÖÃPWM2
 #define XXX_PWM2_CLK_ENABLE()      __HAL_RCC_GPIOA_CLK_ENABLE()         /* PWM2 ¹Ü½ÅÊ±ÖÓÊ¹ÄÜ(²»ÓÃÔòÆÁ±Î)*/
@@ -64,7 +69,8 @@ BSP_EXT TIM_HandleTypeDef            htim2;                             // ¶¨Ê±Æ
 #define XXX_PWM2_OCMODE              TIM_OCMODE_PWM1                    /* PWM2 Êä³ö¼«ÐÔÄ£Ê½(2Ôò·´¼«ÐÔ) */ //Ê¹ÓÃÔÚ:·Ç0%,·ÇÍ£Ö¹
 #define XXX_PWM2_OCPOLARITY          TIM_OCPOLARITY_HIGH                /* PWM2 ÓÐÐ§Õ¼¿Õ±ÈÊä³öµÄµçÆ½    // //ÕýÏòÍ¨µÀ
 #define XXX_PWM2_OCIDLESTATE         TIM_OCIDLESTATE_RESET              // PWM2 ¿ÕÏÐÊ±µçÆ½(²»ÓÃÔòÆÁ±Î)  */ //Ö»Õë¶ÔTIM1,ÆäËü¶¨Ê±Æ÷Ä¬ÈÏÎªµÍµçÆ½
-#define XXX_PWM2_CCRx                CCR2                               /* PWM2 XXX_TIMX->XXX_PWM2_CCRx */ //Õ¼¿Õ±È
+#define XXX_PWM2_CCR                 CCR2                               /* PWM2 XXX_TIMX->XXX_PWM2_CCR  */ //Õ¼¿Õ±È
+#define XXX_PWM2_TIM_CHANNEL         TIM_CHANNEL_2                      /* PWM2 ËùÔÚ¶¨Ê±Æ÷Í¨µÀ          */
 
 // ÅäÖÃPWM3
 #define XXX_PWM3_CLK_ENABLE()      __HAL_RCC_GPIOA_CLK_ENABLE()         /* PWM3 ¹Ü½ÅÊ±ÖÓÊ¹ÄÜ(²»ÓÃÔòÆÁ±Î)*/
@@ -73,7 +79,8 @@ BSP_EXT TIM_HandleTypeDef            htim2;                             // ¶¨Ê±Æ
 #define XXX_PWM3_OCMODE              TIM_OCMODE_PWM1                    /* PWM3 Êä³ö¼«ÐÔÄ£Ê½(2Ôò·´¼«ÐÔ) */ //Ê¹ÓÃÔÚ:·Ç0%,·ÇÍ£Ö¹
 #define XXX_PWM3_OCPOLARITY          TIM_OCPOLARITY_HIGH                /* PWM3 ÓÐÐ§Õ¼¿Õ±ÈÊä³öµÄµçÆ½    // //ÕýÏòÍ¨µÀ
 #define XXX_PWM3_OCIDLESTATE         TIM_OCIDLESTATE_RESET              // PWM3 ¿ÕÏÐÊ±µçÆ½(²»ÓÃÔòÆÁ±Î)  */ //Ö»Õë¶ÔTIM1,ÆäËü¶¨Ê±Æ÷Ä¬ÈÏÎªµÍµçÆ½
-#define XXX_PWM3_CCRx                CCR3                               /* PWM3 XXX_TIMX->XXX_PWM3_CCRx */ //Õ¼¿Õ±È
+#define XXX_PWM3_CCR                 CCR3                               /* PWM3 XXX_TIMX->XXX_PWM3_CCR  */ //Õ¼¿Õ±È
+#define XXX_PWM3_TIM_CHANNEL         TIM_CHANNEL_3                      /* PWM3 ËùÔÚ¶¨Ê±Æ÷Í¨µÀ          */
 
 // ÅäÖÃPWM4
 #define XXX_PWM4_CLK_ENABLE()      __HAL_RCC_GPIOA_CLK_ENABLE()         /* PWM4 ¹Ü½ÅÊ±ÖÓÊ¹ÄÜ(²»ÓÃÔòÆÁ±Î)*/
@@ -82,7 +89,8 @@ BSP_EXT TIM_HandleTypeDef            htim2;                             // ¶¨Ê±Æ
 #define XXX_PWM4_OCMODE              TIM_OCMODE_PWM1                    /* PWM4 Êä³ö¼«ÐÔÄ£Ê½(2Ôò·´¼«ÐÔ) */ //Ê¹ÓÃÔÚ:·Ç0%,·ÇÍ£Ö¹
 #define XXX_PWM4_OCPOLARITY          TIM_OCPOLARITY_HIGH                /* PWM4 ÓÐÐ§Õ¼¿Õ±ÈÊä³öµÄµçÆ½    // //ÕýÏòÍ¨µÀ
 #define XXX_PWM4_OCIDLESTATE         TIM_OCIDLESTATE_RESET              // PWM4 ¿ÕÏÐÊ±µçÆ½(²»ÓÃÔòÆÁ±Î)  */ //Ö»Õë¶ÔTIM1,ÆäËü¶¨Ê±Æ÷Ä¬ÈÏÎªµÍµçÆ½
-#define XXX_PWM4_CCRx                CCR4                               /* PWM4 XXX_TIMX->XXX_PWM4_CCRx */ //Õ¼¿Õ±È
+#define XXX_PWM4_CCR                 CCR4                               /* PWM4 XXX_TIMX->XXX_PWM4_CCR  */ //Õ¼¿Õ±È
+#define XXX_PWM4_TIM_CHANNEL         TIM_CHANNEL_4                      /* PWM4 ËùÔÚ¶¨Ê±Æ÷Í¨µÀ          */
 
 #endif ///////////////////////////////
 

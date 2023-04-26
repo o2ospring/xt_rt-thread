@@ -57,7 +57,7 @@ extern "C" {
 //#define XT_APP_DEBUG                  20221126                        /* 开启演示                     */
 #define __XT_IR_SEND_REMAP_H
 #ifndef XT_APP_IRSEND_EN
-#define XT_APP_IRSEND_EN                XT_DEF_ENABLED                  /* 红外遥控发送服务模块         */
+#define XT_APP_IRSEND_EN                XT_DEF_DISABLED                 /* 红外遥控发送服务模块         */
 #endif
 #define __XT_SCOM_REMAP_H
 #ifndef XT_APP_SCOM_EN
@@ -87,6 +87,11 @@ extern "C" {
 #define __XT_WIZNET_VOFA_REMAP_H
 #ifndef XT_APP_WIZNETVOFA_EN
 #define XT_APP_WIZNETVOFA_EN            XT_DEF_ENABLED                  /* 网络虚拟数字示波器(VOFA+)    */
+#endif
+//#define XT_APP_DEBUG                  20230301                        /* 开启演示                     */
+#define __XT_LED_PWM_REMAP_H
+#ifndef XT_APP_LEDPWM_EN
+#define XT_APP_LEDPWM_EN                XT_DEF_ENABLED                  /* LED调色调光模块              */
 #endif
 
 /*********************************************************************************************************

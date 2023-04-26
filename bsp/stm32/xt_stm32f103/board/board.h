@@ -9,12 +9,13 @@
 #ifndef BOARD_H__
 #define BOARD_H__
 
-#include <stdint.h> //////////////////////// <-使用的数据定义，如: int8_t, uint32_t 等
-#include <string.h> //////////////////////// <-使用的字符处理，如: strcpy(), memcpy() 等
-#include "stm32f1xx.h" ///////////////////// <-处理器总头文件
-#include "drv_common.h" //////////////////// <-操作系统模块
-#include "drv_gpio.h" ////////////////////// <-操作系统模块
-#include "application.h" /////////////////// <-软件资源管理
+#include <stdint.h> //////////////////////// <- 使用的数据定义，如: int8_t, uint32_t 等
+#include <string.h> //////////////////////// <- 使用的字符处理，如: strcpy(), memcpy() 等
+#include "xt_comdef.h" ///////////////////// <- 常用宏定义集合，如: XT_BIT_SET 等
+#include "stm32f1xx.h" ///////////////////// <- 处理器总头文件
+#include "drv_common.h" //////////////////// <- 操作系统模块
+#include "drv_gpio.h" ////////////////////// <- 操作系统模块
+#include "application.h" /////////////////// <- 软件资源管理
 /*
 #include "stm32f1xx_hal_conf.h"
 #include "system_stm32f10x.h"
@@ -128,7 +129,7 @@ extern int __bss_end;
 #define RTT_COM3_AFIO_REMAP_UART() __HAL_AFIO_REMAP_USART3_ENABLE()     // 串口引脚重映射(不使用则屏蔽) */ //只有 UART1~3 才有映射
 
 // 公共定时器+++++++++++++++++++++++++
-#define BSP_MS_TICK_TIM              4 /*TIME_MS_TICK()为硬件计数器*/   /* 定时器CCR4 用于硬件计数器    */
+#define BSP_MS_TICK_TIM              4 /*time_ms_tick()为硬件计数器*/   /* 定时器CCR4 用于硬件计数器    */
 #if (BSP_TIM4_EN & 0x11)
 #define BSP_TIM4                     TIM4                               /* 定时器                       */
 #define BSP_TIM4_CLK_ENABLE()      __HAL_RCC_TIM4_CLK_ENABLE()          /* 定时器时钟使能               */
@@ -244,30 +245,81 @@ extern void xt_scomx_tim_irqhandler(void); //├→★★硬件驱动二选一�
 #define XT_WIZ_SPI_NSS_EN()          XT_WIZ_SPI_NSS_GPIO->BRR  = XT_WIZ_SPI_NSS_PIN // NSS有效
 #define XT_WIZ_SPI_NSS_DI()          XT_WIZ_SPI_NSS_GPIO->BSRR = XT_WIZ_SPI_NSS_PIN // NSS无效
 
+// LED调色调光模块演示++++++++++++++++
+// 配置PWM频率等
+#define LEDM_TIMX_DIV                1                                                      //定时器的时钟分频
+#define LEDM_TIMX_PWM_FRE            1000                                                   //PWM 输出频率
+#define LEDM_TIMX_PWM_FREVOL       ((72000000 / (LEDM_TIMX_DIV+1) / LEDM_TIMX_PWM_FRE) - 1) //PWM 100%数值(≤0xFFFF)
+
+// 配置PWM定时器
+#define LEDM_TIMX                    TIM3                               /* 定时器                       */
+#define LEDM_TIMX_CLK_ENABLE()     __HAL_RCC_TIM3_CLK_ENABLE()          /* 定时器时钟使能               //
+#define LEDM_TIMX_AFIO_REMAP()     __HAL_AFIO_REMAP_TIM3_PARTIAL_1()    // 定时器引脚重映射(不用则屏蔽) // //只有 TIM1~5 才有映射 (分:重映射[TIM4~5]、部分和完全重映射TIM1~3)
+#define LEDM_TIMX_HANDLER            htim3                              // 定时器句柄(不用全局句柄则屏蔽//
+BSP_EXT TIM_HandleTypeDef            htim3;                             // 定时器句柄(全局变量,按需屏蔽)*/
+#define LEDM_TIMX_IRQn               TIM3_IRQn                          /* 定时器中断通道               */
+#define LEDM_TIMX_PRE_INT_PRIO       0                                  /* 定时器抢占中断优先级         */
+#define LEDM_TIMX_SUB_INT_PRIO       0                                  /* 定时器响应中断优先级         */
+#define LEDM_TIMX_IRQHandler         TIM3_IRQHandler                    /* 中断向量函数                 */
+
+// 配置冷光PWM引脚
+#define LEDM_PWMC_CLK_ENABLE()     __HAL_RCC_GPIOB_CLK_ENABLE()         /* PWMC 管脚时钟使能(不用则屏蔽)*/
+#define LEDM_PWMC_GPIO               GPIOB                              /* PWMC 所在端口                */
+#define LEDM_PWMC_PIN                GPIO_PIN_0                         /* PWMC 所在管脚                */
+#define LEDM_PWMC_OCMODE             TIM_OCMODE_PWM1                    /* PWMC 输出极性模式(2则反极性) */ //使用在:非0%,非停止
+#define LEDM_PWMC_OCPOLARITY         TIM_OCPOLARITY_HIGH                /* PWMC 有效占空比输出的电平    // //正向通道
+#define LEDM_PWMC_OCIDLESTATE        TIM_OCIDLESTATE_RESET              // PWMC 空闲时电平(不用则屏蔽)  */ //只针对TIM1,其它定时器默认为低电平
+#define LEDM_PWMC_CCR                CCR3                               /* PWMC LEDM_TIMX->LEDM_PWMC_CCR*/ //占空比
+#define LEDM_PWMC_TIM_CHANNEL        TIM_CHANNEL_3                      /* PWMC 所在定时器通道          */
+
+// 配置暖光PWM引脚
+#define LEDM_PWMW_CLK_ENABLE()     __HAL_RCC_GPIOB_CLK_ENABLE()         /* PWMW 管脚时钟使能(不用则屏蔽)*/
+#define LEDM_PWMW_GPIO               GPIOB                              /* PWMW 所在端口                */
+#define LEDM_PWMW_PIN                GPIO_PIN_1                         /* PWMW 所在管脚                */
+#define LEDM_PWMW_OCMODE             TIM_OCMODE_PWM2                    /* PWMW 输出极性模式(2则反极性) */ //使用在:非0%,非停止（★★注：使用 TIM_OCMODE_PWM2 是为实现错峰控制★★）
+#define LEDM_PWMW_OCPOLARITY         TIM_OCPOLARITY_HIGH                /* PWMW 有效占空比输出的电平    // //正向通道
+#define LEDM_PWMW_OCIDLESTATE        TIM_OCIDLESTATE_RESET              // PWMW 空闲时电平(不用则屏蔽)  */ //只针对TIM1,其它定时器默认为低电平
+#define LEDM_PWMW_CCR                CCR4                               /* PWMW LEDM_TIMX->LEDM_PWMW_CCR*/ //占空比
+#define LEDM_PWMW_TIM_CHANNEL        TIM_CHANNEL_4                      /* PWMW 所在定时器通道          */
+
 /********************************************************************************************************/
 /*++++++++++++++++++++++++++++++++++++++++++++++ 硬件扩展 ++++++++++++++++++++++++++++++++++++++++++++++*/
 /********************************************************************************************************/
 
-// 硬件定时器定时调用函数+++++++++++++
+#if (defined BSP_STM32F1XX_IT_C__)
+volatile uint32_t time_1ms_tick = 0;
+volatile uint32_t time_10ms_tick = 0;
+volatile uint32_t time_100ms_tick = 0;
+#else
+extern volatile uint32_t time_1ms_tick;
+extern volatile uint32_t time_10ms_tick;
+extern volatile uint32_t time_100ms_tick;
+#endif
+
+// 硬件定时器定时调用函数++++++++++++++++++++++++++++++++++++++
 #if (defined BSP_STM32F1XX_IT_C__) && (defined BSP_MS_TICK_TIM)
-#if (BSP_WDG_EN & 0x01)
-                         extern void wdg_reload_counter(uint8_t runner);
-#define WDG_RELOAD()                 wdg_reload_counter(1)
-#else
-#define WDG_RELOAD()
-#endif
-
-#include "xt_scom.h"
-#if (XT_APP_SCOM_EN == XT_DEF_ENABLED) && (XT_SCOM_HW_DRIVERS_EN == 2)
-                         extern void xt_scomx_tim_irqhandler(void);
-#define XT_SCOMX_OVT()               xt_scomx_tim_irqhandler()
-#else
-#define XT_SCOMX_OVT()
-#endif
-
-#define TIME_1MS_LOOP()              XT_SCOMX_OVT()                     /* 1ms   定时器循环调用函数     */
-#define TIME_10MS_LOOP()                                                /* 10ms  定时器循环调用函数     */
-#define TIME_100MS_LOOP()            WDG_RELOAD()                       /* 100ms 定时器循环调用函数     */
+extern void wdg_reload_counter(uint8_t runner);
+extern void xt_scomx_tim_irqhandler(void);
+XT_INLINE void time_ms_tick(void)
+{
+	static uint8_t time_1ms_cnt = 0;
+	time_1ms_tick++;                      /*1ms   硬件计数器*/
+	#if (XT_APP_SCOM_EN == XT_DEF_ENABLED) && (XT_SCOM_HW_DRIVERS_EN == 2)
+	xt_scomx_tim_irqhandler();
+	#endif
+	if ((++time_1ms_cnt % 10) == 0)
+	{
+		time_10ms_tick++;                 /*10ms  硬件计数器*/
+		if ((time_1ms_cnt % 100) == 0)
+		{
+			time_1ms_cnt = 0;
+			time_100ms_tick++;            /*100ms 硬件计数器*/
+			#if (BSP_WDG_EN & 0x01)
+			wdg_reload_counter(1);
+			#endif
+		}
+	}
+}
 #endif
 
 /********************************************************************************************************/

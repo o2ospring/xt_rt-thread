@@ -83,7 +83,7 @@ void bsp_tim1cc_init(void)
 	bsp_timx_handler.Init.CounterMode = TIM_COUNTERMODE_UP;                          /* 向上计数器       */
 	bsp_timx_handler.Init.Period = 0xFFFF;                                           /* 计数器翻转最大值 */
 	bsp_timx_handler.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                    /* 时钟分频因子     */
-	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断*/         /* 多少次翻转才中断 */
+	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断->TIM1,8*/ /* 多少次翻转才中断 */
 	bsp_timx_handler.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;         /* 自动重装载使能   */
 	HAL_TIM_Base_Init(&bsp_timx_handler);                                            /* 定时器初始化     */
 	//HAL_TIM_Base_Start_IT(&bsp_timx_handler);                                      /* 溢出中断使能     */
@@ -94,6 +94,9 @@ void bsp_tim1cc_init(void)
 	TIM_OCInitStructure.OCFastMode  = TIM_OCFAST_DISABLE;
 	TIM_OCInitStructure.OCMode      = TIM_OCMODE_TIMING;                             /* 只定时,引脚不输出*/
 	TIM_OCInitStructure.OCPolarity  = TIM_OCPOLARITY_HIGH;                           /* 高电平有效       */
+	/* [OCMode]知识扩充（★★特别备注:4个通道可独立,只是这里没分开设置!）：
+	1、[TIM_OCMODE_TOGGLE]->输出比较模式->(CCR==CNT)时，翻转输出电平。
+	2、[TIM_OCMODE_PWM1/2]->PWM模式->(CNT<CCR)时输出一种电平，(CNT>CCR)时输出相反的电平。*/
 	//CCR1
 	TIM_OCInitStructure.Pulse = BSP_TIMx_CCR1;                                       /* 比较通道的计数值 */
 	HAL_TIM_OC_ConfigChannel(&bsp_timx_handler, &TIM_OCInitStructure, TIM_CHANNEL_1);/* 比较通道的初始化 */
@@ -189,7 +192,7 @@ void bsp_tim2_init(void)
 	bsp_timx_handler.Init.CounterMode = TIM_COUNTERMODE_UP;                          /* 向上计数器       */
 	bsp_timx_handler.Init.Period = 0xFFFF;                                           /* 计数器翻转最大值 */
 	bsp_timx_handler.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                    /* 时钟分频因子     */
-	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断*/         /* 多少次翻转才中断 */
+	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断->TIM1,8*/ /* 多少次翻转才中断 */
 	bsp_timx_handler.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;         /* 自动重装载使能   */
 	HAL_TIM_Base_Init(&bsp_timx_handler);                                            /* 定时器初始化     */
 	//HAL_TIM_Base_Start_IT(&bsp_timx_handler);                                      /* 溢出中断使能     */
@@ -200,6 +203,9 @@ void bsp_tim2_init(void)
 	TIM_OCInitStructure.OCFastMode  = TIM_OCFAST_DISABLE;
 	TIM_OCInitStructure.OCMode      = TIM_OCMODE_TIMING;                             /* 只定时,引脚不输出*/
 	TIM_OCInitStructure.OCPolarity  = TIM_OCPOLARITY_HIGH;                           /* 高电平有效       */
+	/* [OCMode]知识扩充（★★特别备注:4个通道可独立,只是这里没分开设置!）：
+	1、[TIM_OCMODE_TOGGLE]->输出比较模式->(CCR==CNT)时，翻转输出电平。
+	2、[TIM_OCMODE_PWM1/2]->PWM模式->(CNT<CCR)时输出一种电平，(CNT>CCR)时输出相反的电平。*/
 	//CCR1
 	TIM_OCInitStructure.Pulse = BSP_TIMx_CCR1;                                       /* 比较通道的计数值 */
 	HAL_TIM_OC_ConfigChannel(&bsp_timx_handler, &TIM_OCInitStructure, TIM_CHANNEL_1);/* 比较通道的初始化 */
@@ -273,7 +279,7 @@ void bsp_tim3_init(void)
 	bsp_timx_handler.Init.CounterMode = TIM_COUNTERMODE_UP;                          /* 向上计数器       */
 	bsp_timx_handler.Init.Period = 0xFFFF;                                           /* 计数器翻转最大值 */
 	bsp_timx_handler.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                    /* 时钟分频因子     */
-	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断*/         /* 多少次翻转才中断 */
+	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断->TIM1,8*/ /* 多少次翻转才中断 */
 	bsp_timx_handler.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;         /* 自动重装载使能   */
 	HAL_TIM_Base_Init(&bsp_timx_handler);                                            /* 定时器初始化     */
 	//HAL_TIM_Base_Start_IT(&bsp_timx_handler);                                      /* 溢出中断使能     */
@@ -284,6 +290,9 @@ void bsp_tim3_init(void)
 	TIM_OCInitStructure.OCFastMode  = TIM_OCFAST_DISABLE;
 	TIM_OCInitStructure.OCMode      = TIM_OCMODE_TIMING;                             /* 只定时,引脚不输出*/
 	TIM_OCInitStructure.OCPolarity  = TIM_OCPOLARITY_HIGH;                           /* 高电平有效       */
+	/* [OCMode]知识扩充（★★特别备注:4个通道可独立,只是这里没分开设置!）：
+	1、[TIM_OCMODE_TOGGLE]->输出比较模式->(CCR==CNT)时，翻转输出电平。
+	2、[TIM_OCMODE_PWM1/2]->PWM模式->(CNT<CCR)时输出一种电平，(CNT>CCR)时输出相反的电平。*/
 	//CCR1
 	TIM_OCInitStructure.Pulse = BSP_TIMx_CCR1;                                       /* 比较通道的计数值 */
 	HAL_TIM_OC_ConfigChannel(&bsp_timx_handler, &TIM_OCInitStructure, TIM_CHANNEL_1);/* 比较通道的初始化 */
@@ -357,7 +366,7 @@ void bsp_tim4_init(void)
 	bsp_timx_handler.Init.CounterMode = TIM_COUNTERMODE_UP;                          /* 向上计数器       */
 	bsp_timx_handler.Init.Period = 0xFFFF;                                           /* 计数器翻转最大值 */
 	bsp_timx_handler.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;                    /* 时钟分频因子     */
-	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断*/         /* 多少次翻转才中断 */
+	bsp_timx_handler.Init.RepetitionCounter = 0;  /*0->1次翻转进入溢出中断->TIM1,8*/ /* 多少次翻转才中断 */
 	bsp_timx_handler.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;         /* 自动重装载使能   */
 	HAL_TIM_Base_Init(&bsp_timx_handler);                                            /* 定时器初始化     */
 	//HAL_TIM_Base_Start_IT(&bsp_timx_handler);                                      /* 溢出中断使能     */
@@ -368,6 +377,9 @@ void bsp_tim4_init(void)
 	TIM_OCInitStructure.OCFastMode  = TIM_OCFAST_DISABLE;
 	TIM_OCInitStructure.OCMode      = TIM_OCMODE_TIMING;                             /* 只定时,引脚不输出*/
 	TIM_OCInitStructure.OCPolarity  = TIM_OCPOLARITY_HIGH;                           /* 高电平有效       */
+	/* [OCMode]知识扩充（★★特别备注:4个通道可独立,只是这里没分开设置!）：
+	1、[TIM_OCMODE_TOGGLE]->输出比较模式->(CCR==CNT)时，翻转输出电平。
+	2、[TIM_OCMODE_PWM1/2]->PWM模式->(CNT<CCR)时输出一种电平，(CNT>CCR)时输出相反的电平。*/
 	//CCR1
 	TIM_OCInitStructure.Pulse = BSP_TIMx_CCR1;                                       /* 比较通道的计数值 */
 	HAL_TIM_OC_ConfigChannel(&bsp_timx_handler, &TIM_OCInitStructure, TIM_CHANNEL_1);/* 比较通道的初始化 */

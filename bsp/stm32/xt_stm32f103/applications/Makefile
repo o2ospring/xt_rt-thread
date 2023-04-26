@@ -23,6 +23,7 @@ SRCS_F = \
          ../modules/xt_wiznet/xt_wiznet_remap.h \
          ../modules/xt_wiznet/xt_wiznet_port_remap.h \
          ../modules/xt_wiznet_vofa/xt_wiznet_vofa_remap.h \
+         ../modules/xt_led_pwm/xt_led_pwm_remap.h \
          \
          ../xt_modules/xt_macro/xt_comdef.h \
          ../xt_modules/xt_llist/xt_llist.c \
@@ -47,6 +48,8 @@ SRCS_F = \
          ../xt_modules/xt_wiznet/Ethernet/W5300/w5300.c \
          ../xt_modules/xt_wiznet/Ethernet/W5500/w5500.c \
          ../xt_modules/xt_wiznet_vofa/xt_wiznet_vofa.c \
+         ../xt_modules/xt_led_pwm/xt_led_pwm.c \
+         ../xt_modules/xt_led_pwm/xt_led_pwm_stm32f1xx_hal.c \
          \
          ./main.c \
          ./application.c \
@@ -117,6 +120,7 @@ SRCS_I = ../../../../include \
          ../modules/xt_cef2 \
          ../modules/xt_wiznet \
          ../modules/xt_wiznet_vofa \
+         ../modules/xt_led_pwm \
          ../xt_modules/xt_macro \
          ../xt_modules/xt_llist \
          ../xt_modules/xt_ir_send \
@@ -128,6 +132,7 @@ SRCS_I = ../../../../include \
          ../xt_modules/xt_wiznet/Internet \
          ../xt_modules/xt_wiznet/Ethernet \
          ../xt_modules/xt_wiznet_vofa \
+         ../xt_modules/xt_led_pwm \
          \
          ../user/xt_ir_send_demo \
          ../user/xt_wiznet_demo
