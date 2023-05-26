@@ -5,9 +5,11 @@
   * Change Logs:
   * Date           Author       Notes
   * 2022-12-16     o2ospring    原始版本
+  * 2023-05-17     o2ospring    增加向[5555]端口广播本机IP
   */
 #include <stdint.h> //////////////////////// <- 使用的数据定义，如: int8_t, uint32_t 等
 #include <string.h> //////////////////////// <- 使用的字符处理，如: strcpy(), memcpy() 等
+#include <stdio.h> ///////////////////////// <- 使用标准输入输出，如：sprintf(p,...) 等
 #include <stdlib.h> //////////////////////// <- 使用到字符转换，如：atoi(s) 等
 #include "rtthread.h" ////////////////////// <- 使用RT-Thread操作系统
 #include "xt_wiznet.h" ///////////////////// <- 依赖网络服务模块!!!!!!!!!!!!!!!!!!!!!!!!!

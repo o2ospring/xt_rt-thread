@@ -282,6 +282,43 @@ BSP_EXT TIM_HandleTypeDef            htim3;                             // 定�
 #define LEDM_PWMW_CCR                CCR4                               /* PWMW LEDM_TIMX->LEDM_PWMW_CCR*/ //占空比
 #define LEDM_PWMW_TIM_CHANNEL        TIM_CHANNEL_4                      /* PWMW 所在定时器通道          */
 
+// LED调色调光模块(精简版)演示++++++++
+// 配置PWM频率等
+#define LEDMM_TIMX_DIV               1                                                        //定时器的时钟分频
+#define LEDMM_TIMX_PWM_FRE           1000                                                     //PWM 输出频率
+#define LEDMM_TIMX_PWM_FREVOL      ((72000000 / (LEDMM_TIMX_DIV+1) / LEDMM_TIMX_PWM_FRE) - 1) //PWM 100%数值(≤0xFFFF)
+
+// 配置PWM定时器
+#define LEDMM_TIMX                   TIM3                               /* 定时器                       */
+#define LEDMM_TIMX_CLK_ENABLE()    __HAL_RCC_TIM3_CLK_ENABLE()          /* 定时器时钟使能               //
+#define LEDMM_TIMX_AFIO_REMAP()    __HAL_AFIO_REMAP_TIM3_PARTIAL_1()    // 定时器引脚重映射(不用则屏蔽) // //只有 TIM1~5 才有映射 (分:重映射[TIM4~5]、部分和完全重映射TIM1~3)
+#define LEDMM_TIMX_HANDLER           htim3                              // 定时器句柄(不用全局句柄则屏蔽//
+BSP_EXT TIM_HandleTypeDef            htim3;                             // 定时器句柄(全局变量,按需屏蔽)*/
+#define LEDMM_TIMX_IRQn              TIM3_IRQn                          /* 定时器中断通道 (不中断则屏蔽)*/
+#define LEDMM_TIMX_PRE_INT_PRIO      0                                  /* 定时器抢占中断优先级(.则屏蔽)*/
+#define LEDMM_TIMX_SUB_INT_PRIO      0                                  /* 定时器响应中断优先级(.则屏蔽)*/
+#define LEDMM_TIMX_IRQHandler        TIM3_IRQHandler                    /* 中断向量函数   (不中断则屏蔽)*/
+
+// 配置冷光PWM引脚
+#define LEDMM_PWMC_CLK_ENABLE()    __HAL_RCC_GPIOB_CLK_ENABLE()         /* PWMC 管脚时钟使能(不用则屏蔽)*/
+#define LEDMM_PWMC_GPIO              GPIOB                              /* PWMC 所在端口                */
+#define LEDMM_PWMC_PIN               GPIO_PIN_0                         /* PWMC 所在管脚                */
+#define LEDMM_PWMC_OCMODE            TIM_OCMODE_PWM1                    /* PWMC 输出极性模式(2则反极性) */ //使用在:非0%,非停止
+#define LEDMM_PWMC_OCPOLARITY        TIM_OCPOLARITY_HIGH                /* PWMC 有效占空比输出的电平    // //正向通道
+#define LEDMM_PWMC_OCIDLESTATE       TIM_OCIDLESTATE_RESET              // PWMC 空闲时电平(不用则屏蔽)  */ //只针对TIM1,其它定时器默认为低电平
+#define LEDMM_PWMC_CCR               CCR3                               /* PWMC LEDMM_TIMX->LEDMM_PWMC_CCR*/ //占空比
+#define LEDMM_PWMC_TIM_CHANNEL       TIM_CHANNEL_3                      /* PWMC 所在定时器通道          */
+
+// 配置暖光PWM引脚
+#define LEDMM_PWMW_CLK_ENABLE()    __HAL_RCC_GPIOB_CLK_ENABLE()         /* PWMW 管脚时钟使能(不用则屏蔽)*/
+#define LEDMM_PWMW_GPIO              GPIOB                              /* PWMW 所在端口                */
+#define LEDMM_PWMW_PIN               GPIO_PIN_1                         /* PWMW 所在管脚                */
+#define LEDMM_PWMW_OCMODE            TIM_OCMODE_PWM2                    /* PWMW 输出极性模式(2则反极性) */ //使用在:非0%,非停止（★★注：使用 TIM_OCMODE_PWM2 是为实现错峰控制★★）
+#define LEDMM_PWMW_OCPOLARITY        TIM_OCPOLARITY_HIGH                /* PWMW 有效占空比输出的电平    // //正向通道
+#define LEDMM_PWMW_OCIDLESTATE       TIM_OCIDLESTATE_RESET              // PWMW 空闲时电平(不用则屏蔽)  */ //只针对TIM1,其它定时器默认为低电平
+#define LEDMM_PWMW_CCR               CCR4                               /* PWMW LEDMM_TIMX->LEDMM_PWMW_CCR*/ //占空比
+#define LEDMM_PWMW_TIM_CHANNEL       TIM_CHANNEL_4                      /* PWMW 所在定时器通道          */
+
 /********************************************************************************************************/
 /*++++++++++++++++++++++++++++++++++++++++++++++ 硬件扩展 ++++++++++++++++++++++++++++++++++++++++++++++*/
 /********************************************************************************************************/

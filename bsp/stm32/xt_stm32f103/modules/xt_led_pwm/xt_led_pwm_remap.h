@@ -5,6 +5,7 @@
   * Change Logs:
   * Date           Author       Notes
   * 2023-03-01     o2ospring    原始版本
+  * 2023-05-08     o2ospring    修正色温函数的关灯控制小错误，以及优化色温换算
   */
 #include <stdint.h> //////////////////////// <- 使用的数据定义，如: int8_t, uint32_t 等
 #include <string.h> //////////////////////// <- 使用的字符处理，如: strcpy(), memcpy() 等
@@ -199,6 +200,17 @@ typedef struct led_pwm_obj_
 //参数检测+++++++++++++++++++++++++++++++++++++
 #if ((XT_LEDM_PWM_MAX+1) > 65535UL) || (((XT_LEDM_PWM_MAX+1) % XT_LEDM_PWM_SUM_DIVISOR) != 0) || ((1000000 % XT_LEDM_PWM_SUM_DIVISOR) != 0)
 #error "[XT_LEDM_PWM_MAX][XT_LEDM_PWM_SUM_DIVISOR] config error!"
+#endif
+#if (defined XT_LEDM_HD_BG_MIN) && (defined XT_LEDM_HD_BG_MAX)
+#if ((XT_LEDMM_COLOR == 2) && ((1000UL/*亮度‰*/ * 1000UL/*色温‰*/ * 100UL/*前置%*/) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR)))) \
+||  ((XT_LEDMM_COLOR == 1) && ((1000UL/*亮度‰*/                   * 100UL/*前置%*/) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR))))
+#error "[XT_LEDM_PWM_MAX][XT_LEDM_PWM_SUM_DIVISOR] config error!"
+#endif
+#else
+#if ((XT_LEDMM_COLOR == 2) && ((1000UL/*亮度‰*/ * 1000UL/*色温‰*/) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR))) \
+||  ((XT_LEDMM_COLOR == 1) && ((1000UL/*亮度‰*/                  ) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR)))
+#error "[XT_LEDM_PWM_MAX][XT_LEDM_PWM_SUM_DIVISOR] config error!"
+#endif
 #endif
 #if (XT_LEDM_BG_MIN <= 0) || (XT_LEDM_BG_MAX != 1000) || ((defined XT_LEDM_HD_BG_MAX) && (XT_LEDM_HD_BG_MAX != 100))
 #error "[XT_LEDM_BG_MIN][XT_LEDM_BG_MAX][XT_LEDM_HD_BG_MAX] config error!"

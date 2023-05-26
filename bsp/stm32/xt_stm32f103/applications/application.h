@@ -91,7 +91,12 @@ extern "C" {
 //#define XT_APP_DEBUG                  20230301                        /* 开启演示                     */
 #define __XT_LED_PWM_REMAP_H
 #ifndef XT_APP_LEDPWM_EN
-#define XT_APP_LEDPWM_EN                XT_DEF_ENABLED                  /* LED调色调光模块              */
+#define XT_APP_LEDPWM_EN                XT_DEF_DISABLED                 /* LED调色调光模块              */
+#endif
+//#define XT_APP_DEBUG                  20230508                        /* 开启演示                     */
+#define __XT_LED_PWM_MINI_REMAP_H
+#ifndef XT_APP_LEDPWMM_EN
+#define XT_APP_LEDPWMM_EN               XT_DEF_ENABLED                  /* LED调色调光模块(精简版)      */
 #endif
 
 /*********************************************************************************************************
