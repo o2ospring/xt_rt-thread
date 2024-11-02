@@ -22,8 +22,8 @@
 #endif
 #endif
 
-#ifndef XT_APP_TLOOP_2_TAB_EXPORT
-#define XT_APP_TLOOP_2_TAB_EXPORT(func,ms)
+#ifndef XT_APP_TLOOP_1_TAB_EXPORT
+#define XT_APP_TLOOP_1_TAB_EXPORT(func,ms)
 #endif
 
 #if (BSP_WDG_EN & 0x01)
@@ -89,6 +89,6 @@ void wdg_reload_software(void)
 {
 	wdg_reload_counter(0);
 }
-XT_APP_TLOOP_2_TAB_EXPORT(wdg_reload_software, 100/*ms*/);
+XT_APP_TLOOP_1_TAB_EXPORT(wdg_reload_software, 100/*ms*/);
 
 #endif  //#if (BSP_WDG_EN & 0x01)

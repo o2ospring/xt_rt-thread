@@ -207,8 +207,8 @@ typedef struct led_pwm_obj_
 #error "[XT_LEDM_PWM_MAX][XT_LEDM_PWM_SUM_DIVISOR] config error!"
 #endif
 #else
-#if ((XT_LEDMM_COLOR == 2) && ((1000UL/*亮度‰*/ * 1000UL/*色温‰*/) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR))) \
-||  ((XT_LEDMM_COLOR == 1) && ((1000UL/*亮度‰*/                  ) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR)))
+#if ((XT_LEDMM_COLOR == 2) && ((1000UL/*亮度‰*/ * 1000UL/*色温‰*/) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR)))) \
+||  ((XT_LEDMM_COLOR == 1) && ((1000UL/*亮度‰*/                  ) > (0xFFFFFFFF / ((XT_LEDM_PWM_MAX+1)/XT_LEDM_PWM_SUM_DIVISOR))))
 #error "[XT_LEDM_PWM_MAX][XT_LEDM_PWM_SUM_DIVISOR] config error!"
 #endif
 #endif

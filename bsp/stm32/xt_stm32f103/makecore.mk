@@ -36,7 +36,7 @@ endif
 # 3、执行创建文件夹、生成依赖、编译、删除等相关操作
 ####################################################
 
-.PHONY: all clean echo debug download
+.PHONY: all clean echo debug download proj
 
 ifdef TARGET
 all: $(TARGET).elf $(TARGET).hex $(TARGET).bin
@@ -143,3 +143,8 @@ ifdef TARGET
 download:
 	$(DOWNLOAD_CMD)
 endif
+
+# 生成工程
+proj:
+	@echo "SRCS: $(SRCS)"
+	@echo "SRCS_I: $(SRCS_I)"

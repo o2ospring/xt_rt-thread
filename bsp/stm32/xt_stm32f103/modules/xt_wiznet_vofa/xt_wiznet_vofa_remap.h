@@ -6,6 +6,8 @@
   * Date           Author       Notes
   * 2022-12-16     o2ospring    原始版本
   * 2023-05-17     o2ospring    增加向[5555]端口广播本机IP
+  * 2023-11-17     o2ospring    增加上电暂停刷新示波器功能
+  * 2023-12-16     o2ospring    增加可修改连接上位机的端口
   */
 #include <stdint.h> //////////////////////// <- 使用的数据定义，如: int8_t, uint32_t 等
 #include <string.h> //////////////////////// <- 使用的字符处理，如: strcpy(), memcpy() 等
@@ -23,7 +25,7 @@ extern "C" {
 /********************************************************************************************************/
 
 #define XT_WIZVOFA_POWERON_EN       1                                    //是否上电开启示波器（0:不开启）
-#define XT_WIZVOFA_REFRESH_TK       (100/*ms*//(1000/RT_TICK_PER_SECOND))//设置示波器刷新时间（@系统节拍）
+#define XT_WIZVOFA_REFRESH_TK       (100/*ms*//(1000/RT_TICK_PER_SECOND))//设置示波器刷新时间（0:上电暂停刷新,@系统节拍）
 #define XT_WIZVOFA_SOCKET           (XT_SOCK_SUM - 2)                    //使用第几个socket接口连接示波器
 #define XT_WIZVOFA_CH_SUM           4   /*目前[VOFA+]没有限制*/          //示波器通道总数（4:共4路）
 #define XT_WIZVOFA_BIG_ENDIAN_SW    0   /*针对大端处理器才开启*/         //开启大端处理器（0:禁用）
@@ -46,7 +48,7 @@ uint8_t xt_wizvofa_ip[4]          = {192, 168, 3, 222};                  /* VOFA
 #define XT_WIZVOFA_OS_TICK_OVMAX    (RT_TICK_MAX / 3)                    /* 判断操作系统节拍器翻转最大值*/
 #define XT_WIZVOFA_THREAD_CREATE(p) p = rt_thread_create("xt_wizvofa", xt_wizvofa_thread_entry, 0, 480, 5, 4); \
                                     if (p != RT_NULL) rt_thread_startup(p)
-#if (XT_WIZVOFA_REFRESH_TK <= 0)
+#if (XT_WIZVOFA_REFRESH_TK < 0)
 #error "" 
 #endif
 
@@ -62,6 +64,7 @@ extern int xt_wizvofa_4ch_put(uint8_t ch_f, float ch1, float ch2, float ch3, flo
 extern int xt_wizvofa_xch_put(uint8_t ch_s, float *p_ch, uint8_t s_ch);
 
 //extern void xt_wizvofa_ip_set(int argc, char *argv[]);
+//extern void xt_wizvofa_port_set(int argc, char *argv[]);
 //extern void xt_wizvofa_cycl_set(int argc, char *argv[]);
 //extern void xt_wizvofa_help(void);
 

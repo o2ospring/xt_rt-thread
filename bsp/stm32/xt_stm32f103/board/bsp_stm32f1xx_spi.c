@@ -14,8 +14,8 @@
 #include "bsp_stm32f1xx_spi.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_5_TAB_EXPORT
+#define XT_CHIP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 //HAL_StatusTypeDef HAL_SPI_Transmit(SPI_HandleTypeDef *hspi, uint8_t *pData, uint16_t Size, uint32_t Timeout);//·¢ËÍÊý¾Ý
@@ -121,7 +121,7 @@ void bsp_spi1_init(void)
 	#endif
 	#undef BSP_SPIx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_spi1_init, "bsp_spi1_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_spi1_init, "bsp_spi1_init()");
 #endif  //#if (BSP_SPI1_EN & 0x01)
 
 /**
@@ -224,7 +224,7 @@ void bsp_spi2_init(void)
 	#endif
 	#undef BSP_SPIx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_spi2_init, "bsp_spi2_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_spi2_init, "bsp_spi2_init()");
 #endif  //#if (BSP_SPI2_EN & 0x01)
 
 /**
@@ -327,5 +327,5 @@ void bsp_spi3_init(void)
 	#endif
 	#undef BSP_SPIx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_spi3_init, "bsp_spi3_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_spi3_init, "bsp_spi3_init()");
 #endif  //#if (BSP_SPI3_EN & 0x01)

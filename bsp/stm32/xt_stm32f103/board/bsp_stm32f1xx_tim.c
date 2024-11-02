@@ -13,8 +13,8 @@
 #include "bsp_stm32f1xx_tim.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_5_TAB_EXPORT
+#define XT_CHIP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 #if (BSP_TIM5_EN & 0x01) || (BSP_TIM6_EN & 0x01)  \
@@ -129,7 +129,7 @@ void bsp_tim1cc_init(void)
 	#undef BSP_TIMx_CCR3
 	#undef BSP_TIMx_CCR4
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_tim1cc_init, "bsp_tim1cc_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_tim1cc_init, "bsp_tim1cc_init()");
 #endif  //#if (BSP_TIM1_CC_EN & 0x01)
 
 /**
@@ -238,7 +238,7 @@ void bsp_tim2_init(void)
 	#undef BSP_TIMx_CCR3
 	#undef BSP_TIMx_CCR4
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_tim2_init, "bsp_tim2_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_tim2_init, "bsp_tim2_init()");
 #endif  //#if (BSP_TIM2_EN & 0x01)
 
 /**
@@ -325,7 +325,7 @@ void bsp_tim3_init(void)
 	#undef BSP_TIMx_CCR3
 	#undef BSP_TIMx_CCR4
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_tim3_init, "bsp_tim3_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_tim3_init, "bsp_tim3_init()");
 #endif  //#if (BSP_TIM3_EN & 0x01)
 
 /**
@@ -412,7 +412,7 @@ void bsp_tim4_init(void)
 	#undef BSP_TIMx_CCR3
 	#undef BSP_TIMx_CCR4
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_tim4_init, "bsp_tim4_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_tim4_init, "bsp_tim4_init()");
 #endif  //#if (BSP_TIM4_EN & 0x01)
 
 #if 0

@@ -27,8 +27,8 @@
 #include "bsp_stm32f1xx_pwm.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_5_TAB_EXPORT
+#define XT_CHIP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 /**
@@ -240,7 +240,7 @@ void bsp_pwm_init(void)
 	// 由于 PWM模式->(CNT<CCR)时输出一种电平，(CNT>CCR)时输出相反的电平，
 	// 所以 XXX_TIMX->XXX_PWM1_CCR 修改占空比操作不会引起定时器错过比较值而造成计数反转的现象。
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_pwm_init, "bsp_pwm_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_pwm_init, "bsp_pwm_init()");
 
 /**
   * @brief  定时器中断

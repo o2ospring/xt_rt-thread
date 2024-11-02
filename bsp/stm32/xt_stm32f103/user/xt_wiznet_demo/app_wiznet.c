@@ -15,8 +15,8 @@
 #include "app_wiznet.h"
 #endif
 
-#ifndef XT_APP_INIT_2_TAB_EXPORT
-#define XT_APP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_APP_INIT_5_TAB_EXPORT
+#define XT_APP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 ALIGN(RT_ALIGN_SIZE)
@@ -45,7 +45,7 @@ void app_wiznet_init(void)
     /**/            app_tcp_thread_stack, sizeof(app_tcp_thread_stack), 12, 4);
     rt_thread_startup(&app_tcp_thread);
 }
-XT_APP_INIT_2_TAB_EXPORT(app_wiznet_init, "app_wiznet_init()");
+XT_APP_INIT_5_TAB_EXPORT(app_wiznet_init, "app_wiznet_init()");
 
 /**
   * @brief  UDP 演示线程

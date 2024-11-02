@@ -17,8 +17,8 @@
 #include "bsp_stm32f1xx_crc.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_5_TAB_EXPORT
+#define XT_CHIP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 #if (BSP_CRC_EN & 0x01)
@@ -35,7 +35,7 @@ void bsp_crc_init(void)
 	// >> `HAL_CRC_MspInit(hcrc);` //回调用户提供的回调函数(使能时钟)
 	__HAL_RCC_CRC_CLK_ENABLE();
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_crc_init, "bsp_crc_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_crc_init, "bsp_crc_init()");
 
 /**
   * @brief  计算出CRC32校验值

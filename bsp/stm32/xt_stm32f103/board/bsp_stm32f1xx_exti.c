@@ -14,8 +14,8 @@
 #include "bsp_stm32f1xx_exti.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_5_TAB_EXPORT
+#define XT_CHIP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 /**
@@ -57,7 +57,7 @@ void bsp_exti0_init(void)
 	#undef BSP_EXTIx_PIN
 	#undef BSP_EXTIx_IN_MODE
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_exti0_init, "bsp_exti0_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_exti0_init, "bsp_exti0_init()");
 #endif  //#if (BSP_EXTI0_EN & 0x01)
 
 /**
@@ -99,7 +99,7 @@ void bsp_exti1_init(void)
 	#undef BSP_EXTIx_PIN
 	#undef BSP_EXTIx_IN_MODE
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_exti1_init, "bsp_exti1_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_exti1_init, "bsp_exti1_init()");
 #endif  //#if (BSP_EXTI1_EN & 0x01)
 
 /**
@@ -141,7 +141,7 @@ void bsp_exti2_init(void)
 	#undef BSP_EXTIx_PIN
 	#undef BSP_EXTIx_IN_MODE
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_exti2_init, "bsp_exti2_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_exti2_init, "bsp_exti2_init()");
 #endif  //#if (BSP_EXTI2_EN & 0x01)
 
 /**
@@ -183,7 +183,7 @@ void bsp_exti3_init(void)
 	#undef BSP_EXTIx_PIN
 	#undef BSP_EXTIx_IN_MODE
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_exti3_init, "bsp_exti3_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_exti3_init, "bsp_exti3_init()");
 #endif  //#if (BSP_EXTI3_EN & 0x01)
 
 /**
@@ -225,7 +225,7 @@ void bsp_exti4_init(void)
 	#undef BSP_EXTIx_PIN
 	#undef BSP_EXTIx_IN_MODE
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_exti4_init, "bsp_exti4_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_exti4_init, "bsp_exti4_init()");
 #endif  //#if (BSP_EXTI4_EN & 0x01)
 
 /**
@@ -267,7 +267,7 @@ void bsp_exti9_5_init(void)
 	#undef BSP_EXTIx_PIN
 	#undef BSP_EXTIx_IN_MODE
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_exti9_5_init, "bsp_exti9_5_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_exti9_5_init, "bsp_exti9_5_init()");
 #endif  //#if (BSP_EXTI9_5_EN & 0x01)
 
 /**
@@ -309,7 +309,7 @@ void bsp_exti15_10_init(void)
 	#undef BSP_EXTIx_PIN
 	#undef BSP_EXTIx_IN_MODE
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_exti15_10_init, "bsp_exti15_10_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_exti15_10_init, "bsp_exti15_10_init()");
 #endif  //#if (BSP_EXTI15_10_EN & 0x01)
 
 #if 0

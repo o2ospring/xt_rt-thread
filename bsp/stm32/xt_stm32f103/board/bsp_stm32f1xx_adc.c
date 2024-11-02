@@ -13,8 +13,8 @@
 #include "bsp_stm32f1xx_adc.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_5_TAB_EXPORT
+#define XT_CHIP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 #if (BSP_ADCX_EN & 0x01)
@@ -50,7 +50,7 @@ void bsp_adc_init(void)
 	/* 启动连续采集 */
 	HAL_ADC_Start_DMA(&hadcx, (uint32_t *)bsp_dma_adcx_value, ADCx_DMA_SIZE); 
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_adc_init, "bsp_adc_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_adc_init, "bsp_adc_init()");
 
 /**
   * @brief  ADCx初始化

@@ -14,8 +14,8 @@
 #include "bsp_stm32f1xx_uart.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_5_TAB_EXPORT
+#define XT_CHIP_INIT_5_TAB_EXPORT(func,desc)
 #endif
 
 /**
@@ -122,7 +122,7 @@ void bsp_usart1_init(void)
 	#endif
 	#undef BSP_UARTx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_usart1_init, "bsp_usart1_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_usart1_init, "bsp_usart1_init()");
 #endif  //#if (BSP_USART1_EN & 0x01)
 
 /**
@@ -229,7 +229,7 @@ void bsp_usart2_init(void)
 	#endif
 	#undef BSP_UARTx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_usart2_init, "bsp_usart2_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_usart2_init, "bsp_usart2_init()");
 #endif  //#if (BSP_USART2_EN & 0x01)
 
 /**
@@ -336,7 +336,7 @@ void bsp_usart3_init(void)
 	#endif
 	#undef BSP_UARTx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_usart3_init, "bsp_usart3_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_usart3_init, "bsp_usart3_init()");
 #endif  //#if (BSP_USART3_EN & 0x01)
 
 /**
@@ -443,7 +443,7 @@ void bsp_uart4_init(void)
 	#endif
 	#undef BSP_UARTx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_uart4_init, "bsp_uart4_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_uart4_init, "bsp_uart4_init()");
 #endif  //#if (BSP_UART4_EN & 0x01)
 
 /**
@@ -550,7 +550,7 @@ void bsp_uart5_init(void)
 	#endif
 	#undef BSP_UARTx_HANDLER
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_uart5_init, "bsp_uart5_init()");
+XT_CHIP_INIT_5_TAB_EXPORT(bsp_uart5_init, "bsp_uart5_init()");
 #endif  //#if (BSP_UART5_EN & 0x01)
 
 #if 0

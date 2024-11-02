@@ -1,5 +1,5 @@
 export ROOT = $(realpath .)
-.PHONY: all clean echo debug download clean_app help
+.PHONY: all clean echo debug download clean_app proj help
 include makeenvi.mk
 
 ####################################################
@@ -128,6 +128,10 @@ download:
 clean_app:
 	$(subst //, && $(MAKE) clean$(LFTAB),$(MAKEFILE_CALL2))
 
+proj:
+	$(RM) $(RMFLAGS) file_src.maketmp file_inc.maketmp
+	$(subst //, && $(MAKE) proj$(LFTAB),$(MAKEFILE_CALL))
+
 help:
 	@echo "make all"
 	@echo "make clean"
@@ -135,3 +139,4 @@ help:
 	@echo "make debug"
 	@echo "make download"
 	@echo "make clean_app"
+	@echo "make proj"

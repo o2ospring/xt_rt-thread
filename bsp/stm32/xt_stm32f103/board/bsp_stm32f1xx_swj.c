@@ -13,8 +13,8 @@
 #include "bsp_stm32f1xx_swj.h"
 #endif
 
-#ifndef XT_CHIP_INIT_2_TAB_EXPORT
-#define XT_CHIP_INIT_2_TAB_EXPORT(func,desc)
+#ifndef XT_CHIP_INIT_1_TAB_EXPORT
+#define XT_CHIP_INIT_1_TAB_EXPORT(func,desc)
 #endif
 
 #if (BSP_JTAG_DI_SW_EN & 0x01)
@@ -27,5 +27,5 @@ void bsp_swj_init(void)
 {
 	__HAL_AFIO_REMAP_SWJ_NOJTAG();
 }
-XT_CHIP_INIT_2_TAB_EXPORT(bsp_swj_init, "bsp_swj_init()");
+XT_CHIP_INIT_1_TAB_EXPORT(bsp_swj_init, "bsp_swj_init()");
 #endif  //#if (BSP_JTAG_DI_SW_EN & 0x01)
